@@ -1,0 +1,62 @@
+:root {
+  //Text colors
+  --text: #171a1f;
+  --text-gray: #9095a0;
+  --text-nav: #565e6cff;
+  --text-news-letter: #424955ff;
+  --btn-text: #fff;
+
+  // Colors
+  // primary
+
+  --primary: #6355d8ff;
+  --primary-hover: #4d3ed3ff;
+  --primary-hover-active: #3d2dc7ff;
+
+  // secondary
+
+  --secondary: #60cfa5ff;
+  --secondary-hover: #36b584ff;
+  --secondary-hover-active: #2f9c72ff;
+
+  // error
+
+  --error: #ed5d56ff;
+
+  --custom-gray-1: #d1d5db;
+
+  // bg colors
+
+  --bg-color: #fff;
+  --bg-gray: #fafafbff;
+  --input-bg: #9095a0ff;
+  --select-bg: #eaecefff;
+  --tag-bg: #f3f4f6ff;
+  --overlay: #ffffffeb;
+  --form-bg: #d4d6daff;
+  --table-bg: rgb(207, 203, 243, 0.25);
+  --modal-overlay: #f8f9fae8;
+
+  // default radius
+
+  --border-radius: 6px;
+
+  // width
+  --container-width: 1176px;
+  --container-height: 1003px;
+
+  // Dark mode scheme
+
+  .dark {
+    --text: #ebebeb;
+    --text-nav: #9095a0;
+    --text-news-letter: #fff;
+    --bg-color: #171a1f;
+    --bg-gray: #0d1117;
+    --select-bg: var(--bg-color);
+    --tag-bg: var(--bg-color);
+    --overlay: #000000bf;
+    --form-bg: #f3f4f6ff;
+    --modal-overlay: var(--overlay);
+  }
+}

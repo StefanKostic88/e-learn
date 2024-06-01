@@ -1,0 +1,36 @@
+@mixin text-properties($font-size, $line-height, $font-weight) {
+  font-size: $font-size;
+  line-height: $line-height;
+  font-weight: $font-weight;
+}
+
+@mixin flex-prop($align-items, $justify-content) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+}
+
+@mixin flex-center {
+  @include flex-prop(center, center);
+}
+
+@mixin flex-col-center {
+  @include flex-center();
+  flex-direction: column;
+  justify-content: center;
+}
+
+@mixin button-color($primary-color, $hover-color, $hover-active-color) {
+  color: var(--btn-text);
+  background-color: $primary-color;
+  &:hover,
+  &:focus {
+    background-color: $hover-color;
+  }
+  &:hover:active {
+    background-color: $hover-active-color;
+  }
+  &:disabled {
+    opacity: 0.4;
+  }
+}

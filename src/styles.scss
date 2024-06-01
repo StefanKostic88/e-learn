@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./styles/base/base.scss";
+
+.padding-side {
+  @media (max-width: 1175px) {
+    padding: 0 1.6rem;
+  }
+}
+
+.active {
+  color: var(--primary-hover-active);
+  @media (max-width: 600px) {
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -0.7px;
+      width: 3px;
+      height: 100%;
+      background-color: var(--primary);
+    }
+  }
+}

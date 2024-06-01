@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap");
+@import "./mixins.scss";
+@import "./variables.scss";
+
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  color: var(--text);
+  background-color: var(--bg-color);
+  @include text-properties(1.8rem, 2.8rem, 400);
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: -1px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  @include text-properties(5.6rem, 7.8rem, 700);
+  @media (max-width: 600px) {
+    @include text-properties(5.2rem, 6.4rem, 700);
+  }
+}
+
+h2 {
+  @include text-properties(4.8rem, 6.8rem, 700);
+  @media (max-width: 600px) {
+    @include text-properties(3.6rem, 4rem, 700);
+  }
+}
+
+h3 {
+  @include text-properties(2rem, 3rem, 700);
+
+  @media (max-width: 600px) {
+    line-height: 2.4rem;
+  }
+}
+
+p {
+  @include text-properties(1.8rem, 2.8rem, 400);
+  @media (max-width: 600px) {
+    @include text-properties(1.4rem, 2.2rem, 400);
+  }
+}
+
+span,
+label,
+.text-small-to-medium {
+  display: block;
+  @include text-properties(1.6rem, 2.6rem, 400);
+}
+
+label {
+  font-weight: 700;
+}
+
+.text-extra-small {
+  @include text-properties(1.2rem, 2rem, 400);
+}
+.text-small {
+  @include text-properties(1.4rem, 2.2rem, 400);
+}
+
+.text-medium {
+  @include text-properties(1.8rem, 2.8rem, 400);
+}
+.text-normal {
+  @include text-properties(2rem, 3rem, 400);
+  @media (max-width: 600px) {
+    @include text-properties(1.8rem, 2.8rem, 400);
+  }
+}
