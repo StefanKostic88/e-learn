@@ -1,0 +1,18 @@
+:host {
+  --page-wraper-main-title-margin-bottom: 36px;
+  --custom-wraper-max-width: 1400px;
+
+  & app-home-page-unsigned {
+    align-self: stretch;
+  }
+}
+
+.grayed-text {
+  color: var(--text-gray);
+  max-width: 780px;
+  text-align: center;
+}
+
+.homepage-paragraph {
+  padding-bottom: 96px;
+}

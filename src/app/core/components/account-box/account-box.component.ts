@@ -34,7 +34,7 @@ export class AccountBoxComponent {
   @Input() isAuthorized: boolean | null = false;
 
   // public readonly isNavigationIsOpened$ = this.uiService.isNavigationIsOpened;
-  public readonly isNavigationIsOpened$ = of(true);
+  public readonly isNavigationIsOpened$ = of(false);
   public readonly linksList = headerLinksList;
   public readonly exitIcon: IconDefinition = faArrowRightToBracket;
   public readonly closeIcon: IconDefinition = faClose;

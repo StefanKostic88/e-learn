@@ -1,0 +1,51 @@
+@import "../../../../styles.scss";
+:host {
+  & app-button {
+    margin-top: auto;
+    --button-custom-width: 100%;
+  }
+}
+
+.label {
+  @include text-properties(18px, 28px, 700);
+}
+
+.error {
+  color: var(--error);
+}
+
+.registration {
+  & h3 {
+    margin-bottom: 4rem;
+  }
+  &__container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 117.6rem;
+    height: 62.5rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      gap: 4.4rem;
+    }
+    @media (min-width: 1024px) {
+      gap: 9.6rem;
+    }
+
+    &_spec {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & form {
+      display: flex;
+      flex-direction: column;
+      gap: 2.8rem;
+      flex: 1 1 0%;
+      @media (min-width: 768px) {
+        max-width: 62.9rem;
+      }
+    }
+  }
+}

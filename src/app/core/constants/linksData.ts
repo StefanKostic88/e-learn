@@ -49,3 +49,37 @@ export const headerLinksList = [
   { path: 'pricing', linkName: 'Pricing' },
   { path: 'about-us', linkName: 'About Us' },
 ];
+
+export interface BoxItem {
+  title: string;
+  creationDate: Date;
+  img: string;
+  readTime: number;
+  tag: string;
+}
+
+export const boxItems: BoxItem[] = [
+  {
+    title: 'Revolutionizing Education: How AI is Transforming E-Learning',
+    creationDate: new Date(),
+    img: '../../../assets/imgs/box-image-1.jpg',
+    readTime: 5,
+    tag: 'Elearning Transformation',
+  },
+  {
+    title:
+      'Mastering New Frontiers: The Rise of Virtual Reality in Online Education',
+    creationDate: new Date(),
+    img: '../../../assets/imgs/box-image-2.jpg',
+    readTime: 10,
+    tag: 'Artificial Intelligence',
+  },
+  {
+    title:
+      'Unlocking Potential: Personalized Learning in the Digital Classroom',
+    creationDate: new Date(),
+    img: '../../../assets/imgs/box-image-3.jpg',
+    readTime: 15,
+    tag: 'Digital Learning',
+  },
+];

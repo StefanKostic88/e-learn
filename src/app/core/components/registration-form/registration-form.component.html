@@ -1,0 +1,41 @@
+<div class="registration">
+  <h3 class="text-medium mb-10">{{ roleSubject | async | titlecase }}</h3>
+  <div class="registration__container">
+    <app-custom-img [img]="img"></app-custom-img>
+
+    <form (ngSubmit)="onSubmit()" [formGroup]="registrationForm">
+      <app-input
+        *ngFor="let input of inputsArr | async"
+        [formControlName]="input.formControlName"
+        [parentForm]="registrationForm"
+        [labelName]="input.labelName"
+        [inputName]="input.formControlName"
+      ></app-input>
+
+      <div
+        class="registration__container_spec"
+        *ngIf="roleSubject.getValue() === 'trainer'"
+      >
+        <label for="specialization">Specialization</label>
+
+        <app-drop-down-menu
+          [name]="'specialization'"
+          formControlName="specialization"
+          [options]="allSpecializations$ | async"
+        ></app-drop-down-menu>
+      </div>
+
+      <span
+        class="error"
+        *ngIf="registrationError$ | async as registrationError"
+      >
+        {{ registrationError }}
+      </span>
+
+      <app-button
+        [content]="'Submit'"
+        [disabled]="!registrationForm.valid"
+      ></app-button>
+    </form>
+  </div>
+</div>

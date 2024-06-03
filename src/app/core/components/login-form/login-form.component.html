@@ -1,0 +1,34 @@
+<form class="login" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <app-input
+    [labelName]="'User name'"
+    [inputName]="'username'"
+    [parentForm]="loginForm"
+    formControlName="username"
+    [inputType]="'text'"
+    [placeholder]="'User Name'"
+  >
+    <div class="icon">
+      <fa-icon class="icon-left" [icon]="user"></fa-icon>
+    </div>
+  </app-input>
+  <app-input
+    [labelName]="'Password'"
+    [inputName]="'password'"
+    [parentForm]="loginForm"
+    formControlName="password"
+    [inputType]="'password'"
+    [placeholder]="'Password'"
+  >
+    <div class="icon">
+      <fa-icon class="icon-left" [icon]="lock"></fa-icon>
+    </div>
+  </app-input>
+  <span class="invalid-credentials" *ngIf="loginError$ | async as loginError">{{
+    loginError
+  }}</span>
+  <app-button
+    [content]="'Sign In'"
+    [btnSize]="buttonSize.MEDIUM"
+    [disabled]="!loginForm.valid && loginForm.touched"
+  ></app-button>
+</form>

@@ -1,0 +1,17 @@
+<app-page-wraper [pageTitle]="pageTitle | async">
+  <ng-container class="main">
+    <p class="grayed-text text-normal">
+      Welcome to Learn Platform - where every day is a day to learn. Dive into
+      the vast ocean of knowledge and empower yourself with the tools for a
+      successful tomorrow. Heappy learning!
+    </p>
+
+    <ng-container *ngIf="isAuthorized$ | async; else unsigned">
+      <app-home-page-signed></app-home-page-signed>
+    </ng-container>
+  </ng-container>
+</app-page-wraper>
+
+<ng-template #unsigned>
+  <app-home-page-unsigned></app-home-page-unsigned>
+</ng-template>

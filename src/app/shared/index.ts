@@ -9,3 +9,5 @@ export * from './ui/switcher/switcher.component';
 
 // components
 export * from './components/logo/logo.component';
+export * from './components/join-us-box/join-us-box.component';
+export * from './components/page-wraper/page-wraper.component';

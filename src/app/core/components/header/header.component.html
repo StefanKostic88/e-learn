@@ -24,14 +24,34 @@
       [isAuthorized]="userHeaderData.isAuthorized"
     >
       <ng-container *ngIf="!userHeaderData.isAuthorized">
-        <li class="navigationLinks"><a [routerLink]="'/'">Sign in</a></li>
-        <li class="navigationLinks"><a [routerLink]="'/'">Join us</a></li>
+        <li class="navigationLinks">
+          <a
+            [routerLink]="'/sign-in'"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Sign in</a
+          >
+        </li>
+        <li class="navigationLinks">
+          <a
+            [routerLink]="'/join-us'"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Join us</a
+          >
+        </li>
       </ng-container>
 
       <ng-container *ngIf="userHeaderData.isAuthorized">
         <li class="navigationLinks link-icon mode-toggler">
           <fa-icon [icon]="userIcon"></fa-icon>
-          <a class="link-icon" [routerLink]="'/'">My Account</a>
+          <a
+            class="link-icon"
+            [routerLink]="'/my-account'"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >My Account</a
+          >
         </li>
         <li class="navigationLinks">
           <span class="link-icon mode-toggler">
@@ -48,17 +68,19 @@
 <!-- This is displayed in case theuser iz not authorized -->
 
 <ng-template #notAuthorized>
-  <div class="btn-container">
-    <app-button
-      [content]="'Sign in'"
-      [outlined]="false"
-      [btnSize]="buttonSize.SMALL"
-      (click)="navigateToSignInPage()"
-    ></app-button>
-    <app-button
-      [content]="'Join us'"
-      [btnSize]="buttonSize.SMALL"
-      (click)="navigateToJoinUsPage()"
-    ></app-button>
-  </div>
+  <ng-container *ngIf="(signInPage$ | async) !== true">
+    <div class="btn-container">
+      <app-button
+        [content]="'Sign in'"
+        [outlined]="false"
+        [btnSize]="buttonSize.SMALL"
+        (click)="navigateToSignInPage()"
+      ></app-button>
+      <app-button
+        [content]="'Join us'"
+        [btnSize]="buttonSize.SMALL"
+        (click)="navigateToJoinUsPage()"
+      ></app-button>
+    </div>
+  </ng-container>
 </ng-template>

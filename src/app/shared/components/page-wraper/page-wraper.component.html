@@ -1,0 +1,5 @@
+<main class="wraper">
+  <ng-content select=".breadcrumbs"></ng-content>
+  <h1 *ngIf="pageTitle" class="page-header">{{ pageTitle }}</h1>
+  <ng-content select=".main"></ng-content>
+</main>

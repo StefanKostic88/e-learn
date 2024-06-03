@@ -7,7 +7,13 @@ import {
   faMoon,
 } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
-import { Router, RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import {
   ButtonComponent,
   CustomImgComponent,
@@ -18,7 +24,7 @@ import {
 import { AccountBoxComponent } from '../account-box/account-box.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
-import { Observable, of } from 'rxjs';
+import { Observable, filter, map, of } from 'rxjs';
 
 const components = [
   NavigationComponent,
@@ -32,7 +38,13 @@ const components = [
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [components, FontAwesomeModule, CommonModule, RouterLink],
+  imports: [
+    components,
+    FontAwesomeModule,
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -52,9 +64,10 @@ export class HeaderComponent implements OnInit {
   public readonly moonIcon: IconDefinition = faMoon;
   public readonly userIcon: IconDefinition = faCircleUser;
 
-  activeRoute = '';
+  public signInPage$?: Observable<boolean>;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router // // private uiService: UiService, // private userService: UserService
   ) {}
 
@@ -63,11 +76,23 @@ export class HeaderComponent implements OnInit {
       accountData: {
         email: 'testemail',
         username: 'sadasd',
-        img: 'asdasd',
+        img: '../../../../assets/imgs/profile.jpg',
       },
-      isAuthorized: true,
+      isAuthorized: false,
     });
-    console.log('Navigation');
+
+    this.signInPage$ = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      map((data) => (data as NavigationEnd).urlAfterRedirects),
+
+      map(
+        (url) =>
+          url === '/join-us' ||
+          url === '/sign-in' ||
+          url === '/join-us/trainer-register' ||
+          url === '/join-us/student-register'
+      )
+    );
   }
 
   public navigateToJoinUsPage(): void {
@@ -78,18 +103,7 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/sign-in']);
   }
 
-  public navigateToMyAccountPage(): void {
-    this.router.navigate(['/my-account']);
-  }
-
   public toggleAccountBox() {
     // this.uiService.toggleNavigationMenu();
-  }
-  public handleKeydown(event: KeyboardEvent, callback: () => void): void {
-    // Check for Enter or Space key
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault(); // Prevent default action for space key to avoid page scroll
-      callback();
-    }
   }
 }
