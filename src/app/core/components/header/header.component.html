@@ -27,11 +27,12 @@
         <li class="navigationLinks"><a [routerLink]="'/'">Sign in</a></li>
         <li class="navigationLinks"><a [routerLink]="'/'">Join us</a></li>
       </ng-container>
-      <li class="navigationLinks link-icon mode-toggler">
-        <fa-icon [icon]="userIcon"></fa-icon>
-        <a class="link-icon" [routerLink]="'/'">My Account</a>
-      </li>
+
       <ng-container *ngIf="userHeaderData.isAuthorized">
+        <li class="navigationLinks link-icon mode-toggler">
+          <fa-icon [icon]="userIcon"></fa-icon>
+          <a class="link-icon" [routerLink]="'/'">My Account</a>
+        </li>
         <li class="navigationLinks">
           <span class="link-icon mode-toggler">
             <fa-icon [icon]="moonIcon"></fa-icon> Night Mode

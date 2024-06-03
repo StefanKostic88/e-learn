@@ -7,6 +7,7 @@ import {
 import {
   IconDefinition,
   faArrowRightToBracket,
+  faClose,
 } from '@fortawesome/free-solid-svg-icons';
 import { headerLinksList } from '../../constants/linksData';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
@@ -36,9 +37,10 @@ export class AccountBoxComponent {
   public readonly isNavigationIsOpened$ = of(true);
   public readonly linksList = headerLinksList;
   public readonly exitIcon: IconDefinition = faArrowRightToBracket;
+  public readonly closeIcon: IconDefinition = faClose;
   public readonly btnSize: typeof ButtonSize = ButtonSize;
 
-  testImg = '../../../../assets/imgs/profile.jpg';
+  testImg = '../../../../assets/imgs/progile/profile.jpg';
 
   constructor() {} // private userService: UserService // private authStoreService: AuthStoreService, // private uiService: UiService,
 
