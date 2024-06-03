@@ -1,0 +1,48 @@
+@import "../../../../styles.scss";
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--button-custom-width, 100%);
+  min-width: var(--custom-button-max-width, 8rem);
+
+  &:disabled {
+    opacity: 0.4;
+  }
+}
+
+.btn-small {
+  padding: 0 1.2rem;
+  height: 3.6rem;
+}
+
+.btn-medium {
+  height: 4.4rem;
+  padding: 0 1.6rem;
+}
+
+.btn-normal {
+  height: 5.2rem;
+  padding: 0 2rem;
+}
+
+.btn-primary {
+  @include button-color(
+    var(--primary),
+    var(--primary-hover),
+    var(--primary-hover-active)
+  );
+}
+
+.btn-secondary {
+  @include button-color(
+    var(--secondary),
+    var(--secondary-hover),
+    var(--secondary-hover-active)
+  );
+}
+
+.btn-error {
+  @include button-color(var(--error), var(--error), var(--error));
+}

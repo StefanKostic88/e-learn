@@ -1,0 +1,34 @@
+<div class="app-input">
+  <label
+    *ngIf="isNotNewsLetter"
+    [htmlFor]="inputName"
+    class="label"
+    [class.invalid-label]="inputIsValid()"
+    >{{ labelName }}
+    <span class="text-small" *ngIf="inputIsValid()">{{
+      errorMsg()
+    }}</span></label
+  >
+  <input
+    appHidePassword
+    #appPasswordHideRef="appHidePassword"
+    [type]="inputType"
+    [id]="inputName"
+    class="costum-input"
+    [value]="value"
+    [disabled]="isDisabled"
+    [placeholder]="placeholder"
+    [class.invalid-input]="inputIsValid()"
+    (input)="handleChange($event)"
+    (blur)="touched()"
+    autocomplete="off"
+  />
+  <div *ngIf="inputType === 'password'" class="eye-icon">
+    <fa-icon
+      class="icon-right"
+      [icon]="appPasswordHideRef.icon"
+      (click)="appPasswordHideRef.togglePass()"
+    ></fa-icon>
+  </div>
+  <ng-content></ng-content>
+</div>

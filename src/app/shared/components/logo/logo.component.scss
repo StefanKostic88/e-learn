@@ -1,0 +1,41 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 48px;
+  gap: 5px;
+  cursor: pointer;
+
+  & h3 {
+    font-size: 30px;
+  }
+}
+
+.logo-cicrcles {
+  width: 45px;
+  height: 34px;
+  position: relative;
+}
+
+.logo-cicrcles::before,
+.logo-cicrcles::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  height: 80%;
+  width: 60%;
+  height: 70%;
+  width: 63%;
+}
+
+.logo-cicrcles::before {
+  left: 0;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+}
+.logo-cicrcles::after {
+  right: 0;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+}

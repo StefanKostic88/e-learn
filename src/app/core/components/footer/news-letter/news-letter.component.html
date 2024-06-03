@@ -1,0 +1,29 @@
+<div class="news-letter">
+  <div>
+    <h3 class="news-letter__heading">Subscribe to our newsletter</h3>
+    <p class="small-paragraph text-extra-small">
+      For product announcements and exclusive insights
+    </p>
+  </div>
+
+  <form [formGroup]="newsletterForm" (ngSubmit)="onSubmit()">
+    <app-input
+      [placeholder]="'Your Email'"
+      [isNotNewsLetter]="false"
+      [parentForm]="newsletterForm"
+      inputName="newsLetterEmail"
+      inputType="email"
+      formControlName="newsLetterEmail"
+    >
+      <div class="icon">
+        <fa-icon [icon]="faEnvelope"></fa-icon></div
+    ></app-input>
+
+    <app-button
+      [content]="'Subscribe'"
+      [isInputBtn]="true"
+      [btnSize]="buttonSize.SMALL"
+      [disabled]="!newsletterForm.valid && newsletterForm.touched"
+    ></app-button>
+  </form>
+</div>

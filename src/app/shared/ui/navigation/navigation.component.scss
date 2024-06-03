@@ -1,0 +1,45 @@
+@import "../../../../styles.scss";
+
+.app-navigation {
+  display: flex;
+
+  &__header {
+    margin-bottom: 0.4rem;
+  }
+
+  & a:hover {
+    color: var(--primary-hover);
+    outline: none;
+  }
+}
+
+.mainNav {
+  color: var(--text-nav);
+  gap: 2rem;
+}
+
+.normal-nav {
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.account-box-nav {
+  color: var(--text-nav);
+  gap: 2rem;
+  align-items: baseline;
+
+  & li {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    height: 90%;
+    font-size: 1.6rem;
+    flex-direction: column;
+
+    & li {
+      display: block;
+    }
+  }
+}

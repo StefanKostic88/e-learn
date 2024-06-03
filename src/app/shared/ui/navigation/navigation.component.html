@@ -1,0 +1,23 @@
+<ul
+  class="app-navigation text-small"
+  [ngClass]="{
+    'normal-nav': !isMainNav,
+    mainNav: isMainNav,
+    'account-box-nav': accountBoxNav
+  }"
+>
+  <li>
+    <h3 class="app-navigation__header">
+      {{ navigationTitle }}
+    </h3>
+  </li>
+  <li *ngFor="let link of linksList; trackBy: trackByIndex">
+    <a
+      [routerLink]="[link.path]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >{{ link.linkName }}</a
+    >
+  </li>
+  <ng-content></ng-content>
+</ul>

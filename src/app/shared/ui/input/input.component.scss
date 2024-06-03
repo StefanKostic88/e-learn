@@ -1,0 +1,60 @@
+@import "../../../../styles.scss";
+
+.app-input {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  @include text-properties(18px, 28px, 700);
+}
+
+.costum-input {
+  height: var(--custom-input-height, 48px);
+  padding-left: var(--custom-input-padding-start, 16px);
+  outline: none;
+  background-color: inherit;
+  width: var(--custom-input-width, 100%);
+  font-size: var(--custom-input-font-size, 16px);
+
+  border: 1px solid var(--input-bg);
+  border-bottom-right-radius: var(
+    --custom-input-border-radius-right,
+    var(--border-radius)
+  );
+  border-top-right-radius: var(
+    --custom-input-border-radius-right,
+    var(--border-radius)
+  );
+
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+
+  &:hover,
+  &:focus {
+    box-shadow: 0 1px 2px 0 var(--primary-hover);
+  }
+}
+
+.invalid-label {
+  color: var(--error);
+}
+.invalid-input {
+  border: 1px solid var(--error);
+  &:hover,
+  &:focus {
+    box-shadow: 0 1px 2px 0 var(--error);
+  }
+}
+
+.eye-icon {
+  position: absolute;
+  padding-right: 16px;
+  right: 0;
+  top: 52%;
+  cursor: pointer;
+}
