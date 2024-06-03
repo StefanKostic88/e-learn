@@ -1,1 +1,27 @@
-<p>footer works!</p>
+<footer class="footer padding-side">
+  <div class="footer-content">
+    <div class="footer-content__top-side">
+      <app-logo class="hidden md:block"></app-logo>
+      <nav class="footer-content__top-side__nav">
+        <app-navigation
+          *ngFor="let linkData of linksData; trackBy: trackByIndex"
+          [navigationTitle]="linkData.NavigationTitle"
+          [linksList]="linkData.navigationList"
+        ></app-navigation>
+      </nav>
+      <app-select-language class="footer-hide-xs"></app-select-language>
+      <app-icons-container class="footer-hide-xs"></app-icons-container>
+      <app-news-letter></app-news-letter>
+    </div>
+
+    <div class="line footer-hide-sm"></div>
+
+    <div class="footer-content__botom-side">
+      <app-select-language class="footer-hide-sm"></app-select-language>
+      <p class="footer-text text-small">
+        &#169; 2024 Learn, Inc. &#183; Privacy &#183; Terms
+      </p>
+      <app-icons-container class="footer-hide-sm"></app-icons-container>
+    </div>
+  </div>
+</footer>

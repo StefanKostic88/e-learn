@@ -1,0 +1,47 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13rem;
+  height: 4.8rem;
+  gap: 5px;
+  cursor: pointer;
+
+  & h3 {
+    font-size: 3rem;
+  }
+}
+
+.logo-cicrcles {
+  width: 4.5rem;
+  height: 3.4rem;
+  position: relative;
+}
+
+.logo-cicrcles::before,
+.logo-cicrcles::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  height: 80%;
+  width: 60%;
+  height: 70%;
+  width: 63%;
+}
+
+.logo-cicrcles::before {
+  left: 0;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+}
+
+.logo-cicrcles::after {
+  right: 0;
+  border-radius: 50%;
+  border: 1px solid var(--primary);
+}
+
+.logo-cicrcles:hover::before,
+.logo-cicrcles:hover::after {
+  border: 1px solid var(--primary-hover);
+}

@@ -1,0 +1,32 @@
+.select-language {
+  display: inline-block;
+  position: relative;
+  width: 12.8rem;
+  &__select {
+    color: inherit;
+    background-color: var(--select-bg);
+    cursor: pointer;
+    appearance: none;
+    width: 100%;
+    border: 1px solid var(--primary);
+    padding: 0.8rem 1.6rem;
+    border-radius: 4px;
+    line-height: 1.25;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  &__icon {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 0.8rem;
+    & fa-icon {
+      font-size: 1.6rem;
+      fill: currentColor;
+    }
+  }
+}

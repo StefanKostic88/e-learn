@@ -1,0 +1,45 @@
+:host {
+  --custom-input-height: 36px;
+  --custom-input-padding-start: 28px;
+  --custom-input-width: 270px;
+  --custom-input-font-size: 14px;
+  --custom-input-border-radius-right: 0;
+
+  @media (max-width: 1024px) {
+    --custom-input-width: 100%;
+  }
+}
+
+form {
+  display: flex;
+}
+
+.news-letter {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__heading {
+    color: var(--primary);
+  }
+}
+
+.small-paragraph {
+  color: var(--text-news-letter);
+}
+
+.icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  padding-left: 8px;
+  & fa-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// top: 18px;
+// transform: translateY(-12px);
