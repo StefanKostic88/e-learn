@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-custom-img',
   standalone: true,
   imports: [],
   templateUrl: './custom-img.component.html',
-  styleUrl: './custom-img.component.scss'
+  styleUrl: './custom-img.component.scss',
 })
 export class CustomImgComponent {
-
+  @Input() public img?: string;
 }

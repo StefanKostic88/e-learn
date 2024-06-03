@@ -1,11 +1,18 @@
 @import "../../../../styles.scss";
 
 .btn {
+  color: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
   width: var(--button-custom-width, 100%);
   min-width: var(--custom-button-max-width, 8rem);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  cursor: pointer;
+  border-width: 0;
+  outline: none;
+  overflow: hidden;
 
   &:disabled {
     opacity: 0.4;
@@ -45,4 +52,25 @@
 
 .btn-error {
   @include button-color(var(--error), var(--error), var(--error));
+}
+
+.full-border {
+  border-radius: var(--border-radius);
+}
+
+.news-letter-borders {
+  border-radius: unset;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+
+.not-otulined {
+  background-color: transparent;
+  color: var(--custom-not-outlined-color, var(--text));
+  &:hover {
+    color: (var(--primary-hover));
+  }
+  &:active {
+    color: (var(--primary-hover-active));
+  }
 }

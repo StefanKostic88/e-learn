@@ -5,6 +5,7 @@ import { IconsContainerComponent } from './icons-container/icons-container.compo
 import { NavigationComponent } from '../../../shared';
 import { NgFor } from '@angular/common';
 import { LogoComponent } from '../../../shared';
+import { footerLinksData } from '../../constants/linksData';
 
 const components = [
   NewsLetterComponent,
@@ -22,51 +23,7 @@ const components = [
   styleUrl: './footer.component.scss',
 })
 export class FooterComponent {
-  linksData = [
-    {
-      NavigationTitle: 'Products',
-      navigationList: [
-        {
-          path: '/features',
-          linkName: 'Features',
-        },
-        {
-          path: '/pricing',
-          linkName: 'Pricing',
-        },
-      ],
-    },
-    {
-      NavigationTitle: 'Resources',
-      navigationList: [
-        {
-          path: '/blog',
-          linkName: 'Blog',
-        },
-        {
-          path: '/user-guide',
-          linkName: 'Users Guide',
-        },
-        {
-          path: '/webinars',
-          linkName: 'Webinars',
-        },
-      ],
-    },
-    {
-      NavigationTitle: 'Company',
-      navigationList: [
-        {
-          path: '/about-us',
-          linkName: 'About us',
-        },
-        {
-          path: '/contact-us',
-          linkName: 'Contact us',
-        },
-      ],
-    },
-  ];
+  linksData = footerLinksData;
 
   public trackByIndex(index: number): number {
     return index;

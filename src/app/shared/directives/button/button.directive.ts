@@ -30,6 +30,10 @@ export class ButtonDirective implements AfterViewInit {
     if (this.isOutlined && this.btnType === ButtonState.PRIMARY) {
       this.renderer.addClass(this.elementRef.nativeElement, 'btn-primary');
     }
+
+    if (!this.isOutlined) {
+      this.renderer.addClass(this.elementRef.nativeElement, 'not-otulined');
+    }
     if (this.isOutlined && this.btnType === ButtonState.SECONDARY) {
       this.renderer.addClass(this.elementRef.nativeElement, 'btn-secondary');
     }
@@ -39,7 +43,8 @@ export class ButtonDirective implements AfterViewInit {
   }
 
   private generateRoundedProps(): void {
-    const inputClass = this.isInputBtn ? 'rounded-r-md' : 'rounded-md';
+    const inputClass = this.isInputBtn ? 'news-letter-borders' : 'full-border';
+    console.log(inputClass);
     this.renderer.addClass(this.elementRef.nativeElement, inputClass);
   }
 

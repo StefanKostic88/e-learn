@@ -2,19 +2,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 130px;
-  height: 48px;
+  width: 13rem;
+  height: 4.8rem;
   gap: 5px;
   cursor: pointer;
 
   & h3 {
-    font-size: 30px;
+    font-size: 3rem;
   }
 }
 
 .logo-cicrcles {
-  width: 45px;
-  height: 34px;
+  width: 4.5rem;
+  height: 3.4rem;
   position: relative;
 }
 
@@ -34,8 +34,14 @@
   border-radius: 50%;
   border: 1px solid var(--primary);
 }
+
 .logo-cicrcles::after {
   right: 0;
   border-radius: 50%;
   border: 1px solid var(--primary);
+}
+
+.logo-cicrcles:hover::before,
+.logo-cicrcles:hover::after {
+  border: 1px solid var(--primary-hover);
 }

@@ -1,1 +1,63 @@
-<p>header works!</p>
+<header class="header">
+  <fa-icon
+    class="header__toggler"
+    [icon]="headerIcon"
+    (click)="toggleAccountBox()"
+  ></fa-icon>
+  <app-logo></app-logo>
+  <app-navigation
+    class="hidden sm:block"
+    [isMainNav]="true"
+    [linksList]="linksList"
+  ></app-navigation>
+  <ng-container *ngIf="userHeaderData$ | async as userHeaderData">
+    <ng-container *ngIf="userHeaderData.isAuthorized; else notAuthorized">
+      <div class="header__account-detailes">
+        <h3 class="text-small-to-medium">
+          {{ userHeaderData.accountData.username }}
+        </h3>
+        <app-custom-img [img]="userHeaderData.accountData.img"></app-custom-img>
+      </div>
+    </ng-container>
+    <app-account-box
+      [accountBoxData]="userHeaderData.accountData"
+      [isAuthorized]="userHeaderData.isAuthorized"
+    >
+      <ng-container *ngIf="!userHeaderData.isAuthorized">
+        <li class="navigationLinks"><a [routerLink]="'/'">Sign in</a></li>
+        <li class="navigationLinks"><a [routerLink]="'/'">Join us</a></li>
+      </ng-container>
+      <li class="navigationLinks link-icon mode-toggler">
+        <fa-icon [icon]="userIcon"></fa-icon>
+        <a class="link-icon" [routerLink]="'/'">My Account</a>
+      </li>
+      <ng-container *ngIf="userHeaderData.isAuthorized">
+        <li class="navigationLinks">
+          <span class="link-icon mode-toggler">
+            <fa-icon [icon]="moonIcon"></fa-icon> Night Mode
+            <app-switcher></app-switcher>
+          </span>
+        </li>
+      </ng-container>
+    </app-account-box>
+  </ng-container>
+</header>
+
+<!-- Is Authorzized Template -->
+<!-- This is displayed in case theuser iz not authorized -->
+
+<ng-template #notAuthorized>
+  <div class="btn-container">
+    <app-button
+      [content]="'Sign in'"
+      [outlined]="false"
+      [btnSize]="buttonSize.SMALL"
+      (click)="navigateToSignInPage()"
+    ></app-button>
+    <app-button
+      [content]="'Join us'"
+      [btnSize]="buttonSize.SMALL"
+      (click)="navigateToJoinUsPage()"
+    ></app-button>
+  </div>
+</ng-template>
