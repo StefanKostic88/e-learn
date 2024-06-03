@@ -1,0 +1,15 @@
+<div *ngIf="isOpened" class="modal-box">
+  <div class="modal-box__overlay"></div>
+  <div class="modal-box__content">
+    <div class="modal-box__content__heading">
+      <h3>Profile Deletion Confirmation</h3>
+      <fa-icon [icon]="icon" (click)="toggleModal()"></fa-icon>
+    </div>
+    <div class="modal-box__content__message">
+      <p class="text-small" *ngFor="let messageChunk of messageChunks">
+        {{ messageChunk.chunk }}
+      </p>
+    </div>
+    <ng-content></ng-content>
+  </div>
+</div>
