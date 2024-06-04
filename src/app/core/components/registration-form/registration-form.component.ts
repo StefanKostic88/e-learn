@@ -14,6 +14,7 @@ import {
   InputComponent,
 } from '../../../shared';
 import { CommonModule } from '@angular/common';
+import { specializations } from '../../constants/dictionary';
 interface RegistrationInputInterface {
   formControlName: string;
   labelName: string;
@@ -35,7 +36,7 @@ const modules = [ReactiveFormsModule, CommonModule];
   styleUrl: './registration-form.component.scss',
 })
 export class RegistrationFormComponent implements OnInit, OnDestroy {
-  public readonly allSpecializations$ = of([]);
+  public readonly allSpecializations$ = of(specializations);
   // public readonly allSpecializations$ =
   //   this.specializationService.allSpecializations;
 
@@ -83,6 +84,8 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
     // this.subscriptions.push(
     //   this.authStoreService.registerAndGetInfo(data).subscribe((data) => data)
     // );
+    console.log(role);
+    console.log(this.registrationForm.value);
   }
 
   private generateRegistrationForm() {

@@ -3,11 +3,15 @@
   & app-button {
     margin-top: auto;
     --button-custom-width: 100%;
+
+    @media (max-width: 768px) {
+      margin-top: 2.8rem;
+    }
   }
 }
 
 .label {
-  @include text-properties(18px, 28px, 700);
+  @include text-properties(1.8rem, 2.8rem, 700);
 }
 
 .error {
@@ -23,7 +27,7 @@
     flex-direction: column;
     width: 100%;
     max-width: 117.6rem;
-    height: 62.5rem;
+    min-height: 62.5rem;
 
     @media (min-width: 768px) {
       flex-direction: row;

@@ -16,12 +16,12 @@
         class="registration__container_spec"
         *ngIf="roleSubject.getValue() === 'trainer'"
       >
-        <label for="specialization">Specialization</label>
-
         <app-drop-down-menu
+          *ngIf="allSpecializations$ | async as specialization"
           [name]="'specialization'"
           formControlName="specialization"
-          [options]="allSpecializations$ | async"
+          [options]="specialization"
+          [label]="'Specialization'"
         ></app-drop-down-menu>
       </div>
 
