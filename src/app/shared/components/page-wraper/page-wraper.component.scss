@@ -1,0 +1,17 @@
+.wraper {
+  display: flex;
+  flex-direction: column;
+  align-items: var(--custom-wraper-align-items, center);
+  max-width: var(--custom-wraper-max-width, var(--container-width));
+  min-height: var(--container-height);
+  margin: auto;
+  margin-bottom: var(--custom-wraper-gap);
+  gap: var(--custom-wraper-gap);
+  padding: 0 var(--page-wraper-main-padding-side, 16px);
+}
+
+.page-header {
+  margin-top: 48px;
+  margin-bottom: var(--page-wraper-main-title-margin-bottom);
+  text-align: center;
+}

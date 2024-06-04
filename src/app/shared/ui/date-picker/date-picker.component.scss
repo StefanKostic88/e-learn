@@ -1,0 +1,15 @@
+.app-date-picker {
+  width: 100%;
+  max-width: var(--custom-datepicker-max-width, 192px);
+  height: 44px;
+  & input {
+    background-color: var(--bg-color);
+    color: var(--text);
+    border: 1px solid var(--input-bg);
+
+    &:active {
+      background-color: var(--bg-color);
+      box-shadow: 0 1px 2px 0 var(--primary-hover);
+    }
+  }
+}

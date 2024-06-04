@@ -1,1 +1,34 @@
-<p>drop-down-menu works!</p>
+<div class="wraper">
+  <label *ngIf="label" [for]="label">{{ label }}</label>
+
+  <div
+    class="dropdown-btn"
+    (click)="toggleMenu()"
+    tabindex="0"
+    (keydown)="handleTogleKeydown($event)"
+  >
+    <span>{{ title | titlecase }}</span>
+    <fa-icon [icon]="icon" class="dropdown-btn-icon"></fa-icon>
+  </div>
+  <div class="drop-down-menu" *ngIf="menuIsOpened">
+    <div
+      *ngFor="let option of options"
+      class="drop-down-menu-item"
+      (click)="selectOption(option)"
+      tabindex="0"
+      (keydown)="handleSelectKeydown($event, option)"
+    >
+      {{ option }}
+    </div>
+  </div>
+</div>
+<select
+  [required]="required"
+  [name]="name"
+  [id]="name"
+  [(ngModel)]="selectedOption"
+>
+  <option *ngFor="let option of options" [value]="option">
+    {{ option | titlecase }}
+  </option>
+</select>

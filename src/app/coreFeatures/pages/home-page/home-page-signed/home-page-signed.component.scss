@@ -1,0 +1,45 @@
+@import "../../../../../styles.scss";
+:host app-box {
+  @media (max-width: 775px) {
+    display: none;
+    &:nth-child(1) {
+      display: flex;
+    }
+  }
+}
+
+.home-page-signed-top {
+  margin-top: 9.6rem;
+  margin-bottom: 4.4rem;
+
+  @include flex-col-center();
+
+  & h2 {
+    text-align: center;
+    margin-bottom: 1.6rem;
+  }
+  & p {
+    text-align: center;
+    margin-bottom: 1.6rem;
+    max-width: 59rem;
+  }
+}
+
+.home-page-signed-botton {
+  @include flex-col-center();
+  gap: 4rem;
+  margin-bottom: 32rem;
+}
+
+.box-conrainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.4rem;
+  justify-content: center;
+}
+
+.grayed-text {
+  color: var(--text-gray);
+  max-width: 780px;
+  text-align: center;
+}

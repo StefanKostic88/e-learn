@@ -21,6 +21,7 @@ body {
   color: var(--text);
   background-color: var(--bg-color);
   @include text-properties(1.8rem, 2.8rem, 400);
+  transition: 200ms ease-in-out;
   scroll-behavior: smooth;
 }
 
@@ -58,6 +59,7 @@ button,
 textarea,
 select {
   font: inherit;
+  color: inherit;
 }
 
 h1 {

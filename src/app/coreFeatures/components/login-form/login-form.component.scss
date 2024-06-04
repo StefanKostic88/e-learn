@@ -1,0 +1,38 @@
+@import "../../../../styles.scss";
+
+.login {
+  max-width: 335px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.icon {
+  position: absolute;
+  top: 52%;
+  inset-inline-start: 0;
+
+  display: flex;
+  align-items: center;
+
+  padding-left: 16px;
+
+  &-inner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    color: var(--text);
+  }
+}
+
+:host {
+  --custom-input-padding-start: 44px;
+}
+
+.invalid-credentials {
+  align-self: center;
+  color: var(--error);
+  text-align: center;
+  max-width: 300px;
+}

@@ -1,1 +1,11 @@
-<p>box works!</p>
+<figure class="box">
+  <app-custom-img [img]="img"></app-custom-img>
+  <div class="box-content">
+    <p>{{ tag }}</p>
+    <h3>{{ title }}</h3>
+    <div class="box-read">
+      <span>{{ creationDate | date }}</span>
+      <span>{{ readTime }} mins read</span>
+    </div>
+  </div>
+</figure>

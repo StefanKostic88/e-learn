@@ -44,7 +44,6 @@ export class ButtonDirective implements AfterViewInit {
 
   private generateRoundedProps(): void {
     const inputClass = this.isInputBtn ? 'news-letter-borders' : 'full-border';
-    console.log(inputClass);
     this.renderer.addClass(this.elementRef.nativeElement, inputClass);
   }
 

@@ -1,0 +1,20 @@
+:host {
+  & app-input {
+    flex: 1;
+    width: 100%;
+    max-width: 306px;
+  }
+
+  & app-button {
+    @media (max-width: 768px) {
+      margin: auto;
+      align-self: stretch;
+      --button-custom-width: 153px;
+    }
+  }
+}
+
+.traning-form__date-picker-container {
+  display: flex;
+  gap: 37px;
+}

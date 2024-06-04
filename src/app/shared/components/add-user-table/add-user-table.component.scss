@@ -1,0 +1,15 @@
+@import "../../../../styles.scss";
+
+.custom-header {
+  background-color: var(--table-bg);
+
+  @include text-properties(1.4rem, 2.2rem, 400);
+  font-family: "Poppins", sans-serif;
+  color: var(--text);
+}
+
+.custom-table-row {
+  background-color: inherit;
+  color: inherit;
+  @include text-properties(1.4rem, 2.2rem, 400);
+}

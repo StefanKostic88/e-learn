@@ -1,0 +1,82 @@
+<p-table
+  *ngIf="tableData"
+  class="app-table"
+  [rows]="tableLength"
+  [value]="tableData"
+  [paginator]="addPaginator"
+>
+  <ng-template pTemplate="header">
+    <tr class="custom-table-row">
+      <th class="custom-header" *ngFor="let data of tableHeaders">
+        {{ data }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-container *ngIf="tableType === 'userList'">
+    <ng-template pTemplate="body" let-data let-i="rowIndex">
+      <tr class="custom-table-row">
+        <td class="font-bold">{{ data?.name }}</td>
+        <td *ngIf="role === 'student'">
+          {{ data?.specialization }}
+        </td>
+        <td *ngIf="role === 'trainer'">
+          {{ data?.isActive ? "Active" : "Not Active" }}
+        </td>
+      </tr>
+    </ng-template>
+  </ng-container>
+  <ng-container *ngIf="tableType === 'studentTrainingList'">
+    <ng-template pTemplate="body" let-data let-i="rowIndex">
+      <tr class="custom-table-row">
+        <td class="font-bold">{{ data?.startDate | date }}</td>
+        <td>
+          {{ data?.trainingName }}
+        </td>
+        <td>
+          {{ data?.trainingType }}
+        </td>
+        <td>
+          {{ data?.trainer }}
+        </td>
+        <td>
+          {{ data?.duration }}
+        </td>
+      </tr>
+    </ng-template>
+  </ng-container>
+  <ng-container *ngIf="tableType === 'trainerTrainingList'">
+    <ng-template pTemplate="body" let-data let-i="rowIndex">
+      <tr class="custom-table-row">
+        <td class="font-bold">{{ data?.startDate | date }}</td>
+        <td>
+          {{ data?.trainingName }}
+        </td>
+        <td>
+          {{ data?.trainingType }}
+        </td>
+        <td>
+          {{ data?.student }}
+        </td>
+        <td>
+          {{ data?.duration }}
+        </td>
+      </tr>
+    </ng-template>
+  </ng-container>
+</p-table>
+
+<!-- <td *ngIf="data.checked">
+  <input type="checkbox" />
+</td> -->
+
+<!-- <ng-template pTemplate="body" let-data let-i="rowIndex">
+  <tr class="custom-table-row">
+    <td class="font-bold">{{ data?.name }}</td>
+    <td *ngIf="role === 'student'">
+      {{ data?.specialization }}
+    </td>
+    <td *ngIf="role === 'trainer'">
+      {{ data?.isActive ? "Active" : "Not Active" }}
+    </td>
+  </tr>
+</ng-template> -->

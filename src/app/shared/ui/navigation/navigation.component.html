@@ -16,6 +16,7 @@
       [routerLink]="[link.path]"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
+      (click)="closeNavigation()"
       >{{ link.linkName }}</a
     >
   </li>

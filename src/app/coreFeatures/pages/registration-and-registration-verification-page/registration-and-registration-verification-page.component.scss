@@ -1,0 +1,44 @@
+@import "../../../../styles.scss";
+
+:host {
+  --custom-wraper-align-items: stretch;
+}
+
+h2 {
+  margin-top: 117px;
+}
+
+.check-icon {
+  background-color: var(--secondary);
+  height: 74px;
+  width: 74px;
+  border-radius: 50%;
+  @include flex-center();
+
+  & fa-icon {
+    font-size: 50px;
+  }
+}
+
+.registration-complete {
+  @include flex-col-center();
+  gap: 24px;
+
+  &__content {
+    @include flex-col-center();
+    gap: 8px;
+    margin-bottom: 38px;
+
+    &__user-info {
+      &__tag {
+        & span:first-child {
+          font-weight: 700;
+        }
+      }
+    }
+  }
+  p {
+    max-width: 460px;
+    text-align: center;
+  }
+}

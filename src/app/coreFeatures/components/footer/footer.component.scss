@@ -1,0 +1,73 @@
+@import "../../../../styles.scss";
+
+:host {
+  app-logo {
+    display: none;
+    @media (min-width: 768px) {
+      display: block;
+    }
+  }
+}
+
+.footer {
+  background-color: var(--bg-gray);
+  &-content {
+    max-width: var(--container-width);
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    @media (min-width: 600px) {
+      gap: 2.4rem;
+    }
+
+    &__top-side {
+      @include flex-prop(center, space-between);
+      flex-direction: column;
+      gap: 4.4rem;
+      padding-top: 2.4rem;
+      @media (min-width: 600px) {
+        flex-direction: row;
+        align-items: baseline;
+        padding-top: 9.6rem;
+      }
+      &__nav {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        @media (min-width: 600px) {
+          flex-direction: row;
+        }
+      }
+    }
+    &__botom-side {
+      @include flex-center();
+      padding: 1.6rem;
+      @media (min-width: 600px) {
+        justify-content: space-between;
+        padding-bottom: 2.4rem;
+      }
+    }
+  }
+}
+
+.footer-hide-xs {
+  @media (min-width: 600px) {
+    display: none;
+  }
+}
+
+.footer-hide-sm {
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+.line {
+  background-color: #9ca3af;
+  height: 1px;
+}
+
+.footer-text {
+  text-align: center;
+}

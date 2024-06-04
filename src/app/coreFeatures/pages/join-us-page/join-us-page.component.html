@@ -1,0 +1,11 @@
+<app-page-wraper [pageTitle]="'Join us'">
+  <ng-container class="main">
+    <app-join-us-box
+      *ngFor="let joinUsElement of joinUsElements"
+      [title]="joinUsElement.title"
+      [content]="joinUsElement.content"
+      [img]="joinUsElement.img"
+      [btnHandler]="joinUsElement.navigateTo"
+    ></app-join-us-box>
+  </ng-container>
+</app-page-wraper>

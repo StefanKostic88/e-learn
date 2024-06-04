@@ -1,0 +1,86 @@
+@import "../../../../../styles.scss";
+.join-us {
+  background-color: var(--bg-gray);
+
+  min-height: 38.4rem;
+  max-width: 117.6rem;
+  width: 100%;
+
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--border-radius);
+  margin: 9.6rem 0;
+
+  p {
+    max-width: 51rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+}
+
+.home-unasigned {
+  @include flex-prop(center, center);
+  flex-direction: column;
+
+  & video {
+    width: 100%;
+    max-width: 95.7rem;
+    margin-top: 10rem;
+  }
+  h2 {
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+  }
+}
+
+.circle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(70%) translateY(-50%);
+  width: 18.5rem;
+  @media (min-width: 600px) {
+    width: 34.3rem;
+  }
+}
+
+.dots,
+.dots-2 {
+  position: absolute;
+  width: 9.5rem;
+
+  @media (min-width: 600px) {
+    width: 17.7rem;
+  }
+}
+.dots {
+  bottom: 0;
+  right: 0;
+  transform: translateX(60%) translateY(62%);
+}
+.dots-2 {
+  top: 0;
+  left: 0;
+  transform: translateX(50%) translateY(-62%);
+}
+
+.full-circle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-50%) translateY(25%);
+  width: 17rem;
+  height: 17rem;
+  border-radius: 50%;
+  background-color: #867ce1ff;
+  @media (min-width: 600px) {
+    width: 29.5rem;
+    height: 29.5rem;
+  }
+}

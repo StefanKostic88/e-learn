@@ -1,0 +1,24 @@
+<ng-container>
+  <div class="home-page-signed-top">
+    <h2 class="text-center">What's new</h2>
+    <p class="grayed-text text-normal">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus pariatur a
+      corrupti minima in? Dignissimos veritatis dolore officiis quaerat mollitia
+      iure eligendi animi inventore magni fugit. Aut error vitae modi.
+    </p>
+  </div>
+
+  <div class="home-page-signed-botton">
+    <div class="box-conrainer">
+      <app-box
+        *ngFor="let boxItem of boxItems"
+        [title]="boxItem.title"
+        [img]="boxItem.img"
+        [readTime]="boxItem.readTime"
+        [tag]="boxItem.tag"
+        [creationDate]="boxItem.creationDate"
+      ></app-box>
+    </div>
+    <app-button [content]="'Read more articles'"></app-button>
+  </div>
+</ng-container>

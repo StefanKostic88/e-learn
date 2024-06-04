@@ -1,0 +1,71 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
+import { SessionStorageService } from '../session-storage/session-storage.service';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UiService {
+  private navigationIsOpened$$: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
+  public navigationIsOpened$: Observable<boolean> =
+    this.navigationIsOpened$$.asObservable();
+
+  private darkMode$$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  public darkMode$: Observable<boolean> = this.darkMode$$.asObservable();
+
+  constructor(private sessionStorageService: SessionStorageService) {}
+
+  get isNavigationIsOpened(): Observable<boolean> {
+    return this.navigationIsOpened$;
+  }
+
+  set isNavigationIsOpened(val: boolean) {
+    this.navigationIsOpened$$.next(val);
+  }
+
+  get darkMode(): Observable<boolean> {
+    return this.darkMode$;
+  }
+  set darkMode(value: boolean) {
+    this.darkMode$$.next(value);
+  }
+
+  public toggleNavigationMenu(): void {
+    const currentValue = this.navigationIsOpened$$.getValue();
+
+    this.navigationIsOpened$$.next(!currentValue);
+  }
+  public closeNavigation(): void {
+    this.navigationIsOpened$$.next(false);
+  }
+
+  public darkModeToggler() {
+    const curDarkValue = this.darkMode$$.getValue();
+    this.darkMode = !curDarkValue;
+  }
+
+  public applyDarkMode() {
+    const darkModeClass = 'dark';
+    document.querySelector('body')?.classList.toggle(darkModeClass);
+
+    if (this.darkMode$$.getValue()) {
+      this.sessionStorageService.setMode(darkModeClass);
+    } else {
+      this.sessionStorageService.delteMode();
+    }
+  }
+
+  public getCurrentMode() {
+    return of(this.sessionStorageService.getMode()).pipe(
+      tap((mode) => {
+        if (mode === 'dark') {
+          document.querySelector('body')?.classList.add(mode);
+          this.darkMode = true;
+        }
+      })
+    );
+  }
+}

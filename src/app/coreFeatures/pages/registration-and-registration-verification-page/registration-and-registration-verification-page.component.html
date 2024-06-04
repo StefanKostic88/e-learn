@@ -1,0 +1,49 @@
+<app-page-wraper>
+  <ng-container class="main">
+    <ng-container
+      *ngIf="
+        (registrationSuccess$ | async) !== true;
+        else registrationCompleted
+      "
+    >
+      <h2>Regstration</h2>
+      <app-registration-form></app-registration-form>
+    </ng-container>
+
+    <!-- <app-spiner *ngIf="registrationPending$ | async"></app-spiner> -->
+  </ng-container>
+</app-page-wraper>
+
+<!-- registration completed -->
+
+<ng-template #registrationCompleted>
+  <div *ngIf="registrationSuccess$ | async" class="registration-complete">
+    <h2>Registration</h2>
+    <span class="check-icon">
+      <fa-icon [icon]="checkIcon"></fa-icon>
+    </span>
+    <div class="registration-complete__content">
+      <p>
+        Congratulations, you have successfully registered with Learn Platform.
+        Here are your credentials, which you can change in your account.
+      </p>
+      <div
+        class="registration-complete__content__user-info"
+        *ngIf="createdUser$ | async as createdUser"
+      >
+        <div class="registration-complete__content__user-info__tag">
+          <span>Username</span>
+          <span>{{ createdUser.username }}</span>
+        </div>
+        <div class="registration-complete__content__user-info__tag">
+          <span>Password</span>
+          <span>{{ createdUser.password }}</span>
+        </div>
+      </div>
+    </div>
+    <app-button
+      [content]="'My Account'"
+      (click)="navigeteToMyAccount()"
+    ></app-button>
+  </div>
+</ng-template>

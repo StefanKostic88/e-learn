@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './switcher.component.scss',
 })
 export class SwitcherComponent {
-  @Input() checked: boolean = false;
+  @Input() checked: boolean | null = false;
   @Input() disabled: boolean = false;
 }

@@ -1,0 +1,57 @@
+@import "../../../../styles.scss";
+
+.join-us-box {
+  background-color: var(--bg-gray);
+  max-width: var(--container-width);
+  min-height: 384px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: row-reverse;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  &__content {
+    @include flex-col-center();
+    flex: 1 1 0;
+    padding: 80px 64px;
+
+    @media (max-width: 768px) {
+      padding: 80px 32px;
+    }
+    @media (max-width: 600px) {
+      padding: 40px 16px;
+    }
+  }
+}
+
+h2,
+p {
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+}
+p {
+  margin-bottom: 20px;
+}
+
+:host {
+  --custom-img-height: 100%;
+
+  @media (max-width: 768px) {
+    --custom-img-height: 256px;
+  }
+
+  & app-custom-img {
+    flex: 1 1 0;
+  }
+  & app-button {
+    align-self: baseline;
+    @media (max-width: 768px) {
+      align-self: inherit;
+    }
+  }
+}
