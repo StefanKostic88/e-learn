@@ -1,0 +1,11 @@
+<div class="app-date-picker">
+  <label for="">{{ label }}</label>
+  <input
+    type="text"
+    [bsValue]="initialValue"
+    class="form-control"
+    bsDatepicker
+    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD MMMM YYYY' }"
+    (bsValueChange)="onValueChange($event)"
+  />
+</div>

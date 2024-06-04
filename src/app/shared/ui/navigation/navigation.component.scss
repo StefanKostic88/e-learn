@@ -14,8 +14,15 @@
 }
 
 .mainNav {
-  color: var(--text-nav);
   gap: 2rem;
+
+  & li a {
+    color: var(--text-nav);
+    position: relative;
+    &.active {
+      color: var(--primary-hover-active);
+    }
+  }
 }
 
 .normal-nav {
@@ -25,12 +32,19 @@
 }
 
 .account-box-nav {
-  color: var(--text-nav);
   gap: 2rem;
   align-items: baseline;
 
   & li {
     display: none;
+  }
+
+  & li a {
+    position: relative;
+    color: var(--text-nav);
+    &.active {
+      color: var(--primary-hover-active);
+    }
   }
 
   @media (max-width: 600px) {

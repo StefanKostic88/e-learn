@@ -8,8 +8,9 @@
 
 .active {
   color: var(--primary-hover-active);
+
   @media (max-width: 600px) {
-    position: relative;
+    // position: relative;
     &::before {
       content: "";
       position: absolute;

@@ -6,12 +6,12 @@
     />
   </video>
   <div class="join-us">
-    <h2 class="text-primary">Join us</h2>
+    <h2>Join us</h2>
     <p>
       Join our learning community today and unlock endless possibilities. Dive
       into knowledge with us!
     </p>
-    <app-button [content]="'Join Us'"></app-button>
+    <app-button [content]="'Join Us'" (click)="navigateToJoinUs()"></app-button>
     <img [src]="'../assets/imgs/circle.svg'" alt="cicle" class="circle" />
     <img [src]="'../assets/imgs/dots.svg'" alt="dots" class="dots" />
     <img [src]="'../assets/imgs/dots.svg'" alt="dots" class="dots-2" />

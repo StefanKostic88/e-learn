@@ -1,0 +1,95 @@
+<form *ngIf="userEditForm" [formGroup]="userEditForm" class="edit-form">
+  <div class="edit-form__top-section">
+    <div class="edit-form__top-section__inner-left-section">
+      <figure class="edit-form__top-section__inner-left-section__profile">
+        <!-- edit -->
+        <h2 class="edit-form__top-section__inner-left-section__profile-header">
+          Edit Profile
+        </h2>
+        <div
+          class="edit-form__top-section__inner-left-section__profile-picture-section"
+        >
+          <p
+            class="edit-form__top-section__inner-left-section__profile-paragraph"
+          >
+            Profile photo
+          </p>
+          <div
+            class="edit-form__top-section__inner-left-section__profile-content"
+          >
+            <app-custom-img [img]="img"></app-custom-img>
+            <div
+              class="edit-form__top-section__inner-left-section__profile-upload"
+            >
+              <p class="text-small">Upload yout photo</p>
+              <p class="text-extra-small">
+                Your photo should be in PNG or JPG format
+              </p>
+              <div
+                class="edit-form__top-section__inner-left-section__profile-upload-input"
+              >
+                <label
+                  for="file-upload"
+                  class="custom-file-upload text-extra-small"
+                >
+                  Choose image
+                </label>
+                <input id="file-upload" type="file" />
+                <app-button
+                  [content]="'Remove'"
+                  [btnSize]="btnSize.EXTRA_SMALL"
+                  [outlined]="false"
+                ></app-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+      <div class="edit-form__top-section__inner-left-section__form-controls">
+        <app-input
+          *ngFor="let input of inputsArr | async"
+          [formControlName]="input.formControlName"
+          [parentForm]="userEditForm"
+          [labelName]="input.labelName"
+          [inputName]="input.formControlName"
+        ></app-input>
+      </div>
+      <div
+        class="edit-form__top-section__inner-left-section__form-controls__switcher-container"
+      >
+        <span>Active</span>
+        <!-- 
+        *ngIf="userActiveStatus$ | async as userActiveStatus"
+        [checked]="userActiveStatus" -->
+        <app-switcher [disabled]="true" [checked]="true"></app-switcher>
+      </div>
+    </div>
+
+    <div class="edit-form__top-section__specialization-container">
+      <p>Specialization</p>
+
+      <app-drop-down-menu
+        *ngIf="allSpecializations$ | async as allSpecializations"
+        [initialValue]="'React'"
+        [name]="'specialization'"
+        [formControlName]="'specialization'"
+        [options]="allSpecializations"
+      ></app-drop-down-menu>
+    </div>
+  </div>
+
+  <div class="edit-form__btn-container">
+    <app-button
+      [content]="'Cancel'"
+      [btnSize]="btnSize.MEDIUM"
+      [outlined]="false"
+      (click)="navigateBack()"
+    ></app-button>
+    <app-button
+      [content]="'Save Changes'"
+      [btnSize]="btnSize.MEDIUM"
+      [disabled]="changesAreNotValid"
+      (click)="onSubmit()"
+    ></app-button>
+  </div>
+</form>

@@ -32,7 +32,8 @@
 }
 
 input:checked + .slider {
-  background-color: var(--primary-hover-active);
+  background-color: var(--primary);
+  // opacity: 0.8;
 }
 input:checked + .slider::before {
   transform: translateX(20px);

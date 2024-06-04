@@ -1,0 +1,31 @@
+<h3 *ngIf="rows.controls.length === 0; else table">
+  No Trainers Currently Available
+</h3>
+<ng-template #table>
+  <form *ngIf="trainersForm" [formGroup]="trainersForm">
+    <p-table class="add-trainer-component" [value]="rows.controls" [rows]="7">
+      <ng-template pTemplate="header">
+        <tr>
+          <th
+            class="custom-header"
+            *ngFor="let heading of tableHeader"
+            class="custom-header"
+          >
+            {{ heading }}
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-row let-i="rowIndex">
+        <tr class="custom-table-row" [formGroup]="getFormGroup(i)">
+          <td><input type="checkbox" formControlName="selected" /></td>
+          <td class="font-bold">{{ row.value.name }}</td>
+
+          <td>
+            {{ row.value.specialization }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </form>
+</ng-template>

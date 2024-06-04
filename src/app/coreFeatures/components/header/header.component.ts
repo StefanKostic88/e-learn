@@ -66,6 +66,7 @@ export class HeaderComponent implements OnInit {
   public readonly userIcon: IconDefinition = faCircleUser;
 
   public signInPage$?: Observable<boolean>;
+  public darkMode$ = this.uiService.darkMode;
 
   constructor(
     private route: ActivatedRoute,
@@ -80,8 +81,9 @@ export class HeaderComponent implements OnInit {
         username: 'sadasd',
         img: '../../../../assets/imgs/profile.jpg',
       },
-      isAuthorized: false,
+      isAuthorized: true,
     });
+    this.darkMode$.subscribe(console.log);
 
     this.signInPage$ = this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -116,5 +118,10 @@ export class HeaderComponent implements OnInit {
     if (e.key === 'Enter' || e.key === ' ') {
       this.toggleAccountBox();
     }
+  }
+
+  toggleDarkMode() {
+    this.uiService.darkModeToggler();
+    this.uiService.applyDarkMode();
   }
 }

@@ -41,7 +41,7 @@ export class AccountBoxComponent {
   public readonly closeIcon: IconDefinition = faClose;
   public readonly btnSize: typeof ButtonSize = ButtonSize;
 
-  testImg = '../../../../assets/imgs/progile/profile.jpg';
+  testImg = '../../../../assets/imgs/profile.jpg';
 
   constructor(private uiService: UiService) {}
   public closeSidebar(): void {

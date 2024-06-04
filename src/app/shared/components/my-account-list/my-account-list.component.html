@@ -1,0 +1,95 @@
+<div class="my-account-list">
+  <div class="my-account-list__content">
+    <div class="my-account-list__content__profile">
+      <h3>My Profile</h3>
+      <div class="my-account-list__content__profile__user-info">
+        <app-custom-img
+          *ngIf="img$ | async as img"
+          [img]="img"
+        ></app-custom-img>
+        <div
+          class="my-account-list__content__profile__user-info__content-1"
+          *ngIf="userActiveStatus$ | async as userActiveStatus"
+        >
+          <span class="status">Status</span>
+          <app-status-marker></app-status-marker>
+        </div>
+      </div>
+      <div
+        class="my-account-list__content__profile__details ps-4 flex flex-col gap-2 mb-16 md:mb-12"
+      >
+        <div>
+          <span class="font-bold">First Name</span>
+          <span>John</span>
+        </div>
+        <div>
+          <span class="font-bold">Last Name</span>
+          <span>Black</span>
+        </div>
+        <div>
+          <span class="font-bold">User name</span>
+          <span>John_12</span>
+        </div>
+        <div>
+          <span class="font-bold">Specialization</span>
+          <span>Java</span>
+        </div>
+        <div>
+          <span class="font-bold">Adress</span>
+          <span>456 Lake Shore Drive, Chicago, IL 60611, United States</span>
+        </div>
+        <div>
+          <span class="font-bold">Email</span>
+          <span>John_12gmail.com</span>
+        </div>
+
+        <!-- <div *ngFor="let accData of accountDataOutput | async">
+          <span class="font-bold">{{ getBojectKeys(accData) }}</span>
+          <span>{{ getObjectVal(accData) }}</span>
+        </div> -->
+      </div>
+    </div>
+    <!-- <app-students-list
+      *ngIf="(role$ | async) === 'trainer'"
+    ></app-students-list>
+    <app-my-trainers *ngIf="(role$ | async) === 'student'"></app-my-trainers> -->
+
+    <app-table class="flex-1"></app-table>
+  </div>
+  <div class="my-account-list__controls">
+    <app-button
+      [content]="'Edit Profile'"
+      [btnSize]="btnSize.MEDIUM"
+      (click)="navigateTo('edit')"
+    ></app-button>
+    <app-button
+      [content]="'Change Password'"
+      [btnType]="btnType.SECONDARY"
+      [btnSize]="btnSize.MEDIUM"
+      (click)="navigateTo('change-password')"
+    ></app-button>
+    <app-button
+      [content]="'Delete Profile'"
+      [btnType]="btnType.ERROR"
+      [btnSize]="btnSize.MEDIUM"
+      (click)="toggleDeletAccountModal()"
+    ></app-button>
+  </div>
+</div>
+
+<app-modal-box [messageChunks]="modalMessageChunks" #modalBox>
+  <div class="modal-controls">
+    <app-button
+      [content]="'Cancel'"
+      [btnSize]="btnSize.SMALL"
+      [outlined]="false"
+      (click)="toggleDeletAccountModal()"
+    ></app-button>
+    <app-button
+      [content]="'Confirm'"
+      [btnSize]="btnSize.SMALL"
+      [btnType]="btnType.ERROR"
+      (click)="confirmDeleteAndCloseModal()"
+    ></app-button>
+  </div>
+</app-modal-box>

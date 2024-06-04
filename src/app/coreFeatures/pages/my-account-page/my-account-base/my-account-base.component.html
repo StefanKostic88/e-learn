@@ -1,0 +1,15 @@
+<ng-container>
+  <app-my-account-list></app-my-account-list>
+  <div class="my-trainings">
+    <h1>My Trainings</h1>
+    <p class="text-small-to-medium">
+      The training section is interactive, allowing you to engage with trainers
+      and fellow learners. Participate in quizzes and track your progress. All
+      courses are flexible and adaptable to your schedule and learning speed.
+    </p>
+    <app-button
+      [content]="'View Trainings'"
+      (click)="navigateToTrainings()"
+    ></app-button>
+  </div>
+</ng-container>

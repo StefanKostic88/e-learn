@@ -73,10 +73,10 @@
 
 .link-icon {
   display: flex;
-  gap: 0.8rem;
-}
-.mode-toggler {
-  color: var(--text);
+  gap: 1.2rem;
+  color: var(--text-nav);
+  position: relative;
+  font-size: 16px;
 
   & fa-icon {
     font-size: 2.2rem;
@@ -86,13 +86,20 @@
     }
   }
 
-  & app-switcher {
-    display: none;
-    @media (min-width: 600px) {
-      display: block;
-    }
+  &.active {
+    color: var(--primary-hover-active);
   }
 }
+// .mode-toggler {
+//   & fa-icon {
+//     font-size: 2.2rem;
+//     display: none;
+//     @media (min-width: 600px) {
+//       display: block;
+//     }
+//   }
+
+// }
 
 .btn-container {
   display: none;
@@ -101,3 +108,10 @@
     display: flex;
   }
 }
+
+// & app-switcher {
+//   display: none;
+//   @media (min-width: 600px) {
+//     display: block;
+//   }
+// }

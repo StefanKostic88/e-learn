@@ -1,0 +1,21 @@
+.add-trainer-component {
+  margin-top: 27px;
+  display: flex;
+  flex-direction: column;
+  gap: 27px;
+  margin-bottom: 300px;
+  &__comment {
+    margin-bottom: 44px;
+  }
+}
+
+.table-container {
+  display: flex;
+  gap: 162px;
+}
+
+:host {
+  & app-button {
+    align-self: baseline;
+  }
+}

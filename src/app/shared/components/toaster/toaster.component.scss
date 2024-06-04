@@ -1,0 +1,26 @@
+.toaster {
+  position: fixed;
+  top: 50px;
+  right: 32px;
+  width: 100%;
+  max-width: 348px;
+  height: 72px;
+  background-color: #17a948ff;
+  color: #fff;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    P {
+      align-self: flex-end;
+    }
+  }
+
+  & fa-icon {
+    font-size: 24px;
+  }
+  & fa-icon:last-child {
+    cursor: pointer;
+  }
+}

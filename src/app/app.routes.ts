@@ -20,7 +20,8 @@ export const routes: Routes = [
   },
   {
     path: 'my-account',
-    component: HomePageComponent,
+    loadChildren: () =>
+      import('./coreFeatures/pages/my-account-page/my-account-page-routes'),
   },
   {
     path: 'sign-in',

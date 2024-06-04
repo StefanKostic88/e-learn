@@ -50,7 +50,7 @@
       </ng-container>
 
       <ng-container *ngIf="userHeaderData.isAuthorized">
-        <li class="navigationLinks link-icon mode-toggler">
+        <li class="navigationLinks link-icon">
           <fa-icon [icon]="userIcon"></fa-icon>
           <a
             class="link-icon"
@@ -62,9 +62,12 @@
           >
         </li>
         <li class="navigationLinks">
-          <span class="link-icon mode-toggler">
+          <span class="link-icon">
             <fa-icon [icon]="moonIcon"></fa-icon> Night Mode
-            <app-switcher></app-switcher>
+            <app-switcher
+              [checked]="darkMode$ | async"
+              (change)="toggleDarkMode()"
+            ></app-switcher>
           </span>
         </li>
       </ng-container>

@@ -1,1 +1,8 @@
-<p>my-account-page works!</p>
+<app-page-wraper [pageTitle]="title$ | async">
+  <ng-container class="breadcrumbs">
+    <app-breadcrumbs></app-breadcrumbs>
+  </ng-container>
+  <ng-container class="main">
+    <router-outlet></router-outlet>
+  </ng-container>
+</app-page-wraper>

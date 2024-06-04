@@ -11,12 +11,11 @@ import { Observable, filter, map, mergeMap, startWith, switchMap } from 'rxjs';
   styleUrl: './breadcrumbs.component.scss',
 })
 export class BreadcrumbsComponent implements OnInit {
-  currentRoute: string = 'My Account';
-  addedRoute?: Observable<string | null>;
+  currentRoute?: Observable<string | null>;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
   ngOnInit(): void {
-    this.addedRoute = this.router.events.pipe(
+    this.currentRoute = this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       startWith(null),
       map(() => {
@@ -24,19 +23,15 @@ export class BreadcrumbsComponent implements OnInit {
       }),
       mergeMap((route) => route.children),
       switchMap((route) => route.url),
-      map((urlSegments) => {
-        this.route.queryParams.subscribe(console.log);
-        const addTraining = this.router.url.split('/').at(-1);
-
-        const url = urlSegments.join('/');
-
-        let finalUrl = url && ' > ' + url.split('-').join(' ');
-        finalUrl =
-          addTraining === 'add-training'
-            ? finalUrl + ` > ${addTraining}`
-            : finalUrl;
-        return finalUrl;
+      map(() => {
+        return this.transformCurrentUrl(this.router.url);
       })
     );
+  }
+
+  private transformCurrentUrl(url: string) {
+    const currentPath = url.slice(1);
+    const urlArray = currentPath.split('/');
+    return urlArray.map((path) => path.split('-').join(' ')).join(' > ');
   }
 }
