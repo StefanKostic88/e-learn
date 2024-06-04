@@ -25,6 +25,7 @@ import { AccountBoxComponent } from '../account-box/account-box.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { Observable, filter, map, of } from 'rxjs';
+import { UiService } from '../../services/uiService/ui.service';
 
 const components = [
   NavigationComponent,
@@ -68,7 +69,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router // // private uiService: UiService, // private userService: UserService
+    private router: Router,
+    private uiService: UiService
   ) {}
 
   ngOnInit(): void {
@@ -104,6 +106,15 @@ export class HeaderComponent implements OnInit {
   }
 
   public toggleAccountBox() {
-    // this.uiService.toggleNavigationMenu();
+    this.uiService.toggleNavigationMenu();
+  }
+  public closeSideBar(): void {
+    this.uiService.closeNavigation();
+  }
+
+  public handleToggleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      this.toggleAccountBox();
+    }
   }
 }

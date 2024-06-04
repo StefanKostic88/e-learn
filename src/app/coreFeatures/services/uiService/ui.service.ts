@@ -21,6 +21,10 @@ export class UiService {
 
   public toggleNavigationMenu(): void {
     const currentValue = this.navigationIsOpened$$.getValue();
+
     this.navigationIsOpened$$.next(!currentValue);
+  }
+  public closeNavigation(): void {
+    this.navigationIsOpened$$.next(false);
   }
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FooterComponent, HeaderComponent } from './core';
+import { FooterComponent, HeaderComponent } from './coreFeatures';
 
 const components = [FooterComponent, HeaderComponent];
 

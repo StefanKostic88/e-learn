@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './core/pages/home-page/home-page.component';
+import { HomePageComponent } from './coreFeatures/pages/home-page/home-page.component';
 
 export const routes: Routes = [
   {
@@ -24,12 +24,14 @@ export const routes: Routes = [
   },
   {
     path: 'sign-in',
-    loadChildren: () => import('./core/pages/login-page/login-page-routes'),
+    loadChildren: () =>
+      import('./coreFeatures/pages/login-page/login-page-routes'),
     // canActivate: [SignedInGuard],
   },
 
   {
     path: 'join-us',
-    loadChildren: () => import('./core/pages/join-us-page/join-us-page-routes'),
+    loadChildren: () =>
+      import('./coreFeatures/pages/join-us-page/join-us-page-routes'),
   },
 ];

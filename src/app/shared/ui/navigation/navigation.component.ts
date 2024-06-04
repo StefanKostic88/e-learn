@@ -1,6 +1,7 @@
 import { NgClass, NgFor } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { UiService } from '../../../coreFeatures/services/uiService/ui.service';
 
 @Component({
   selector: 'app-navigation',
@@ -15,7 +16,12 @@ export class NavigationComponent {
   @Input() isMainNav: boolean = false;
   @Input() accountBoxNav: boolean = false;
 
+  constructor(private uiService: UiService) {}
+
   trackByIndex(index: number) {
     return index;
+  }
+  public closeNavigation(): void {
+    this.uiService.closeNavigation();
   }
 }

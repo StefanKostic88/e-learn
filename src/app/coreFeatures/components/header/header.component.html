@@ -12,7 +12,12 @@
   ></app-navigation>
   <ng-container *ngIf="userHeaderData$ | async as userHeaderData">
     <ng-container *ngIf="userHeaderData.isAuthorized; else notAuthorized">
-      <div class="header__account-detailes">
+      <div
+        class="header__account-detailes"
+        (click)="toggleAccountBox()"
+        tabindex="0"
+        (keydown)="handleToggleKeydown($event)"
+      >
         <h3 class="text-small-to-medium">
           {{ userHeaderData.accountData.username }}
         </h3>
@@ -29,6 +34,7 @@
             [routerLink]="'/sign-in'"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeSideBar()"
             >Sign in</a
           >
         </li>
@@ -37,6 +43,7 @@
             [routerLink]="'/join-us'"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeSideBar()"
             >Join us</a
           >
         </li>
@@ -50,6 +57,7 @@
             [routerLink]="'/my-account'"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeSideBar()"
             >My Account</a
           >
         </li>

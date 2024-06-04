@@ -7,7 +7,7 @@
   }"
 >
   <div class="sidebar-menu__profile-data">
-    <fa-icon [icon]="closeIcon"></fa-icon>
+    <fa-icon [icon]="closeIcon" (click)="closeSidebar()"></fa-icon>
     <ng-container *ngIf="isAuthorized">
       <!-- <app-custom-img [img]="accountBoxData?.img"></app-custom-img> -->
       <app-custom-img [img]="testImg"></app-custom-img>
@@ -30,6 +30,7 @@
       [content]="'SignOut'"
       [btnSize]="btnSize.SMALL"
       [outlined]="false"
+      (click)="closeSidebar()"
     >
       <fa-icon [icon]="exitIcon"></fa-icon
     ></app-button>

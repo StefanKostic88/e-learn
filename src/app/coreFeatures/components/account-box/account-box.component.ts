@@ -12,8 +12,9 @@ import {
 import { headerLinksList } from '../../constants/linksData';
 import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { of } from 'rxjs';
+
 import { ButtonSize } from '../../../shared/models/button.model';
+import { UiService } from '../../services/uiService/ui.service';
 
 const components = [CustomImgComponent, NavigationComponent, ButtonComponent];
 
@@ -33,8 +34,8 @@ export class AccountBoxComponent {
   };
   @Input() isAuthorized: boolean | null = false;
 
-  // public readonly isNavigationIsOpened$ = this.uiService.isNavigationIsOpened;
-  public readonly isNavigationIsOpened$ = of(false);
+  public readonly isNavigationIsOpened$ = this.uiService.isNavigationIsOpened;
+
   public readonly linksList = headerLinksList;
   public readonly exitIcon: IconDefinition = faArrowRightToBracket;
   public readonly closeIcon: IconDefinition = faClose;
@@ -42,10 +43,9 @@ export class AccountBoxComponent {
 
   testImg = '../../../../assets/imgs/progile/profile.jpg';
 
-  constructor() {} // private userService: UserService // private authStoreService: AuthStoreService, // private uiService: UiService,
-
-  toggle() {
-    // this.uiService.toggleNavigationMenu();
+  constructor(private uiService: UiService) {}
+  public closeSidebar(): void {
+    this.uiService.closeNavigation();
   }
 
   public logoutUser() {
