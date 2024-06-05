@@ -4,6 +4,7 @@ import {
   ButtonComponent,
   InputComponent,
   PageWraperComponent,
+  SpinerComponent,
 } from '../../../shared';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AsyncPipe, NgIf } from '@angular/common';
@@ -15,7 +16,7 @@ const components = [
   ButtonComponent,
   InputComponent,
   RegistrationFormComponent,
-  // SpinerComponent,
+  SpinerComponent,
 ];
 
 @Component({
