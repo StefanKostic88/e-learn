@@ -1,16 +1,63 @@
+@import "../../../../styles.scss";
+
 .custom-header {
   background-color: var(--table-bg);
-  font-size: 14px;
-  line-height: 22px;
-  font-weight: 400;
+  font-size: var(--custom-table-font, 16px);
+  line-height: var(--custom-table-line-height, 26px);
+  font-weight: 700;
   font-family: "Poppins", sans-serif;
   color: var(--text);
+  padding: 1rem;
 }
 
 .custom-table-row {
-  background-color: inherit;
-  color: inherit;
-  font-size: 14px;
-  line-height: 22px;
-  font-weight: 400;
+  & td {
+    background-color: inherit;
+    color: inherit;
+    font-size: var(--custom-table-font, 16px);
+    line-height: var(--custom-table-line-height, 26px);
+    font-weight: 400;
+    padding: 1rem;
+  }
+}
+
+.p-paginator {
+  color: var(--text);
+  background-color: var(--bg-color);
+  &-pages {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  &-page {
+    font-size: 14px;
+    height: 36px;
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    color: var(--text);
+    border: 1px solid var(--input-bg);
+
+    &.p-highlight {
+      background-color: var(--primary);
+      border: 1px solid var(--primary);
+      color: #fff;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: var(--primary-hover);
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  &-paginator-next {
+    &:hover,
+    &:focus {
+      background-color: var(--primary-hover);
+      outline: none;
+      box-shadow: none;
+    }
+  }
 }

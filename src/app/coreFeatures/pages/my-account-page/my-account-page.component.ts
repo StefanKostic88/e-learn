@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from '@angular/router';
+import { Observable, filter, map, mergeMap, startWith, switchMap } from 'rxjs';
 import {
   BreadcrumbsComponent,
   ButtonComponent,
@@ -31,37 +36,44 @@ export class MyAccountPageComponent implements OnInit {
   public title$?: Observable<string | null>;
   constructor(private router: Router, private route: ActivatedRoute) {}
   ngOnInit(): void {
-    this.title$ = of('Test Title');
-    //   this.title$ = this.router.events.pipe(
-    //     filter((event) => event instanceof NavigationEnd),
-    //     startWith(null),
-    //     map(() => {
-    //       return this.route;
-    //     }),
-    //     mergeMap((route) => route.children),
-    //     switchMap((route) => route.url),
-    //     map((urlSegments) => {
-    //       const url = urlSegments.join('/');
-    //       console.log(this.router.url.split('/').at(-1) === 'add-training');
-    //       if (!url) {
-    //         return 'My Account';
-    //       } else if (url && url === 'change-password') {
-    //         return null;
-    //       } else if (url && url === 'edit') {
-    //         return 'My Account';
-    //       } else if (url && this.router.url.split('/').at(-1) === 'trainings') {
-    //         return 'Trainings';
-    //       } else if (
-    //         url &&
-    //         this.router.url.split('/').at(-1) === 'add-training'
-    //       ) {
-    //         return 'Add Passed Trainings';
-    //       } else if (url && url === 'add-trainer') {
-    //         return 'Add Trainer';
-    //       } else {
-    //         return null;
-    //       }
-    //     })
-    //   );
+    this.title$ = this.title$ = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      startWith(null),
+      map(() => {
+        return this.route;
+      }),
+      mergeMap((route) => route.children),
+      switchMap((route) => route.url),
+      map((urlSegments) => {
+        const url = urlSegments.join('/');
+        return this.generateTitle(url);
+      })
+    );
+  }
+
+  private generateTitle(url: string): null | string {
+    if (!url) {
+      return 'My Account';
+    }
+
+    switch (url) {
+      case 'change-password':
+        return null;
+      case 'edit':
+        return 'My Account';
+      case 'add-trainer':
+        return 'Add Trainer';
+      default:
+        // eslint-disable-next-line no-case-declarations
+        const lastSegment = this.router.url.split('/').at(-1);
+        switch (lastSegment) {
+          case 'trainings':
+            return 'Trainings';
+          case 'add-training':
+            return 'Add Passed Trainings';
+          default:
+            return null;
+        }
+    }
   }
 }

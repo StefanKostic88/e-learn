@@ -1,11 +1,14 @@
 <div class="app-date-picker">
   <label for="">{{ label }}</label>
-  <input
-    type="text"
-    [bsValue]="initialValue"
-    class="form-control"
-    bsDatepicker
-    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD MMMM YYYY' }"
-    (bsValueChange)="onValueChange($event)"
-  />
+  <div class="input-group">
+    <input
+      type="text"
+      [bsValue]="initialValue"
+      class="form-control"
+      bsDatepicker
+      [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD MMMM YYYY' }"
+      (bsValueChange)="onValueChange($event)"
+    />
+    <fa-icon [icon]="icon"></fa-icon>
+  </div>
 </div>

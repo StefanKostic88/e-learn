@@ -32,7 +32,7 @@ form {
   position: absolute;
   display: flex;
   align-items: center;
-  top: 0;
+  top: -5px;
   bottom: 0;
   padding-left: 8px;
   & fa-icon {
@@ -40,6 +40,3 @@ form {
     height: 20px;
   }
 }
-
-// top: 18px;
-// transform: translateY(-12px);

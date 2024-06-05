@@ -1,0 +1,67 @@
+@import "../../../../styles.scss";
+:host {
+  --custom-datepicker-max-width: 100%;
+
+  // & app-button {
+  //   align-self: baseline;
+  // }
+}
+
+.add-training {
+  @include flex-col();
+
+  gap: 1.6rem;
+  min-height: 100.2rem;
+
+  &__trainings {
+    display: flex;
+    gap: 12rem;
+
+    @media (max-width: 915px) {
+      gap: 5rem;
+    }
+
+    @media (max-width: 725px) {
+      flex-direction: column;
+    }
+  }
+  &__training-spec {
+    @include flex-col();
+    gap: 2.4rem;
+    width: 100%;
+    max-width: 38.4rem;
+
+    @media (max-width: 725px) {
+      max-width: unset;
+    }
+
+    textarea {
+      background-color: inherit;
+      &:hover,
+      &:focus {
+        box-shadow: 0 1px 2px 0 var(--primary-hover);
+        outline: none;
+      }
+    }
+  }
+
+  &__training-trainer {
+    @include flex-col();
+    width: 100%;
+    max-width: 37.9rem;
+    @media (max-width: 725px) {
+      max-width: unset;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    gap: 0.8rem;
+    margin-left: 18rem;
+    margin-top: 3rem;
+    @media (max-width: 725px) {
+      margin-left: unset;
+      justify-content: center;
+    }
+  }
+}

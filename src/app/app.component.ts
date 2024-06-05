@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { FooterComponent, HeaderComponent, UiService } from './coreFeatures';
-import { take } from 'rxjs';
+import { Subscription, filter, take } from 'rxjs';
 
 const components = [FooterComponent, HeaderComponent];
 
@@ -12,17 +12,26 @@ const components = [FooterComponent, HeaderComponent];
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
-  title = 'e-learn-app';
+export class AppComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
 
-  constructor(private uiService: UiService) {}
+  constructor(private uiService: UiService, private router: Router) {}
 
   ngOnInit(): void {
+    this.subscriptions.push(
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe(() => window.scrollTo(0, 0))
+    );
+
     this.uiService
       .getCurrentMode()
       .pipe(take(1))
       .subscribe({
         complete: () => console.log('closed'),
       });
+  }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 }

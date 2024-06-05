@@ -10,12 +10,12 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  @include text-properties(18px, 28px, 700);
+  @include text-properties(1.8rem, 2.8rem, 700);
 }
 
 .costum-input {
   height: var(--custom-input-height, 48px);
-  padding-left: var(--custom-input-padding-start, 16px);
+  padding-left: var(--custom-input-padding-start, 1.6rem);
   outline: none;
   background-color: inherit;
   width: var(--custom-input-width, 100%);
@@ -53,7 +53,7 @@
 
 .eye-icon {
   position: absolute;
-  padding-right: 16px;
+  padding-right: 1.6rem;
   right: 0;
   top: 52%;
   cursor: pointer;

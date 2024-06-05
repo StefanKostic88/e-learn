@@ -7,11 +7,16 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import {
+  IconDefinition,
+  faCalendar,
+} from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-date-picker',
   standalone: true,
-  imports: [BsDatepickerModule],
+  imports: [BsDatepickerModule, FontAwesomeModule],
   templateUrl: './date-picker.component.html',
   styleUrl: './date-picker.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -26,6 +31,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 export class DatePickerComponent {
   @Input() label: string = 'From';
   @Input() initialValue?: Date = new Date(Date.now());
+  public readonly icon: IconDefinition = faCalendar;
   constructor(private cdr: ChangeDetectorRef) {}
 
   private onChange: (value: Date) => void = () => {};

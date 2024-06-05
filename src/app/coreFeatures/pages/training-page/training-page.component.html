@@ -1,17 +1,12 @@
-<div class="flex flex-col gap-[108px]">
-  <form
-    class="traning-form flex flex-col gap-9 items-start"
-    [formGroup]="trainingForm"
-  >
+<div class="training-page">
+  <form class="traning-form" [formGroup]="trainingForm">
     <app-button
       [content]="'Add training'"
       [btnSize]="btnSize.MEDIUM"
       [btnType]="btnType.SECONDARY"
       (click)="navigateToAddTrainer()"
     ></app-button>
-    <div
-      class="flex flex-col md:flex-row justify-between items-center md:items-baseline mb-12 self-stretch"
-    >
+    <div class="traning-form__controles">
       <app-input
         [formControlName]="'searchStudent'"
         [parentForm]="trainingForm"
@@ -26,9 +21,7 @@
         [inputName]="'searchSpecialization'"
         [placeholder]="'Specialization'"
       ></app-input>
-      <div
-        class="traning-form__date-picker-container flex-col sm:flex-row mt-7"
-      >
+      <div class="traning-form__date-picker-container">
         <app-date-picker [initialValue]="datePickerValueOne"></app-date-picker>
         <app-date-picker [initialValue]="datePickerValueTwo"></app-date-picker>
       </div>
