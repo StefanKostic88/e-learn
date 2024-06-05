@@ -1,1 +1,54 @@
-<p>add-training-page works!</p>
+<form [formGroup]="trainingForm" (ngSubmit)="onSubmit()" class="add-training">
+  <h3>Training</h3>
+  <div class="add-training__trainings">
+    <div class="add-training__training-spec">
+      <app-input
+        [formControlName]="'trainingName'"
+        [parentForm]="trainingForm"
+        [labelName]="'Training Name'"
+        [inputName]="'trainingName'"
+        [placeholder]="'Name'"
+        [required]="true"
+      ></app-input>
+      <app-input
+        [formControlName]="'duration'"
+        [parentForm]="trainingForm"
+        [labelName]="'Duration'"
+        [inputName]="'duration'"
+        [placeholder]="'Duration'"
+        [required]="true"
+      ></app-input>
+      <app-date-picker
+        [label]="'Training Start Date'"
+        [formControlName]="'startDate'"
+      ></app-date-picker>
+      <app-drop-down-menu
+        *ngIf="allTrainingTypes$ | async as allTrainingTypes"
+        [label]="'Type'"
+        [name]="'trainingType'"
+        formControlName="trainingType"
+        [options]="allTrainingTypes"
+        [type]="'training-type'"
+        [required]="true"
+      ></app-drop-down-menu>
+
+      <label for="description">Description</label>
+      <textarea rows="3" name="description" id="description"></textarea>
+    </div>
+    <div class="add-training__training-trainer">
+      <app-drop-down-menu
+        *ngIf="allTrainers$ | async as allTrainers"
+        [label]="'Trainers'"
+        [name]="'trainer'"
+        formControlName="trainer"
+        [options]="allTrainers"
+        [type]="'trainer'"
+        [required]="true"
+      ></app-drop-down-menu>
+    </div>
+  </div>
+  <div class="add-training__controls">
+    <app-button [content]="'Cancel'" [outlined]="false"></app-button>
+    <app-button [content]="'Add'"></app-button>
+  </div>
+</form>

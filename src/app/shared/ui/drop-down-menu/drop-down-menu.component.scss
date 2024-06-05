@@ -3,7 +3,8 @@ select {
 }
 .wraper {
   max-width: var(--custom-drop-down-max-width, 100%);
-  height: var(--drop-down-height, 5.2rem);
+  // height: var(--drop-down-height, 5.2rem);
+  height: var(--drop-down-height, 7.2rem);
 }
 
 .drop-down-menu,
@@ -11,6 +12,7 @@ select {
   border-radius: 4px;
   border: 1px solid var(--input-bg);
   padding: 1rem;
+  font-size: 1.6rem;
 }
 
 .dropdown-btn {
@@ -32,8 +34,10 @@ select {
     appearance: none;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     box-shadow: 0 0 0 1px var(--primary-hover);
+    outline: none;
   }
 }
 
@@ -50,8 +54,10 @@ select {
   &-item {
     cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: var(--primary-hover);
+      outline: none;
     }
   }
 }

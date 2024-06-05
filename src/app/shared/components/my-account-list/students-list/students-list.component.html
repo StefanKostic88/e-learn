@@ -1,1 +1,9 @@
-<p>students-list works!</p>
+<div class="sutdent-list w-full md:min-w-[396px] mb-28 md:mb-0">
+  <h3 class="mb-7 text-2xl">My Students</h3>
+  <app-table
+    *ngIf="tableData$ | async as tableData"
+    [tableHeaders]="tableHeading"
+    [tableData]="tableData"
+    [role]="'trainer'"
+  ></app-table>
+</div>

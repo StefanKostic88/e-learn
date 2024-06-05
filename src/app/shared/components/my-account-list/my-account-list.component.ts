@@ -48,7 +48,7 @@ export class MyAccountListComponent {
   modalBoxComponent?: ModalBoxComponent;
 
   public readonly currentUser$: Observable<{ role: string } | null> = of({
-    role: 'Trainer',
+    role: 'trainer',
   });
 
   public readonly userActiveStatus$: Observable<string> = of('Active');

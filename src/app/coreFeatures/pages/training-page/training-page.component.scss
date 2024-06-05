@@ -1,20 +1,55 @@
+@import "../../../../styles.scss";
+
 :host {
   & app-input {
     flex: 1;
     width: 100%;
-    max-width: 306px;
+    max-width: 30.6rem;
   }
 
   & app-button {
-    @media (max-width: 768px) {
-      margin: auto;
-      align-self: stretch;
-      --button-custom-width: 153px;
+    align-self: center;
+    @media (min-width: 768px) {
+      align-self: flex-start;
     }
   }
 }
 
 .traning-form__date-picker-container {
   display: flex;
-  gap: 37px;
+  gap: 3.7rem;
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+    flex-direction: row;
+  }
+  @media (max-width: 400px) {
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+}
+
+.training-page {
+  @include flex-col();
+  gap: 10.8rem;
+  margin-top: 5rem;
+}
+
+.traning-form {
+  @include flex-col();
+  gap: 3.6rem;
+
+  &__controles {
+    @include flex-col();
+
+    align-items: center;
+    margin-bottom: 4.8rem;
+    align-self: stretch;
+
+    @media (min-width: 768px) {
+      align-items: baseline;
+      flex-direction: row;
+      gap: 2rem;
+      justify-content: space-between;
+    }
+  }
 }

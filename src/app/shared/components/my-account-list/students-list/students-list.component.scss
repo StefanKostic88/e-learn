@@ -1,0 +1,15 @@
+@import "../../../../../styles.scss";
+.sutdent-list {
+  width: 100%;
+  margin-bottom: 11.2rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0px;
+    min-width: 39.6rem;
+  }
+
+  h3 {
+    margin-bottom: 2.8rem;
+    @include text-properties(2.4rem, 3.2rem, 700);
+  }
+}
