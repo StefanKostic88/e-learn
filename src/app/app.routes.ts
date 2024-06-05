@@ -8,7 +8,8 @@ export const routes: Routes = [
   },
   {
     path: 'blog',
-    component: HomePageComponent,
+    loadChildren: () =>
+      import('./coreFeatures/pages/blog-page/blog-page.routes'),
   },
   {
     path: 'pricing',

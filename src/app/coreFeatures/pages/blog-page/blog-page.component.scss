@@ -1,0 +1,28 @@
+@import "../../../../styles.scss";
+
+:host {
+  --custom-box-min-width: 37.6rem;
+  --page-wraper-main-padding-side: 0px;
+  --page-wraper-main-title-margin-bottom: 7.7rem;
+
+  @media (max-width: 600px) {
+    --page-wraper-main-padding-side: 1.6rem;
+  }
+  @media (max-width: 410px) {
+    --custom-box-min-width: 27rem;
+  }
+}
+
+.blog {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5.6rem;
+  padding-bottom: 9.6rem;
+  margin-bottom: 26.6rem;
+  &__box-container {
+    @include flex-center();
+    flex-wrap: wrap;
+    gap: 2.4rem;
+  }
+}

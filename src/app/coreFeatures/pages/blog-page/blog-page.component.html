@@ -1,0 +1,19 @@
+<app-page-wraper [pageTitle]="'Blog'">
+  <ng-container class="main">
+    <div class="blog flex flex-col items-center gap-14 pb-24 mb-[266px]">
+      <div
+        class="blog__box-container flex flex-wrap gap-6 items-center justify-center"
+      >
+        <app-box
+          *ngFor="let blog of blogData"
+          [title]="blog.title"
+          [readTime]="blog.readTime"
+          [creationDate]="blog.creationDate"
+          [img]="blog.img"
+          [tag]="blog.tag"
+        ></app-box>
+      </div>
+      <app-button [content]="'Load More Articles'"></app-button>
+    </div>
+  </ng-container>
+</app-page-wraper>
