@@ -1,0 +1,98 @@
+@import "../../../../../styles.scss";
+
+.pricing-card {
+  min-width: 35.3rem;
+
+  min-height: 40.2rem;
+  box-shadow: 0px 0px 1px #171a1f, 0px 0px 2px var(--text);
+
+  // background-color: #f8f9faff;
+  background-color: var(--bg-gray);
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+
+  gap: 1.6rem;
+
+  @media (max-width: 400px) {
+    min-width: unset;
+  }
+
+  &.left {
+    border-radius: 6px 0px 0px 6px;
+  }
+  &.right {
+    border-radius: 0px 6px 6px 0px;
+  }
+
+  &__header {
+    @include text-properties(3.6rem, 4rem, 700);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &.favorite {
+    transform: scale(1.03);
+    border-radius: 6px;
+    & .pricing-card__header {
+      color: var(--primary);
+
+      & span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1.4rem;
+        background-color: #e16ddeff;
+        width: 6.2rem;
+        height: 2.8rem;
+        color: var(--bg-gray);
+        @include text-properties(1.2rem, 2rem, 400);
+      }
+    }
+
+    @media (max-width: 1090px) {
+      transform: scale(1);
+    }
+  }
+
+  &__price {
+    display: flex;
+    @include text-properties(4rem, 5.6rem, 700);
+    & .time {
+      @include text-properties(1.4rem, 2.2rem, 400);
+    }
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &-item {
+      display: flex;
+      gap: 0.8rem;
+      & fa-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 2.4rem;
+        height: 2.4rem;
+      }
+      &.offer {
+        & fa-icon {
+          color: var(--secondary);
+          border-radius: 50%;
+          border: 1px solid var(--secondary);
+        }
+      }
+    }
+  }
+}
+
+app-button {
+  margin-top: 1.4rem;
+  display: block;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+}

@@ -1,0 +1,16 @@
+<figure
+  class="feature-box"
+  [ngStyle]="{ 'flex-direction': isReversed ? 'row-reverse' : 'row' }"
+>
+  <div class="feature-box__content">
+    <h3>Feature</h3>
+    <p>
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non vitae
+      suscipit ullam! Dolorem, deleniti asperiores. Lorem ipsum dolor sit, amet
+      consectetur adipisicing elit. Non vitae suscipit ullam! Dolorem, deleniti
+      asperiores.
+    </p>
+    <app-button [content]="'Try Now'"></app-button>
+  </div>
+  <app-custom-img [img]="img"></app-custom-img>
+</figure>

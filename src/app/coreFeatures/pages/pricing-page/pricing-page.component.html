@@ -1,0 +1,19 @@
+<app-page-wraper [pageTitle]="'Pricing'">
+  <ng-container class="main">
+    <p class="grayed-text text-normal">
+      Welcome to Learn Platform - where every day is a day to learn. Dive into
+      the vast ocean of knowledge and empower yourself with the tools for a
+      successful tomorrow. Heappy learning!
+    </p>
+
+    <div class="pricing-card__container">
+      <app-pricing-card
+        *ngFor="let data of pricingData"
+        [cardData]="data"
+      ></app-pricing-card>
+    </div>
+    <h2>Frequently asked questions</h2>
+    <p>Lorem ipsum dolor sit amet.</p>
+    <div class="frequently-asked__container"></div>
+  </ng-container>
+</app-page-wraper>

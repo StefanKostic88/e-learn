@@ -13,12 +13,18 @@ export const routes: Routes = [
   },
   {
     path: 'pricing',
-    component: HomePageComponent,
+    loadChildren: () =>
+      import('./coreFeatures/pages/pricing-page//pricing-page.routes'),
   },
   {
     path: 'about-us',
     loadChildren: () =>
       import('./coreFeatures/pages/about-us-page/about-us-page.routes'),
+  },
+  {
+    path: 'features',
+    loadChildren: () =>
+      import('./coreFeatures/pages/features-page/features-page.routes'),
   },
   {
     path: 'my-account',

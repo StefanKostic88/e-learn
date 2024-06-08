@@ -26,6 +26,7 @@
   position: relative;
   padding-left: 1.6rem;
   padding-right: 2.4rem;
+
   @media (min-width: 600px) {
     justify-content: flex-start;
   }
@@ -53,6 +54,10 @@
       cursor: pointer;
       margin-left: auto;
     }
+  }
+
+  & app-navigation {
+    margin-left: 6.6rem;
   }
 }
 
