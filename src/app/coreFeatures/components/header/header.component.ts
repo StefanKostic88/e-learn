@@ -81,7 +81,7 @@ export class HeaderComponent implements OnInit {
         username: 'sadasd',
         img: '../../../../assets/imgs/profile.jpg',
       },
-      isAuthorized: false,
+      isAuthorized: true,
     });
     this.darkMode$.subscribe(console.log);
 

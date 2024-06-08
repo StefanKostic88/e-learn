@@ -17,7 +17,8 @@ export const routes: Routes = [
   },
   {
     path: 'about-us',
-    component: HomePageComponent,
+    loadChildren: () =>
+      import('./coreFeatures/pages/about-us-page/about-us-page.routes'),
   },
   {
     path: 'my-account',
