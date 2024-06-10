@@ -1,7 +1,3 @@
-:host {
-  // --custom-wraper-max-width: 125rem;
-}
-
 .grayed-text {
   color: var(--text-gray);
   max-width: 1070px;
@@ -9,7 +5,6 @@
 }
 
 .pricing-card__container {
-  // align-self: stretch;
   display: flex;
 
   max-width: 1070px;
@@ -22,4 +17,10 @@
   @media (max-width: 1090px) {
     gap: 0.8rem;
   }
+}
+
+.frequently-asked__container {
+  align-self: stretch;
+  margin-top: 5.6rem;
+  margin-bottom: 2.8rem;
 }

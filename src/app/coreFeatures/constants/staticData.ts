@@ -146,3 +146,30 @@ export const pricingCardData: PricingCard[] = [
     border: 'right',
   },
 ];
+
+export interface FaqDataInterface {
+  question: string;
+  answer: string;
+}
+export const faqData: FaqDataInterface[] = [
+  {
+    question: 'How do I enroll in a course?',
+    answer: `Log in to your account.\nBrowse through the course catalog or use the search bar to find a specific course.\nClick on the course title to view more details.\nClick the "Enroll" button.\nFollow the prompts to complete the enrollment process, including any payment if required.`,
+  },
+  {
+    question: 'Can I get a refund if I’m not satisfied with a course?',
+    answer: `Yes, we offer a refund policy. If you are not satisfied with a course, you can request a refund within 14 days of purchase, provided you have not completed more than 25% of the course content. To request a refund, go to your account settings, find the course under your enrolled courses, and click on "Request Refund."`,
+  },
+  {
+    question: 'How do I enroll in a course?',
+    answer: `Log in to your account.\nBrowse through the course catalog or use the search bar to find a specific course.\nClick on the course title to view more details.\nClick the "Enroll" button.\nFollow the prompts to complete the enrollment process, including any payment if required.`,
+  },
+  {
+    question: 'Can I get a refund if I’m not satisfied with a course?',
+    answer: `Yes, we offer a refund policy. If you are not satisfied with a course, you can request a refund within 14 days of purchase, provided you have not completed more than 25% of the course content. To request a refund, go to your account settings, find the course under your enrolled courses, and click on "Request Refund."`,
+  },
+  {
+    question: 'Can I get a refund if I’m not satisfied with a course?',
+    answer: `Yes, we offer a refund policy. If you are not satisfied with a course, you can request a refund within 14 days of purchase, provided you have not completed more than 25% of the course content. To request a refund, go to your account settings, find the course under your enrolled courses, and click on "Request Refund."`,
+  },
+];
