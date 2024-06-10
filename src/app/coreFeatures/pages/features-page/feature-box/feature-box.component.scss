@@ -1,0 +1,46 @@
+:host {
+  --custom-img-height: 40rem;
+  --custom-img-border-radius: 1.2rem;
+}
+
+.feature-box {
+  display: flex;
+
+  align-items: center;
+  gap: 22rem;
+
+  @media (max-width: 1110px) {
+    gap: 11rem;
+  }
+  @media (max-width: 1000px) {
+    gap: 6rem;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 46rem;
+    gap: 2.4rem;
+
+    @media (max-width: 768px) {
+      max-width: unset;
+    }
+  }
+
+  & app-custom-img {
+    flex: 1 1 0;
+
+    @media (max-width: 768px) {
+      --custom-img-max-width: 7000px;
+      width: 100%;
+      --custom-img-height: 288px;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<figure
+  class="faq"
+  (click)="toggleFaq()"
+  (keydown)="handleOnKeyDown($event)"
+  tabindex="0"
+>
+  <div class="faq__qestion">
+    <h3>{{ faqData?.question }}</h3>
+    <span class="faq__qestion__icon">
+      <fa-icon [icon]="icon"></fa-icon>
+    </span>
+  </div>
+  <div *ngIf="faqIsOpened" class="faq-answer">
+    <p class="text-small-to-medium">
+      {{ faqData?.answer }}
+    </p>
+  </div>
+</figure>

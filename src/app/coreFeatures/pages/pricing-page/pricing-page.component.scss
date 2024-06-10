@@ -1,0 +1,26 @@
+.grayed-text {
+  color: var(--text-gray);
+  max-width: 1070px;
+  text-align: center;
+}
+
+.pricing-card__container {
+  display: flex;
+
+  max-width: 1070px;
+  margin-top: 8.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 6.4rem;
+  & app-pricing-card {
+    flex: 1 1 0;
+  }
+  @media (max-width: 1090px) {
+    gap: 0.8rem;
+  }
+}
+
+.frequently-asked__container {
+  align-self: stretch;
+  margin-top: 5.6rem;
+  margin-bottom: 2.8rem;
+}

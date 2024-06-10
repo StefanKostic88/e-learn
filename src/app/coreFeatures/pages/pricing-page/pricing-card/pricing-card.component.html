@@ -1,0 +1,35 @@
+<figure
+  class="pricing-card"
+  [ngClass]="{
+    favorite: cardData?.isFavorite,
+    right: cardData?.border === 'right',
+    left: cardData?.border === 'left'
+  }"
+>
+  <div>
+    <h3 class="pricing-card__header">
+      {{ cardData?.title }}
+      <span *ngIf="cardData?.isFavorite">Popular</span>
+    </h3>
+    <span class="pricing-card__description">{{ cardData?.description }}</span>
+  </div>
+  <span class="pricing-card__price"
+    >${{ cardData?.priceStat?.price }}
+    <span class="time">{{ cardData?.priceStat?.category }}</span></span
+  >
+  <ul class="pricing-card__list">
+    <li
+      class="pricing-card__list-item offer"
+      *ngFor="let features of cardData?.includedProps"
+      [ngClass]="{ offer: features.marker }"
+    >
+      <fa-icon [icon]="checkIcon"></fa-icon>
+      <span class="text-small"> {{ features.name }} </span>
+    </li>
+  </ul>
+  <app-button
+    [content]="'Upgrade'"
+    [btnSize]="btnSize.MEDIUM"
+    [outlined]="cardData?.outlinedBtn"
+  ></app-button>
+</figure>

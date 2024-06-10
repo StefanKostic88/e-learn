@@ -1,0 +1,43 @@
+:host {
+  --custom-img-height: 60rem;
+  --custom-img-max-width: 117.6rem;
+  & app-custom-img {
+    align-self: stretch;
+  }
+}
+
+.grayed-text {
+  color: var(--text-gray);
+  max-width: 780px;
+  text-align: center;
+  margin-top: 2.8rem;
+  margin-bottom: 8.2rem;
+}
+
+.teams-section {
+  display: flex;
+  align-self: stretch;
+  gap: 4.4rem;
+  margin-top: 5.8rem;
+  flex-wrap: wrap;
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    flex: 1 1 0;
+    @media (max-width: 600px) {
+      text-align: center;
+    }
+  }
+
+  &__members {
+    display: flex;
+    gap: 2.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+  }
+}

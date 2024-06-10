@@ -1,0 +1,32 @@
+.faq {
+  border-top: 1px solid #dee1e6ff;
+
+  padding: 2.2rem 1.2rem 2.2rem 2.4rem;
+  margin: 0;
+  cursor: pointer;
+
+  &__qestion {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+
+    & h3 {
+      flex: 1 1 0;
+    }
+    &__icon {
+      position: relative;
+      width: 2.4rem;
+
+      & fa-icon {
+        top: 20%;
+        right: 8px;
+        font-size: 2.4rem;
+      }
+    }
+  }
+
+  p {
+    color: var(--text-gray);
+  }
+}

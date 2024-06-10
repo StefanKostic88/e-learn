@@ -1,0 +1,22 @@
+<app-page-wraper [pageTitle]="'About us'">
+  <ng-container class="main">
+    <p class="grayed-text text-normal">
+      Welcome to Learn Platform - where every day is a day to learn. Dive into
+      the vast ocean of knowledge and empower yourself with the tools for a
+      successful tomorrow. Heappy learning!
+    </p>
+    <app-custom-img [img]="aboutUsImg"></app-custom-img>
+    <div class="teams-section">
+      <div class="teams-section__description">
+        <h2>Our Team</h2>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+      </div>
+      <div class="teams-section__members">
+        <app-profile-card
+          *ngFor="let profile of teamData"
+          [memberData]="profile"
+        ></app-profile-card>
+      </div>
+    </div>
+  </ng-container>
+</app-page-wraper>
