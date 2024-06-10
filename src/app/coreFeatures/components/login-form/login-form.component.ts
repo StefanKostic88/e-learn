@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   faEyeSlash,
   faLock,
   faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { Observable, Subscription, of } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { ButtonSize } from '../../../shared/models/button.model';
 import {
   FormControl,
@@ -27,7 +27,7 @@ const modules = [FontAwesomeModule, ReactiveFormsModule, CommonModule];
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit, OnDestroy {
   public readonly user = faUserAlt;
   public readonly lock = faLock;
   public readonly eye = faEyeSlash;

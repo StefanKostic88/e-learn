@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+  viewChild,
+} from '@angular/core';
 import { ButtonSize } from '../../../shared/models/button.model';
 import { headerLinksList } from '../../constants/linksData';
 import {
@@ -52,6 +59,9 @@ const components = [
 export class HeaderComponent implements OnInit {
   public headerIcon: IconDefinition = faEllipsis;
   protected readonly buttonSize: typeof ButtonSize = ButtonSize;
+
+  @ViewChild('header') headerEl?: ElementRef;
+  @ViewChild(AccountBoxComponent) accountBoxComponent?: AccountBoxComponent;
   // public userHeaderData$?: Observable<UserHeaderData>;
   public userHeaderData$?: Observable<{
     accountData: {
@@ -123,5 +133,14 @@ export class HeaderComponent implements OnInit {
   toggleDarkMode() {
     this.uiService.darkModeToggler();
     this.uiService.applyDarkMode();
+  }
+
+  @HostListener('document:click', ['$event.target']) onClick(
+    targetElement: HTMLElement
+  ) {
+    const clickedInside = this.headerEl?.nativeElement?.contains(targetElement);
+    if (!clickedInside) {
+      this.accountBoxComponent?.closeSidebar();
+    }
   }
 }

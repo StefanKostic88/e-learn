@@ -27,6 +27,7 @@ const components = [CustomImgComponent, NavigationComponent, ButtonComponent];
 })
 export class AccountBoxComponent {
   // @Input() accountBoxData?: AccountData;
+
   @Input() accountBoxData?: {
     email: string;
     username: string;
