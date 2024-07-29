@@ -32,6 +32,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { Observable, filter, map, of } from 'rxjs';
 import { UiService } from '../../services/uiService/ui.service';
+import { AuthStoreService } from '../../services/auth/auth-store.service';
 
 const components = [
   NavigationComponent,
@@ -80,17 +81,20 @@ export class HeaderComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private uiService: UiService
+    private uiService: UiService,
+    private authStoreService: AuthStoreService
   ) {}
 
   ngOnInit(): void {
+    this.authStoreService.isAuthorized.subscribe(console.log);
+
     this.userHeaderData$ = of({
       accountData: {
         email: 'testemail',
         username: 'sadasd',
         img: '../../../../assets/imgs/profile.jpg',
       },
-      isAuthorized: true,
+      isAuthorized: false,
     });
     this.darkMode$.subscribe(console.log);
 

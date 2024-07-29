@@ -2,8 +2,6 @@ import {
   BehaviorSubject,
   Observable,
   catchError,
-  exhaustMap,
-  from,
   map,
   tap,
   throwError,
@@ -13,7 +11,6 @@ import {
   ChangePassword,
   EditInterface,
   LoginUser,
-  RegisterUser,
   CreatedUser,
 } from '../../models/user.model';
 
@@ -98,6 +95,7 @@ export class AuthStoreService {
 
   public logInUser(data: LoginUser): Observable<string | null> {
     this.errorMessage = null;
+    this.loadingSpiner = true;
 
     return this.authService.login(data).pipe(
       tap((JWT_TOKEN) => {
@@ -106,10 +104,13 @@ export class AuthStoreService {
           this.isAuthorized = !!this.sessionStorageService.getToken();
         }
       }),
-
       catchError((err) => {
-        this.errorMessage = err.error.error.message;
+        this.errorMessage = err;
         return throwError(err);
+      }),
+      tap(() => {
+        this.loadingSpiner = false;
+        this.router.navigate(['/']);
       })
     );
   }
@@ -124,29 +125,29 @@ export class AuthStoreService {
     this.errorMessage = null;
   }
 
-  public registerAndGetInfo(data: RegisterUser): Observable<string | null> {
-    this.loadingSpiner = true;
-    return this.authService.userRegistration(data).pipe(
-      map((res) => {
-        this.createdUser = res.data;
-        return res.data;
-      }),
-      catchError((err: string) => {
-        return this.resetRegisterStateAndShowError(err);
-      }),
-      exhaustMap((createdUser) =>
-        from(this.logInUser(createdUser as CreatedUser)).pipe(
-          catchError((err: string) => {
-            return this.resetRegisterStateAndShowError(err);
-          }),
-          tap(() => {
-            this.registrationSuccess = true;
-            this.loadingSpiner = false;
-          })
-        )
-      )
-    );
-  }
+  // public registerAndGetInfo(data: RegisterUser): Observable<string | null> {
+  //   this.loadingSpiner = true;
+  //   return this.authService.userRegistration(data).pipe(
+  //     map((res) => {
+  //       this.createdUser = res.data;
+  //       return res.data;
+  //     }),
+  //     catchError((err: string) => {
+  //       return this.resetRegisterStateAndShowError(err);
+  //     }),
+  //     exhaustMap((createdUser) =>
+  //       from(this.logInUser(createdUser as CreatedUser)).pipe(
+  //         catchError((err: string) => {
+  //           return this.resetRegisterStateAndShowError(err);
+  //         }),
+  //         tap(() => {
+  //           this.registrationSuccess = true;
+  //           this.loadingSpiner = false;
+  //         })
+  //       )
+  //     )
+  //   );
+  // }
 
   public switchToMyaccount(): void {
     this.registrationSuccess = false;

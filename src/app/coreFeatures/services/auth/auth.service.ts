@@ -1,6 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, tap, throwError } from 'rxjs';
 
 import {
   LoginUser,
@@ -21,12 +25,22 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   public login(data: LoginUser) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
     return this.http
-      .post<LoginResponse>(environment.apiEndpoints.login, data)
+      .post<LoginResponse>(
+        'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/login',
+        data,
+        {
+          headers,
+        }
+      )
       .pipe(
         map(({ token }) => token),
-        catchError((err: HttpErrorResponse) =>
-          throwError(err.error.error.message)
+        catchError((errorResponse: HttpErrorResponse) =>
+          throwError(errorResponse.error.message)
         )
       );
   }

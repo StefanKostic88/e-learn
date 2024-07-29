@@ -103,6 +103,8 @@ export interface CreatedUserResponse {
 
 export interface LoginResponse {
   token: string;
+  message: string;
+  headers: Record<string, string>;
 }
 
 export interface ChangePasswordResponse {

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   OnDestroy,
@@ -22,7 +23,7 @@ const components = [
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })
-export class LoginPageComponent implements OnDestroy {
+export class LoginPageComponent implements OnDestroy, AfterViewInit {
   public captchaUnchecked = '../../../assets/imgs/captcha-uncheced.png';
   public captchaChecked = '../../../assets/imgs/captcha-checed.png';
   private formSubscription?: Subscription;
