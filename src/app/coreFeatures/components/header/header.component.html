@@ -4,7 +4,7 @@
     [icon]="headerIcon"
     (click)="toggleAccountBox()"
   ></fa-icon>
-  <app-logo></app-logo>
+  <app-logo (click)="closeSideBar()"></app-logo>
   <app-navigation
     class="hidden sm:block"
     [isMainNav]="true"
@@ -13,6 +13,7 @@
   <ng-container *ngIf="userHeaderData$ | async as userHeaderData">
     <ng-container *ngIf="userHeaderData.isAuthorized; else notAuthorized">
       <div
+        #accountDetails
         class="header__account-detailes"
         (click)="toggleAccountBox()"
         tabindex="0"
@@ -25,7 +26,6 @@
       </div>
     </ng-container>
     <app-account-box
-      #appAccountBox
       [accountBoxData]="userHeaderData.accountData"
       [isAuthorized]="userHeaderData.isAuthorized"
     >

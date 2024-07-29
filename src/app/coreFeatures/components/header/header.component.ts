@@ -4,7 +4,6 @@ import {
   HostListener,
   OnInit,
   ViewChild,
-  viewChild,
 } from '@angular/core';
 import { ButtonSize } from '../../../shared/models/button.model';
 import { headerLinksList } from '../../constants/linksData';
@@ -139,8 +138,12 @@ export class HeaderComponent implements OnInit {
     targetElement: HTMLElement
   ) {
     const clickedInside = this.headerEl?.nativeElement?.contains(targetElement);
+
+    // console.log(this.accountBoxComponent);
+    // console.log(this.headerEl);
     if (!clickedInside) {
       this.accountBoxComponent?.closeSidebar();
+      console.log('asdsad');
     }
   }
 }

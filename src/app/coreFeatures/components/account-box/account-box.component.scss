@@ -63,7 +63,7 @@ p {
 }
 
 .closed {
-  transform: translateX(80%);
+  transform: translateX(100%);
   opacity: 0;
   transition: transform 300ms, opacity 300ms;
 
