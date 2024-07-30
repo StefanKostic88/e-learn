@@ -4,6 +4,7 @@ import { ChangePasswordPageComponent } from '../change-password-page/change-pass
 import { MyAccountBaseComponent } from './my-account-base/my-account-base.component';
 import { MyAccountEditComponent } from './my-account-edit/my-account-edit.component';
 import { MyAccountAddTrainerComponent } from './my-account-add-trainer/my-account-add-trainer.component';
+import { CanDeactivateGuard } from '../../guards/canDeactivate.guard';
 
 export default [
   {
@@ -18,7 +19,7 @@ export default [
       {
         path: 'edit',
         component: MyAccountEditComponent,
-        // canDeactivate: [CanDeactivateGuard],
+        canDeactivate: [CanDeactivateGuard],
       },
       {
         path: 'add-trainer',

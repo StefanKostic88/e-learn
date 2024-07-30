@@ -8,5 +8,7 @@
       >Dont have an accoun? <a [routerLink]="'/join-us'">Sign up</a></span
     >
     <app-custom-img [img]="captcha"></app-custom-img>
+
+    <app-spiner *ngIf="isLoading$ | async"></app-spiner>
   </ng-container>
 </app-page-wraper>

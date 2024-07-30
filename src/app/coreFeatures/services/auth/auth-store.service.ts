@@ -106,6 +106,7 @@ export class AuthStoreService {
       }),
       catchError((err) => {
         this.errorMessage = err;
+        this.loadingSpiner = false;
         return throwError(err);
       }),
       tap(() => {

@@ -12,7 +12,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+
 import { ButtonComponent, InputComponent } from '../../../shared';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
@@ -41,12 +41,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   public formIsValid = true;
   private authSubscription?: Subscription;
 
-  public loadingSpinner = this.authStoreService.loadingSpiner;
-
-  constructor(
-    private authStoreService: AuthStoreService,
-    private router: Router
-  ) {}
+  constructor(private authStoreService: AuthStoreService) {}
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
