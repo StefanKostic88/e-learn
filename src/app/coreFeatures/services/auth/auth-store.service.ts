@@ -17,6 +17,7 @@ import {
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { SessionStorageService } from '../session-storage/session-storage.service';
+import { UiService } from '../uiService/ui.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,18 +32,18 @@ export class AuthStoreService {
 
   public createdUser$ = this.createdUser$$.asObservable();
 
-  private errorMessage$$: BehaviorSubject<null | string> = new BehaviorSubject<
-    string | null
-  >(null);
+  // private errorMessage$$: BehaviorSubject<null | string> = new BehaviorSubject<
+  //   string | null
+  // >(null);
 
-  public errorMessage$: Observable<string | null> =
-    this.errorMessage$$.asObservable();
+  // public errorMessage$: Observable<string | null> =
+  //   this.errorMessage$$.asObservable();
 
-  private loadingSpiner$$: BehaviorSubject<boolean> = new BehaviorSubject(
-    false
-  );
-  public loadingSpiner$: Observable<boolean> =
-    this.loadingSpiner$$.asObservable();
+  // private loadingSpiner$$: BehaviorSubject<boolean> = new BehaviorSubject(
+  //   false
+  // );
+  // public loadingSpiner$: Observable<boolean> =
+  //   this.loadingSpiner$$.asObservable();
 
   private registrationSuccess$$: BehaviorSubject<boolean> = new BehaviorSubject(
     false
@@ -53,6 +54,7 @@ export class AuthStoreService {
   constructor(
     private authService: AuthService,
     private sessionStorageService: SessionStorageService,
+    private uiService: UiService,
     private router: Router
   ) {}
 
@@ -65,19 +67,19 @@ export class AuthStoreService {
     return this.isAuthorized$;
   }
 
-  set errorMessage(value: null | string) {
-    this.errorMessage$$.next(value);
-  }
-  get errorMessage(): Observable<null | string> {
-    return this.errorMessage$;
-  }
+  // set errorMessage(value: null | string) {
+  //   this.errorMessage$$.next(value);
+  // }
+  // get errorMessage(): Observable<null | string> {
+  //   return this.errorMessage$;
+  // }
 
-  set loadingSpiner(val: boolean) {
-    this.loadingSpiner$$.next(val);
-  }
-  get loadingSpiner(): Observable<boolean> {
-    return this.loadingSpiner$;
-  }
+  // set loadingSpiner(val: boolean) {
+  //   this.loadingSpiner$$.next(val);
+  // }
+  // get loadingSpiner(): Observable<boolean> {
+  //   return this.loadingSpiner$;
+  // }
 
   set registrationSuccess(val: boolean) {
     this.registrationSuccess$$.next(val);
@@ -94,8 +96,10 @@ export class AuthStoreService {
   }
 
   public logInUser(data: LoginUser): Observable<string | null> {
-    this.errorMessage = null;
-    this.loadingSpiner = true;
+    // this.errorMessage = null;
+    this.uiService.errorMessage = null;
+    // this.loadingSpiner = true;
+    this.uiService.loadingSpiner = true;
 
     return this.authService.login(data).pipe(
       tap((JWT_TOKEN) => {
@@ -105,12 +109,15 @@ export class AuthStoreService {
         }
       }),
       catchError((err) => {
-        this.errorMessage = err;
-        this.loadingSpiner = false;
+        // this.errorMessage = err;
+        this.uiService.errorMessage = err;
+        // this.loadingSpiner = false;
+        this.uiService.loadingSpiner = false;
         return throwError(err);
       }),
       tap(() => {
-        this.loadingSpiner = false;
+        // this.loadingSpiner = false;
+        this.uiService.loadingSpiner = false;
         this.router.navigate(['/']);
       })
     );
@@ -123,7 +130,8 @@ export class AuthStoreService {
   }
 
   public resetErrorMsgState(): void {
-    this.errorMessage = null;
+    // this.errorMessage = null;
+    this.uiService.errorMessage = null;
   }
 
   // public registerAndGetInfo(data: RegisterUser): Observable<string | null> {
@@ -152,32 +160,32 @@ export class AuthStoreService {
 
   public switchToMyaccount(): void {
     this.registrationSuccess = false;
-    this.errorMessage = null;
+    // this.errorMessage = null;
     this.router.navigate(['/my-account']);
   }
 
   public chnagUserPasswrod(inputData: ChangePassword) {
-    this.errorMessage = null;
-    this.loadingSpiner = true;
+    // this.errorMessage = null;
+    // this.loadingSpiner = true;
     return this.authService.changePassword(inputData).pipe(
       map((data) => data),
       catchError((err: string) => {
-        this.errorMessage = err;
-        this.loadingSpiner = false;
+        // this.errorMessage = err;
+        // this.loadingSpiner = false;
 
         return throwError(err);
       }),
       tap(() => {
         this.registrationSuccess = true;
-        this.loadingSpiner = false;
+        // this.loadingSpiner = false;
       })
     );
   }
 
   private resetRegisterStateAndShowError(err: string) {
     this.registrationSuccess = false;
-    this.loadingSpiner = false;
-    this.errorMessage = err;
+    // this.loadingSpiner = false;
+    // this.errorMessage = err;
     return throwError(err);
   }
 

@@ -17,6 +17,7 @@ import { ButtonComponent, InputComponent } from '../../../shared';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { AuthStoreService } from '../../services/auth/auth-store.service';
+import { UiService } from '../../services/uiService/ui.service';
 
 const components = [ButtonComponent, InputComponent];
 const modules = [FontAwesomeModule, ReactiveFormsModule, CommonModule];
@@ -32,8 +33,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   public readonly user = faUserAlt;
   public readonly lock = faLock;
   public readonly eye = faEyeSlash;
-  public loginError$?: Observable<string | null> =
-    this.authStoreService.errorMessage$;
+  public loginError$?: Observable<string | null> = this.uiService.errorMessage$;
 
   public buttonSize: typeof ButtonSize = ButtonSize;
 
@@ -41,7 +41,10 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   public formIsValid = true;
   private authSubscription?: Subscription;
 
-  constructor(private authStoreService: AuthStoreService) {}
+  constructor(
+    private authStoreService: AuthStoreService,
+    private uiService: UiService
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({

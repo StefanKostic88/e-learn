@@ -5,6 +5,7 @@ import { HomePageSignedComponent } from './home-page-signed/home-page-signed.com
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { HomePageUnsignedComponent } from './home-page-unsigned/home-page-unsigned.component';
+import { AuthStoreService } from '../../services/auth/auth-store.service';
 
 const components = [
   ButtonComponent,
@@ -21,12 +22,12 @@ const components = [
   styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit {
-  constructor() {} // private userService: UserService // private authStoreService: AuthStoreService,
+  constructor(private authStoreService: AuthStoreService) {} // private userService: UserService //
   // public readonly currentUser$ = this.userService.currentUser;
   public readonly currentUser$ = of({ firstName: 'Stefan' });
   // ' of({ firstName: 'Stefan' });'
-  // public readonly isAuthorized$ = this.authStoreService.isAuthorized;
-  public readonly isAuthorized$ = of(false);
+  public readonly isAuthorized$ = this.authStoreService.isAuthorized;
+  // public readonly isAuthorized$ = of(false);
   public pageTitle?: Observable<string>;
 
   ngOnInit(): void {

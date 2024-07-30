@@ -16,6 +16,19 @@ export class UiService {
 
   public darkMode$: Observable<boolean> = this.darkMode$$.asObservable();
 
+  private loadingSpiner$$: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
+  public loadingSpiner$: Observable<boolean> =
+    this.loadingSpiner$$.asObservable();
+
+  private errorMessage$$: BehaviorSubject<null | string> = new BehaviorSubject<
+    string | null
+  >(null);
+
+  public errorMessage$: Observable<string | null> =
+    this.errorMessage$$.asObservable();
+
   constructor(private sessionStorageService: SessionStorageService) {}
 
   get isNavigationIsOpened(): Observable<boolean> {
@@ -31,6 +44,20 @@ export class UiService {
   }
   set darkMode(value: boolean) {
     this.darkMode$$.next(value);
+  }
+
+  set loadingSpiner(val: boolean) {
+    this.loadingSpiner$$.next(val);
+  }
+  get loadingSpiner(): Observable<boolean> {
+    return this.loadingSpiner$;
+  }
+
+  set errorMessage(value: null | string) {
+    this.errorMessage$$.next(value);
+  }
+  get errorMessage(): Observable<null | string> {
+    return this.errorMessage$;
   }
 
   public toggleNavigationMenu(): void {
