@@ -4,7 +4,7 @@ import {
   faLock,
   faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { ButtonSize } from '../../../shared/models/button.model';
 import {
   FormControl,
@@ -18,6 +18,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { UiService } from '../../services/uiService/ui.service';
+import { RouterService } from '../../services/router/router.service';
 
 const components = [ButtonComponent, InputComponent];
 const modules = [FontAwesomeModule, ReactiveFormsModule, CommonModule];
@@ -30,20 +31,22 @@ const modules = [FontAwesomeModule, ReactiveFormsModule, CommonModule];
   styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent implements OnInit, OnDestroy {
-  public readonly user = faUserAlt;
-  public readonly lock = faLock;
-  public readonly eye = faEyeSlash;
-  public loginError$?: Observable<string | null> = this.uiService.errorMessage$;
+  protected readonly user = faUserAlt;
+  protected readonly lock = faLock;
+  protected readonly eye = faEyeSlash;
+  protected loginError$?: Observable<string | null> =
+    this.uiService.errorMessage$;
 
-  public buttonSize: typeof ButtonSize = ButtonSize;
+  protected buttonSize: typeof ButtonSize = ButtonSize;
 
   public loginForm!: FormGroup;
-  public formIsValid = true;
+  protected formIsValid = true;
   private authSubscription?: Subscription;
 
   constructor(
     private authStoreService: AuthStoreService,
-    private uiService: UiService
+    private uiService: UiService,
+    private routerService: RouterService
   ) {}
 
   ngOnInit(): void {
@@ -55,16 +58,15 @@ export class LoginFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.authSubscription?.unsubscribe();
-    // this.authStoreService.resetErrorMsgState();
   }
 
   protected onSubmit() {
     const userCredentials = this.loginForm.value;
-    console.log(userCredentials);
+
     this.authSubscription = this.authStoreService
       .logInUser(userCredentials)
-      .subscribe(console.log);
-    // .pipe(tap(() => this.router.navigate(['/'])))
+      .pipe(tap(() => this.routerService.toHomePage()))
+      .subscribe();
 
     this.loginForm.valid && this.loginForm.reset;
   }

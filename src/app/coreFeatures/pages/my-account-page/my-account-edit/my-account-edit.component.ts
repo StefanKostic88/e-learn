@@ -3,9 +3,14 @@ import {
   ButtonSize,
   ButtonState,
 } from '../../../../shared/models/button.model';
-import { Observable, of } from 'rxjs';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { combineLatest, map, Observable, of, tap } from 'rxjs';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ButtonComponent,
   CustomImgComponent,
@@ -16,6 +21,7 @@ import {
 } from '../../../../shared';
 import { CommonModule } from '@angular/common';
 import { specializations } from '../../../constants/dictionary';
+import { UserStoreService } from '../../../services/user/user-store.service';
 
 const components = [
   CustomImgComponent,
@@ -49,8 +55,8 @@ export class MyAccountEditComponent implements OnInit {
           | 'lastName'
           | 'username'
           | 'email'
-          | 'adress'
-          | 'dateOfBirth';
+          | 'dateOfBirth'
+          | 'address';
         labelName: string;
         value: string | undefined;
       }[]
@@ -60,25 +66,51 @@ export class MyAccountEditComponent implements OnInit {
   // currentUser$: Observable<UserData | null> = this.userService.currentUser;
   snapshot?: { [props: string]: string };
   userActiveStatus$?: Observable<boolean>;
-  specialization$?: Observable<{
-    labelName: string | undefined;
-    value: string | undefined;
-  }>;
+  // specialization$?: Observable<{
+  //   labelName: string | undefined;
+  //   value: string | undefined;
+  // }>;
   public readonly allSpecializations$ = of(specializations);
 
   constructor(
-    private router: Router // private userService: UserService, // private specializationService: SpecializationService, // private authStoreService: AuthStoreService
+    private router: Router, // private userService: UserService, // private specializationService: SpecializationService, // private authStoreService: AuthStoreService
+    private userStoreService: UserStoreService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     // this.specializationService.getAllSpecialization().subscribe();
-    // this.inputsArr = this.userService.getCurrentUserInputs();
+
+    this.inputsArr = this.userStoreService.getCurrentUserInputs();
+
+    this.userStoreService
+      .getCurrentUserInputs()
+      .pipe(
+        map((inputData) => {
+          const formControls: { [prop: string]: AbstractControl } = {};
+          const inputValues = inputData?.map((el) => ({
+            formControlName: el.formControlName,
+            value: el.value,
+          }));
+
+          inputValues?.forEach((el) => {
+            formControls[el.formControlName] = new FormControl(el.value);
+          });
+
+          this.userEditForm = new FormGroup(formControls);
+        }),
+        tap((el) => console.log(el))
+      )
+      .subscribe(console.log);
+
     // this.userActiveStatus$ = this.userService.getUserActiveStatus();
     // this.specialization$ = this.userService.getSpecialization();
+    // this.specialization$ = of('Angular');
+
     // combineLatest([
-    //   this.userService.getCurrentUserInputs(),
+    //   this.userStoreService.getCurrentUserInputs(),
     //   this.specialization$,
-    // ]).subscribe(([data, specialization]) => {
+    // ]).subscribe(([data]) => {
     //   const formControls: { [prop: string]: AbstractControl } = {};
     //   const inputValues = data?.map((el) => ({
     //     formControlName: el.formControlName,
@@ -112,34 +144,34 @@ export class MyAccountEditComponent implements OnInit {
     // console.log(this.userEditForm);
 
     this.userEditForm = new FormGroup({
-      firstName: new FormControl('asd'),
-      lastName: new FormControl('asd'),
-      username: new FormControl('asd'),
-      email: new FormControl('asd'),
-      adress: new FormControl('asd'),
-      dateOfBirth: new FormControl('asd'),
-      specialization: new FormControl('React'),
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+      username: new FormControl(''),
+      email: new FormControl(''),
+      address: new FormControl(''),
+      dateOfBirth: new FormControl(''),
+      specialization: new FormControl(''),
     });
   }
 
   public onSubmit() {
-    console.log('asdasd');
-    // const data: EditInterface = this.userEditForm.value;
+    const data = this.userEditForm.value;
+    console.log(data);
     // this.authStoreService.editCurrentUser(data).subscribe(() => {
     //   this.changesAreNotValid = true;
     //   this.navigateBack();
     // });
   }
 
-  // canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
-  //   if (this.changesAreNotValid) {
-  //     return true;
-  //   } else {
-  //     return confirm(
-  //       'Are you sure you want to leave this page? Any unsaved changes will be lost.'
-  //     );
-  //   }
-  // }
+  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+    if (this.changesAreNotValid) {
+      return true;
+    } else {
+      return confirm(
+        'Are you sure you want to leave this page? Any unsaved changes will be lost.'
+      );
+    }
+  }
 
   navigateBack() {
     this.router.navigate(['/my-account']);

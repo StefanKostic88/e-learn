@@ -9,10 +9,10 @@ export interface RegisterUser {
   email: string;
   firstName: string;
   lastName: string;
-  specialization: string;
   role: string;
+  specialization?: string;
   adress?: string;
-  dateOfBirth: string;
+  dateOfBirth?: string;
 }
 
 export interface TrainerInterface {

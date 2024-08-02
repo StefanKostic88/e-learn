@@ -9,8 +9,9 @@ import {
   of,
   tap,
 } from 'rxjs';
-import { HeaderData, UserData } from '../../models/user.model';
+import { HeaderData, UserData, UserDataRespnse } from '../../models/user.model';
 import { AuthStoreService } from '../auth/auth-store.service';
+import { environment } from '../../../enviroment';
 
 @Injectable({
   providedIn: 'root',
@@ -143,5 +144,40 @@ export class UserStoreService {
 
   public removeCurrentUser() {
     this.currentUser = null;
+  }
+
+  public getCurrentUserInputs() {
+    return this.userService.getCurrentUser().pipe(
+      map((data) => {
+        return this.selectedProperitesTest(data, [
+          'firstName',
+          'lastName',
+          'username',
+          'email',
+          'address',
+          'dateOfBirth',
+        ]);
+      }),
+      map((data) =>
+        data?.map((el) => ({
+          formControlName: el['prop'],
+          labelName: this.splitAndSwitchToUpper(el['prop']),
+          value: el['value'],
+        }))
+      ),
+      tap((el) => console.log(el))
+    );
+  }
+  private selectedProperitesTest<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    T extends Record<string, any>,
+    K extends keyof T
+  >(obj: T | null, props: K[]) {
+    if (!obj) return;
+    const value = props.map((prop) => ({
+      value: obj[prop],
+      prop: prop,
+    }));
+    return value;
   }
 }

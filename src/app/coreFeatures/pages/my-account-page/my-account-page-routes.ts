@@ -15,6 +15,7 @@ export default [
       {
         path: 'change-password',
         component: ChangePasswordPageComponent,
+        canDeactivate: [CanDeactivateGuard],
       },
       {
         path: 'edit',

@@ -29,6 +29,12 @@ export class UiService {
   public errorMessage$: Observable<string | null> =
     this.errorMessage$$.asObservable();
 
+  private actionSuccess$$: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
+
+  public actionSuccess$ = this.actionSuccess$$.asObservable();
+
   constructor(private sessionStorageService: SessionStorageService) {}
 
   get isNavigationIsOpened(): Observable<boolean> {
@@ -58,6 +64,13 @@ export class UiService {
   }
   get errorMessage(): Observable<null | string> {
     return this.errorMessage$;
+  }
+
+  set actionSuccess(val: boolean) {
+    this.actionSuccess$$.next(val);
+  }
+  get actionSuccess(): Observable<boolean> {
+    return this.actionSuccess$;
   }
 
   public toggleNavigationMenu(): void {

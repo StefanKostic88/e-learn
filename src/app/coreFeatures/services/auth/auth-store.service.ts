@@ -2,7 +2,10 @@ import {
   BehaviorSubject,
   Observable,
   catchError,
+  exhaustMap,
+  from,
   map,
+  of,
   tap,
   throwError,
 } from 'rxjs';
@@ -12,6 +15,7 @@ import {
   EditInterface,
   LoginUser,
   CreatedUser,
+  RegisterUser,
 } from '../../models/user.model';
 
 import { Router } from '@angular/router';
@@ -45,11 +49,11 @@ export class AuthStoreService {
   // public loadingSpiner$: Observable<boolean> =
   //   this.loadingSpiner$$.asObservable();
 
-  private registrationSuccess$$: BehaviorSubject<boolean> = new BehaviorSubject(
-    false
-  );
+  // private registrationSuccess$$: BehaviorSubject<boolean> = new BehaviorSubject(
+  //   false
+  // );
 
-  public registrationSuccess$ = this.registrationSuccess$$.asObservable();
+  // public registrationSuccess$ = this.registrationSuccess$$.asObservable();
 
   constructor(
     private authService: AuthService,
@@ -81,12 +85,12 @@ export class AuthStoreService {
   //   return this.loadingSpiner$;
   // }
 
-  set registrationSuccess(val: boolean) {
-    this.registrationSuccess$$.next(val);
-  }
-  get registrationSuccess(): Observable<boolean> {
-    return this.registrationSuccess$;
-  }
+  // set registrationSuccess(val: boolean) {
+  //   this.registrationSuccess$$.next(val);
+  // }
+  // get registrationSuccess(): Observable<boolean> {
+  //   return this.registrationSuccess$;
+  // }
 
   set createdUser(val: CreatedUser | null) {
     this.createdUser$$.next(val);
@@ -118,7 +122,7 @@ export class AuthStoreService {
       tap(() => {
         // this.loadingSpiner = false;
         this.uiService.loadingSpiner = false;
-        this.router.navigate(['/']);
+        // this.router.navigate(['/']);
       })
     );
   }
@@ -134,59 +138,58 @@ export class AuthStoreService {
     this.uiService.errorMessage = null;
   }
 
-  // public registerAndGetInfo(data: RegisterUser): Observable<string | null> {
-  //   this.loadingSpiner = true;
-  //   return this.authService.userRegistration(data).pipe(
-  //     map((res) => {
-  //       this.createdUser = res.data;
-  //       return res.data;
-  //     }),
-  //     catchError((err: string) => {
-  //       return this.resetRegisterStateAndShowError(err);
-  //     }),
-  //     exhaustMap((createdUser) =>
-  //       from(this.logInUser(createdUser as CreatedUser)).pipe(
-  //         catchError((err: string) => {
-  //           return this.resetRegisterStateAndShowError(err);
-  //         }),
-  //         tap(() => {
-  //           this.registrationSuccess = true;
-  //           this.loadingSpiner = false;
-  //         })
-  //       )
-  //     )
-  //   );
-  // }
-
-  public switchToMyaccount(): void {
-    this.registrationSuccess = false;
-    // this.errorMessage = null;
-    this.router.navigate(['/my-account']);
+  public registerAndGetInfo(data: RegisterUser) {
+    this.uiService.loadingSpiner = true;
+    return this.authService.userRegistration(data).pipe(
+      tap((user) => {
+        this.createdUser = user;
+      }),
+      catchError((err) => {
+        this.uiService.loadingSpiner = false;
+        return this.resetRegisterStateAndShowError(err);
+      }),
+      exhaustMap((createdUser) =>
+        from(this.logInUser(createdUser as CreatedUser)).pipe(
+          catchError((err: string) => {
+            return this.resetRegisterStateAndShowError(err);
+          }),
+          tap(() => {
+            this.uiService.actionSuccess = true;
+            this.uiService.loadingSpiner = false;
+          })
+        )
+      )
+    );
   }
 
-  public chnagUserPasswrod(inputData: ChangePassword) {
-    // this.errorMessage = null;
-    // this.loadingSpiner = true;
+  // public switchToMyaccount(): void {
+  //   // this.registrationSuccess = false;
+  //   // this.errorMessage = null;
+  //   this.router.navigate(['/my-account']);
+  // }
+
+  public changeUserPassword(inputData: ChangePassword) {
+    this.uiService.errorMessage = null;
+    this.uiService.loadingSpiner = true;
     return this.authService.changePassword(inputData).pipe(
       map((data) => data),
-      catchError((err: string) => {
-        // this.errorMessage = err;
-        // this.loadingSpiner = false;
-
-        return throwError(err);
-      }),
       tap(() => {
-        this.registrationSuccess = true;
-        // this.loadingSpiner = false;
+        this.uiService.actionSuccess = true;
+        this.uiService.loadingSpiner = false;
+      }),
+      catchError((err: string) => {
+        this.uiService.errorMessage = err;
+        this.uiService.loadingSpiner = false;
+        this.uiService.actionSuccess = false;
+        return of(null);
       })
     );
   }
 
   private resetRegisterStateAndShowError(err: string) {
-    this.registrationSuccess = false;
-    // this.loadingSpiner = false;
-    // this.errorMessage = err;
-    return throwError(err);
+    this.uiService.actionSuccess = false;
+    this.uiService.errorMessage = err;
+    return of(null);
   }
 
   public editCurrentUser(inputData: EditInterface) {

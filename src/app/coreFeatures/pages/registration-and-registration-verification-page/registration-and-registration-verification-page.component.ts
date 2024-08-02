@@ -10,6 +10,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { of } from 'rxjs';
 import { RegistrationFormComponent } from '../../components/registration-form/registration-form.component';
+import { UiService } from '../../services/uiService/ui.service';
+import { AuthStoreService } from '../../services/auth/auth-store.service';
+import { RouterService } from '../../services/router/router.service';
 
 const components = [
   PageWraperComponent,
@@ -28,20 +31,18 @@ const components = [
   styleUrl: './registration-and-registration-verification-page.component.scss',
 })
 export class RegistrationAndRegistrationVerificationPageComponent {
-  checkIcon: IconDefinition = faCheck;
+  protected checkIcon: IconDefinition = faCheck;
+  protected readonly registrationPending$ = this.uiService.loadingSpiner;
+  protected readonly registrationSuccess$ = this.uiService.actionSuccess;
+  protected readonly createdUser$ = this.authStoreService.createdUser;
 
-  // public readonly registrationPending$ = this.authStoreService.loadingSpiner;
-  // public readonly registrationSuccess$ =
-  //   this.authStoreService.registrationSuccess;
-  // public readonly createdUser$ = this.authStoreService.createdUser;
-  public readonly registrationPending$ = of(false);
-  public readonly registrationSuccess$ = of(false);
-
-  public readonly createdUser$ = of({ password: 'asdasd', username: 'asdasd' });
-
-  // constructor(private authStoreService: AuthStoreService) {}
+  constructor(
+    private uiService: UiService,
+    private authStoreService: AuthStoreService,
+    private routerService: RouterService
+  ) {}
 
   protected navigeteToMyAccount() {
-    // this.authStoreService.switchToMyaccount();
+    this.routerService.toMyAccount();
   }
 }

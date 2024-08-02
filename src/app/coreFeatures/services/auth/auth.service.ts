@@ -15,6 +15,8 @@ import {
   ChangePasswordResponse,
   LoginResponse,
   UserDataRespnse,
+  RegisterUser,
+  CreatedUserResponse,
 } from '../../models/user.model';
 import { environment } from '../../../enviroment';
 
@@ -45,18 +47,19 @@ export class AuthService {
       );
   }
 
-  // public userRegistration(registerData: RegisterUser) {
-  //   return this.http
-  //     .post<CreatedUserResponse>(
-  //       environment.apiEndpoints.register,
-  //       registerData
-  //     )
-  //     .pipe(
-  //       catchError((err: HttpErrorResponse) => {
-  //         return throwError(err.error.error.message);
-  //       })
-  //     );
-  // }
+  public userRegistration(registerData: RegisterUser) {
+    return this.http
+      .post<CreatedUserResponse>(
+        environment.apiEndpoints.register,
+        registerData
+      )
+      .pipe(
+        map((createdUserResponse) => createdUserResponse.data),
+        catchError((err: HttpErrorResponse) => {
+          return throwError(err.error.message);
+        })
+      );
+  }
 
   public changePassword(inputData: ChangePassword) {
     console.log(inputData);
@@ -67,9 +70,9 @@ export class AuthService {
       )
       .pipe(
         map(({ data }) => data),
-        catchError((err: HttpErrorResponse) =>
-          throwError(err.error.error.message)
-        )
+        catchError((err: HttpErrorResponse) => {
+          return throwError(err.error.message);
+        })
       );
   }
 
