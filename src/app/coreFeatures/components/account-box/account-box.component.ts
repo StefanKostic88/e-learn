@@ -15,6 +15,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ButtonSize } from '../../../shared/models/button.model';
 import { UiService } from '../../services/uiService/ui.service';
+import { HeaderDetails } from '../../models/user.model';
+import { AuthStoreService } from '../../services/auth/auth-store.service';
+import { UserStoreService } from '../../services/user/user-store.service';
 
 const components = [CustomImgComponent, NavigationComponent, ButtonComponent];
 
@@ -26,13 +29,7 @@ const components = [CustomImgComponent, NavigationComponent, ButtonComponent];
   styleUrl: './account-box.component.scss',
 })
 export class AccountBoxComponent {
-  // @Input() accountBoxData?: AccountData;
-
-  @Input() accountBoxData?: {
-    email: string;
-    username: string;
-    img: string;
-  };
+  @Input() accountBoxData?: HeaderDetails;
   @Input() isAuthorized: boolean | null = false;
 
   public readonly isNavigationIsOpened$ = this.uiService.isNavigationIsOpened;
@@ -42,15 +39,21 @@ export class AccountBoxComponent {
   public readonly closeIcon: IconDefinition = faClose;
   public readonly btnSize: typeof ButtonSize = ButtonSize;
 
-  testImg = '../../../../assets/imgs/profile.jpg';
+  // testImg = '../../../../assets/imgs/profile.jpg';
 
-  constructor(private uiService: UiService) {}
+  constructor(
+    private uiService: UiService,
+    private authStoreService: AuthStoreService,
+    private userStoreService: UserStoreService
+  ) {}
   public closeSidebar(): void {
     this.uiService.closeNavigation();
+    console.log('asdasd');
   }
 
   public logoutUser() {
-    // this.authStoreService.logOut();
-    // this.userService.removeCurrentUser();
+    console.log('asdasd');
+    this.authStoreService.logOut();
+    this.userStoreService.removeCurrentUser();
   }
 }

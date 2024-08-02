@@ -2,7 +2,8 @@ export const environment = {
   apiEndpoints: {
     login: 'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/login',
     register: 'http://localhost:8000/api/register',
-    myAccount: 'http://localhost:8000/api/my-account',
+    myAccount:
+      'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/myAccount',
     logout: 'http://localhost:8000/api/logout',
     allSpecializations: 'http://localhost:8000/api/specialization',
     allTrainers: 'http://localhost:8000/api/trainers',

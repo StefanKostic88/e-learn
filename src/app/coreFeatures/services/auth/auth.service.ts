@@ -4,12 +4,12 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, tap, throwError } from 'rxjs';
+import { catchError, map, throwError } from 'rxjs';
 
 import {
   LoginUser,
-  RegisterUser,
-  CreatedUserResponse,
+  // RegisterUser,
+  // CreatedUserResponse,
   ChangePassword,
   EditInterface,
   ChangePasswordResponse,
@@ -45,18 +45,18 @@ export class AuthService {
       );
   }
 
-  public userRegistration(registerData: RegisterUser) {
-    return this.http
-      .post<CreatedUserResponse>(
-        environment.apiEndpoints.register,
-        registerData
-      )
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          return throwError(err.error.error.message);
-        })
-      );
-  }
+  // public userRegistration(registerData: RegisterUser) {
+  //   return this.http
+  //     .post<CreatedUserResponse>(
+  //       environment.apiEndpoints.register,
+  //       registerData
+  //     )
+  //     .pipe(
+  //       catchError((err: HttpErrorResponse) => {
+  //         return throwError(err.error.error.message);
+  //       })
+  //     );
+  // }
 
   public changePassword(inputData: ChangePassword) {
     console.log(inputData);

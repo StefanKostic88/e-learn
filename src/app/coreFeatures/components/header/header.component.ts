@@ -33,6 +33,8 @@ import { CommonModule } from '@angular/common';
 import { Observable, filter, map, of } from 'rxjs';
 import { UiService } from '../../services/uiService/ui.service';
 import { AuthStoreService } from '../../services/auth/auth-store.service';
+import { UserStoreService } from '../../services/user/user-store.service';
+import { HeaderData } from '../../models/user.model';
 
 const components = [
   NavigationComponent,
@@ -63,14 +65,7 @@ export class HeaderComponent implements OnInit {
   @ViewChild('header') headerEl?: ElementRef;
   @ViewChild(AccountBoxComponent) accountBoxComponent?: AccountBoxComponent;
   // public userHeaderData$?: Observable<UserHeaderData>;
-  public userHeaderData$?: Observable<{
-    accountData: {
-      email: string;
-      username: string;
-      img: string;
-    };
-    isAuthorized: boolean;
-  }>;
+  public userHeaderData$?: Observable<HeaderData>;
   public readonly linksList = headerLinksList;
   public readonly moonIcon: IconDefinition = faMoon;
   public readonly userIcon: IconDefinition = faCircleUser;
@@ -82,21 +77,24 @@ export class HeaderComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private uiService: UiService,
-    private authStoreService: AuthStoreService
+    private authStoreService: AuthStoreService,
+    private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
     this.authStoreService.isAuthorized.subscribe(console.log);
 
-    this.userHeaderData$ = of({
-      accountData: {
-        email: 'testemail',
-        username: 'sadasd',
-        img: '../../../../assets/imgs/profile.jpg',
-      },
-      isAuthorized: false,
-    });
-    this.darkMode$.subscribe(console.log);
+    // this.userHeaderData$ = of({
+    //   accountData: {
+    //     email: 'testemail',
+    //     username: 'sadasd',
+    //     img: '../../../../assets/imgs/profile.jpg',
+    //   },
+    //   isAuthorized: false,
+    // });
+    // this.darkMode$.subscribe(console.log);
+
+    this.userHeaderData$ = this.userStoreService.getUserHeaderData();
 
     this.signInPage$ = this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
@@ -142,12 +140,8 @@ export class HeaderComponent implements OnInit {
     targetElement: HTMLElement
   ) {
     const clickedInside = this.headerEl?.nativeElement?.contains(targetElement);
-
-    // console.log(this.accountBoxComponent);
-    // console.log(this.headerEl);
     if (!clickedInside) {
       this.accountBoxComponent?.closeSidebar();
-      console.log('asdsad');
     }
   }
 }

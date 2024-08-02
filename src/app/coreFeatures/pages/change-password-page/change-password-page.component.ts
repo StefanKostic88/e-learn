@@ -13,6 +13,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ButtonSize } from '../../../shared/models/button.model';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { Observable, of } from 'rxjs';
+import { AuthStoreService } from '../../services/auth/auth-store.service';
 
 const modules = [ReactiveFormsModule, FontAwesomeModule, CommonModule];
 const components = [
@@ -51,7 +52,7 @@ export class ChangePasswordPageComponent implements OnInit {
   // public readonly sucessMessage$: Observable<boolean> =
   //   this.authStoreService.registrationSuccess;
 
-  // constructor(private authStoreService: AuthStoreService) {}
+  constructor(private authStoreService: AuthStoreService) {}
 
   ngOnInit(): void {
     this.passwordChangeForm = new FormGroup({

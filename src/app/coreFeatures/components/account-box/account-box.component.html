@@ -9,14 +9,11 @@
   <div class="sidebar-menu__profile-data">
     <fa-icon [icon]="closeIcon" (click)="closeSidebar()"></fa-icon>
     <ng-container *ngIf="isAuthorized">
-      <!-- <app-custom-img [img]="accountBoxData?.img"></app-custom-img> -->
-      <app-custom-img [img]="testImg"></app-custom-img>
+      <app-custom-img [img]="accountBoxData?.img"></app-custom-img>
 
       <div>
-        <!-- <h3 class="text-small">{{ accountBoxData?.username }}</h3> -->
-        <h3 class="text-small">sk23s</h3>
-        <!-- <p class="text-extra-small">{{ accountBoxData?.email }}</p> -->
-        <p class="text-extra-small">Emaltest</p>
+        <h3 class="text-small">{{ accountBoxData?.username }}</h3>
+        <p class="text-extra-small">{{ accountBoxData?.email }}</p>
       </div>
     </ng-container>
   </div>
@@ -24,13 +21,13 @@
     <ng-content></ng-content
   ></app-navigation>
 
-  <span class="sign-out">
+  <span class="sign-out" *ngIf="isAuthorized">
     <fa-icon [icon]="exitIcon"></fa-icon>
     <app-button
       [content]="'SignOut'"
       [btnSize]="btnSize.SMALL"
       [outlined]="false"
-      (click)="closeSidebar()"
+      (click)="logoutUser()"
     >
       <fa-icon [icon]="exitIcon"></fa-icon
     ></app-button>

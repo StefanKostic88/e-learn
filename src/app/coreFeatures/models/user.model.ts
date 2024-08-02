@@ -72,29 +72,29 @@ export interface TrainerData {
   }[];
 }
 
-export interface UserData {
-  id: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  isActive: boolean;
-  img?: string;
-  adress?: string;
-  dateOfBirth?: string;
-  student: {
-    _id: string;
-    user_id: string;
-    myTrainers: {
-      trainer: TrainerData;
-      firstName: string;
-      lastName: string;
-      id: string;
-    }[];
-  } | null;
-  trainer: TrainerData | null;
-}
+// export interface UserData {
+//   id: string;
+//   username: string;
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   role: string;
+//   isActive: boolean;
+//   img?: string;
+//   adress?: string;
+//   dateOfBirth?: string;
+//   student: {
+//     _id: string;
+//     user_id: string;
+//     myTrainers: {
+//       trainer: TrainerData;
+//       firstName: string;
+//       lastName: string;
+//       id: string;
+//     }[];
+//   } | null;
+//   trainer: TrainerData | null;
+// }
 
 export interface CreatedUserResponse {
   message: string;
@@ -111,6 +111,33 @@ export interface ChangePasswordResponse {
   data: string;
 }
 
+export interface UserData {
+  isActive: string;
+  password: string;
+  specialization?: string;
+  role: string;
+  lastName: string;
+  username: string;
+  address: string;
+  email: string;
+  id: string;
+  firstName: string;
+  img?: string;
+  dateOfBirth?: string;
+}
+
 export interface UserDataRespnse {
   data: UserData;
+}
+
+// HEADER DATA
+export interface HeaderDetails {
+  email: string | null;
+  username: string | null;
+  img: string;
+}
+
+export interface HeaderData {
+  isAuthorized: boolean;
+  accountData: HeaderDetails;
 }

@@ -13,6 +13,8 @@ import { AsyncPipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { Observable, map, of } from 'rxjs';
 import { CustomImgComponent } from '../../ui/custom-img/custom-img.component';
 import { StatusMarkerComponent } from '../../ui/status-marker/status-marker.component';
+import { UserStoreService } from '../../../coreFeatures/services/user/user-store.service';
+import { UserData } from '../../../coreFeatures';
 
 export interface AccountDataOutput {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,18 +49,15 @@ export class MyAccountListComponent {
   @ViewChild(ModalBoxComponent, { static: false })
   modalBoxComponent?: ModalBoxComponent;
 
-  public readonly currentUser$: Observable<{ role: string } | null> = of({
-    role: 'trainer',
-  });
+  // public readonly currentUser$: Observable<{ role: string } | null> = of({
+  //   role: 'trainer',
+  // });
+  public readonly currentUser$: Observable<UserData | null> =
+    this.userStoreService.currentUser;
 
   public readonly userActiveStatus$: Observable<string> = of('Active');
 
-  // public readonly accountDataOutput: Observable<
-  //   AccountDataOutput[] | undefined
-  // > = this.userService.getAccountData();
-
-  // public readonly currentUser$: Observable<UserData | null> =
-  //   this.userService.currentUser;
+  public readonly accountDataOutput = this.userStoreService.getAccountData();
 
   // public readonly userActiveStatus$: Observable<string> =
   //   this.userService.getUserAccountStatus();
@@ -94,7 +93,8 @@ export class MyAccountListComponent {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute // private userService: UserService
+    private route: ActivatedRoute,
+    private userStoreService: UserStoreService
   ) {}
 
   protected navigateTo(route: string): void {

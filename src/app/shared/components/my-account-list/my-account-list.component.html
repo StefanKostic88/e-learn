@@ -18,7 +18,7 @@
       <div
         class="my-account-list__content__profile__details ps-4 flex flex-col gap-2 mb-16 md:mb-12"
       >
-        <div>
+        <!-- <div>
           <span class="font-bold">First Name</span>
           <span>John</span>
         </div>
@@ -41,12 +41,12 @@
         <div>
           <span class="font-bold">Email</span>
           <span>John_12gmail.com</span>
-        </div>
+        </div> -->
 
-        <!-- <div *ngFor="let accData of accountDataOutput | async">
+        <div *ngFor="let accData of accountDataOutput | async">
           <span class="font-bold">{{ getBojectKeys(accData) }}</span>
           <span>{{ getObjectVal(accData) }}</span>
-        </div> -->
+        </div>
       </div>
     </div>
     <app-students-list

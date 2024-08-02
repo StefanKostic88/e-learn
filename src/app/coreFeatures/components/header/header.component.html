@@ -26,6 +26,7 @@
       </div>
     </ng-container>
     <app-account-box
+      *ngIf="userHeaderData"
       [accountBoxData]="userHeaderData.accountData"
       [isAuthorized]="userHeaderData.isAuthorized"
     >
