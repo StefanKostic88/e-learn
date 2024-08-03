@@ -5,13 +5,21 @@ import { MyAccountBaseComponent } from './my-account-base/my-account-base.compon
 import { MyAccountEditComponent } from './my-account-edit/my-account-edit.component';
 import { MyAccountAddTrainerComponent } from './my-account-add-trainer/my-account-add-trainer.component';
 import { CanDeactivateGuard } from '../../guards/canDeactivate.guard';
+import { UserResolverService } from '../../resolvers/user.resolver.service';
+import { EditUserReolverService } from '../../resolvers/edit-user.resolver.service';
 
 export default [
   {
     path: '',
     component: MyAccountPageComponent,
     children: [
-      { path: '', component: MyAccountBaseComponent },
+      {
+        path: '',
+        component: MyAccountBaseComponent,
+        resolve: {
+          user: UserResolverService,
+        },
+      },
       {
         path: 'change-password',
         component: ChangePasswordPageComponent,
@@ -21,6 +29,9 @@ export default [
         path: 'edit',
         component: MyAccountEditComponent,
         canDeactivate: [CanDeactivateGuard],
+        resolve: {
+          user: EditUserReolverService,
+        },
       },
       {
         path: 'add-trainer',

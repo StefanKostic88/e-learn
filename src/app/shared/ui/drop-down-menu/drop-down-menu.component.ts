@@ -26,7 +26,7 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
   @Input() required: boolean = false;
   @Input() type: string = 'specialization';
   @Input() label?: string;
-  @Input() initialValue?: string;
+  @Input() initialValue?: string | null;
   @Input() public name: string = 'specialization';
   @Input() public options?: string[];
 
@@ -43,6 +43,7 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
   protected title?: string;
 
   ngOnInit(): void {
+    console.log(this.initialValue, 'SPASDASD');
     this.title = this.initialValue ? this.initialValue : 'Please Select';
   }
 

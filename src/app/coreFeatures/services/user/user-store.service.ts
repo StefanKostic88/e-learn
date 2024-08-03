@@ -12,6 +12,7 @@ import {
 import { HeaderData, UserData, UserDataRespnse } from '../../models/user.model';
 import { AuthStoreService } from '../auth/auth-store.service';
 import { environment } from '../../../enviroment';
+import { AbstractControl, FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -149,7 +150,8 @@ export class UserStoreService {
   public getCurrentUserInputs() {
     return this.userService.getCurrentUser().pipe(
       map((data) => {
-        return this.selectedProperitesTest(data, [
+        const specialization = data.specialization;
+        const userInputs = this.selectedProperitesTest(data, [
           'firstName',
           'lastName',
           'username',
@@ -157,15 +159,18 @@ export class UserStoreService {
           'address',
           'dateOfBirth',
         ]);
+
+        return { userInputs, specialization };
       }),
-      map((data) =>
-        data?.map((el) => ({
+      map(({ userInputs, specialization }) => {
+        const userInputsFinal = userInputs?.map((el) => ({
           formControlName: el['prop'],
           labelName: this.splitAndSwitchToUpper(el['prop']),
           value: el['value'],
-        }))
-      ),
-      tap((el) => console.log(el))
+        }));
+
+        return { userInputsFinal, specialization };
+      })
     );
   }
   private selectedProperitesTest<
@@ -179,5 +184,13 @@ export class UserStoreService {
       prop: prop,
     }));
     return value;
+  }
+
+  public getUserSpecialization() {
+    return this.userService.getCurrentUser().pipe(
+      tap((el) => console.log(el, 'asdasd')),
+      map((user) => user.specialization),
+      tap((el) => console.log(el, 'asdasd'))
+    );
   }
 }

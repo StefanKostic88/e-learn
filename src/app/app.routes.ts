@@ -37,9 +37,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./coreFeatures/pages/my-account-page/my-account-page-routes'),
     canActivate: [AuthorizedGuard],
-    resolve: {
-      user: UserResolverService,
-    },
+    // resolve: {
+    //   user: UserResolverService,
+    // },
   },
   {
     path: 'sign-in',

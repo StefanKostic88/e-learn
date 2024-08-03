@@ -47,7 +47,7 @@
       </figure>
       <div class="edit-form__top-section__inner-left-section__form-controls">
         <app-input
-          *ngFor="let input of inputsArr | async"
+          *ngFor="let input of inputsArr"
           [formControlName]="input.formControlName"
           [parentForm]="userEditForm"
           [labelName]="input.labelName"
@@ -70,7 +70,7 @@
 
       <app-drop-down-menu
         *ngIf="allSpecializations$ | async as allSpecializations"
-        [initialValue]="'React'"
+        [initialValue]="userSpecialization"
         [name]="'specialization'"
         [formControlName]="'specialization'"
         [options]="allSpecializations"
