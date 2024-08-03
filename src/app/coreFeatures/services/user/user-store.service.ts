@@ -4,6 +4,7 @@ import {
   BehaviorSubject,
   catchError,
   combineLatest,
+  exhaustMap,
   map,
   Observable,
   of,
@@ -13,6 +14,7 @@ import { HeaderData, UserData, UserDataRespnse } from '../../models/user.model';
 import { AuthStoreService } from '../auth/auth-store.service';
 import { environment } from '../../../enviroment';
 import { AbstractControl, FormControl } from '@angular/forms';
+import { UiService } from '../uiService/ui.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +30,8 @@ export class UserStoreService {
 
   constructor(
     private userService: UserService,
-    private authStoreService: AuthStoreService
+    private authStoreService: AuthStoreService,
+    private uiService: UiService
   ) {}
 
   set currentUser(val: null | UserData) {
@@ -148,9 +151,11 @@ export class UserStoreService {
   }
 
   public getCurrentUserInputs() {
+    this.uiService.loadingSpiner = true;
     return this.userService.getCurrentUser().pipe(
       map((data) => {
         const specialization = data.specialization;
+        const role = data.role;
         const userInputs = this.selectedProperitesTest(data, [
           'firstName',
           'lastName',
@@ -160,16 +165,19 @@ export class UserStoreService {
           'dateOfBirth',
         ]);
 
-        return { userInputs, specialization };
+        return { userInputs, specialization, role };
       }),
-      map(({ userInputs, specialization }) => {
+      map(({ userInputs, specialization, role }) => {
         const userInputsFinal = userInputs?.map((el) => ({
           formControlName: el['prop'],
           labelName: this.splitAndSwitchToUpper(el['prop']),
           value: el['value'],
         }));
 
-        return { userInputsFinal, specialization };
+        return { userInputsFinal, specialization, role };
+      }),
+      tap(() => {
+        this.uiService.loadingSpiner = false;
       })
     );
   }

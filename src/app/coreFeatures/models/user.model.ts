@@ -130,6 +130,10 @@ export interface UserDataRespnse {
   data: UserData;
 }
 
+export interface UserEditResponse {
+  message: string;
+}
+
 // HEADER DATA
 export interface HeaderDetails {
   email: string | null;

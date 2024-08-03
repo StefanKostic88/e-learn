@@ -12,7 +12,8 @@ export const environment = {
     addStudentInTrainer: 'http://localhost:8000/api/add-student',
     changePassword:
       'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/change-password',
-    editUser: 'http://localhost:8000/api/edit',
+    editUser:
+      ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/edit',
     trainings: 'http://localhost:8000/api/trainings',
     trainingTypes: 'http://localhost:8000/api/training-type',
     myTrainings: 'http://localhost:8000/api/trainings/my-trainings',

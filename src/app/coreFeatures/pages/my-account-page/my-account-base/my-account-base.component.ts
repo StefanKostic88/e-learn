@@ -24,6 +24,5 @@ export class MyAccountBaseComponent {
 
   public navigateToTrainings(): void {
     this.router.navigate(['trainings'], { relativeTo: this.route });
-    console.log('test');
   }
 }

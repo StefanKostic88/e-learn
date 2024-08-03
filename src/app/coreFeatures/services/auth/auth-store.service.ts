@@ -22,6 +22,7 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { SessionStorageService } from '../session-storage/session-storage.service';
 import { UiService } from '../uiService/ui.service';
+import { RouterService } from '../router/router.service';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +60,8 @@ export class AuthStoreService {
     private authService: AuthService,
     private sessionStorageService: SessionStorageService,
     private uiService: UiService,
-    private router: Router
+    private router: Router,
+    private routerService: RouterService
   ) {}
 
   set isAuthorized(value: boolean) {
@@ -193,8 +195,12 @@ export class AuthStoreService {
   }
 
   public editCurrentUser(inputData: EditInterface) {
-    return this.authService
-      .editUser(inputData)
-      .pipe(tap((d) => console.log(d)));
+    this.uiService.loadingSpiner = true;
+    return this.authService.editUser(inputData).pipe(
+      tap(() => {
+        this.uiService.loadingSpiner = false;
+        this.routerService.toMyAccount();
+      })
+    );
   }
 }

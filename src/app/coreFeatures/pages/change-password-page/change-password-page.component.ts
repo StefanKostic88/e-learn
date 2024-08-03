@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -65,6 +72,11 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    const timer = setTimeout(() => {
+      this.uiService.loadingSpiner = false;
+      clearTimeout(timer);
+    }, 300);
+
     this.passwordChangeForm = new FormGroup({
       currentPassword: new FormControl(''),
       newPassword: new FormControl(''),
@@ -105,13 +117,14 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
   protected onSubmit() {
     const data: ChangePassword = this.passwordChangeForm.value;
 
-    this.subscriptions?.push(
-      this.authStoreService.changeUserPassword(data).subscribe({
-        next: () => {
-          this.passwordChangeForm.reset();
-        },
-      })
-    );
+    const sub = this.authStoreService.changeUserPassword(data).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.passwordChangeForm.reset();
+      },
+    });
+
+    this.subscriptions?.push(sub);
   }
   protected generateInputs() {
     return Object.entries(this.passwordChangeForm.controls).map((el) => {

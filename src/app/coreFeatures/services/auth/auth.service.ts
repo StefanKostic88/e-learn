@@ -17,6 +17,7 @@ import {
   UserDataRespnse,
   RegisterUser,
   CreatedUserResponse,
+  UserEditResponse,
 } from '../../models/user.model';
 import { environment } from '../../../enviroment';
 
@@ -78,12 +79,10 @@ export class AuthService {
 
   public editUser(inputData: EditInterface) {
     return this.http
-      .patch<UserDataRespnse>(environment.apiEndpoints.editUser, inputData)
+      .patch<UserEditResponse>(environment.apiEndpoints.editUser, inputData)
       .pipe(
-        map(({ data }) => data),
-        catchError((err: HttpErrorResponse) =>
-          throwError(err.error.error.message)
-        )
+        map(({ message }) => message),
+        catchError((err: HttpErrorResponse) => throwError(err.error.message))
       );
   }
 }

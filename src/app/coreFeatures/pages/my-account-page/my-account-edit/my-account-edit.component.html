@@ -65,11 +65,13 @@
       </div>
     </div>
 
-    <div class="edit-form__top-section__specialization-container">
+    <div
+      class="edit-form__top-section__specialization-container"
+      *ngIf="role === 'trainer'"
+    >
       <p>Specialization</p>
 
       <app-drop-down-menu
-        *ngIf="allSpecializations$ | async as allSpecializations"
         [initialValue]="userSpecialization"
         [name]="'specialization'"
         [formControlName]="'specialization'"

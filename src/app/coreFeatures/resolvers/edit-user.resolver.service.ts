@@ -1,8 +1,7 @@
 import { Resolve } from '@angular/router';
-import { UserData } from '../models/user.model';
 import { Injectable } from '@angular/core';
 import { UserStoreService } from '../services/user/user-store.service';
-import { finalize, Observable, of, switchMap, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthStoreService } from '../services/auth/auth-store.service';
 import { UiService } from '../services/uiService/ui.service';
 
@@ -25,7 +24,8 @@ export class EditUserReolverService
             value: string | undefined;
           }[]
         | undefined;
-      specialization: string | undefined;
+      specialization?: string;
+      role: string;
     }>
 {
   constructor(
@@ -48,7 +48,8 @@ export class EditUserReolverService
           value: string | undefined;
         }[]
       | undefined;
-    specialization: string | undefined;
+    specialization?: string;
+    role: string;
   }> {
     return this.userStoreService.getCurrentUserInputs();
   }

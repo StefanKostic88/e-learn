@@ -3,7 +3,7 @@ import {
   ButtonSize,
   ButtonState,
 } from '../../../../shared/models/button.model';
-import { combineLatest, map, Observable, of, tap } from 'rxjs';
+import { combineLatest, map, Observable, of, Subscription, tap } from 'rxjs';
 import {
   AbstractControl,
   FormControl,
@@ -22,6 +22,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { specializations } from '../../../constants/dictionary';
 import { UserStoreService } from '../../../services/user/user-store.service';
+import { AuthStoreService } from '../../../services/auth/auth-store.service';
+import { UiService } from '../../../services/uiService/ui.service';
 
 const components = [
   CustomImgComponent,
@@ -48,6 +50,8 @@ export class MyAccountEditComponent implements OnInit {
   public readonly btnSize: typeof ButtonSize = ButtonSize;
   public changesAreNotValid = true;
 
+  public subscriptions?: Subscription[];
+
   protected inputsArr?: {
     formControlName:
       | 'firstName'
@@ -60,20 +64,19 @@ export class MyAccountEditComponent implements OnInit {
     value: string | undefined;
   }[];
 
-  // currentUser$: Observable<UserData | null> = this.userService.currentUser;
   snapshot?: { [props: string]: string };
   userActiveStatus$?: Observable<boolean>;
-  // specialization$?: Observable<{
-  //   labelName: string | undefined;
-  //   value: string | undefined;
-  // }>;
-  public readonly allSpecializations$ = of(specializations);
+
+  public readonly allSpecializations = specializations;
   public userSpecialization?: string;
+  public role?: string;
 
   constructor(
-    private router: Router, // private userService: UserService, // private specializationService: SpecializationService, // private authStoreService: AuthStoreService
+    private router: Router,
     private userStoreService: UserStoreService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authStoreService: AuthStoreService,
+    private uiService: UiService
   ) {}
 
   ngOnInit(): void {
@@ -87,11 +90,12 @@ export class MyAccountEditComponent implements OnInit {
       specialization: new FormControl(''),
     });
 
-    this.route.data
+    const data = this.route.data
       .pipe(
         tap(({ user }) => {
           this.userSpecialization = user.specialization;
           this.inputsArr = user.userInputsFinal;
+          this.role = user.role;
           const formControls: { [prop: string]: AbstractControl } = {};
           const inputValues = this.inputsArr?.map((el) => ({
             formControlName: el.formControlName,
@@ -112,98 +116,39 @@ export class MyAccountEditComponent implements OnInit {
           this.snapshot = this.userEditForm.value;
         })
       )
-      .subscribe(console.log);
-    // this.userSpecialization$.subscribe(console.log);
-    // this.specializationService.getAllSpecialization().subscribe();
+      .subscribe();
 
-    // this.inputsArr$ = this.userStoreService.getCurrentUserInputs();
-    // this.userSpecialization$ = this.userStoreService.getUserSpecialization();
+    this.subscriptions?.push(data);
 
-    // combineLatest([this.inputsArr$, this.userSpecialization$])
-    //   .pipe(
-    //     map(([inputData, specialization]) => {
-    //       console.log(inputData);
-    //       const formControls: { [prop: string]: AbstractControl } = {};
-    //       const inputValues = inputData?.map((el) => ({
-    //         formControlName: el.formControlName,
-    //         value: el.value,
-    //       }));
+    const changeSub = this.userEditForm.valueChanges.subscribe({
+      next: (data) => {
+        let changed = false;
+        for (const key in data) {
+          if (this.snapshot && data[key] !== this.snapshot[key]) {
+            changed = true;
+            break;
+          }
+        }
+        if (changed) {
+          this.changesAreNotValid = false;
+          console.log('Changes detected');
+        } else {
+          console.log('Changes NOT detected');
+          this.changesAreNotValid = true;
+        }
+      },
+    });
 
-    //       inputValues?.forEach((el) => {
-    //         formControls[el.formControlName] = new FormControl(el.value);
-    //       });
-    //       if (specialization) {
-    //         console.log(specialization, 'asdasd');
-    //         formControls['specialization'] = new FormControl(specialization);
-    //       }
-    //       this.userEditForm = new FormGroup(formControls);
-    //       this.snapshot = this.userEditForm.value;
-    //     })
-    //   )
-    //   .subscribe();
-
-    // this.inputsArr
-    //   .pipe(
-    //     map((inputData) => {
-    //       const formControls: { [prop: string]: AbstractControl } = {};
-    // const inputValues = inputData?.map((el) => ({
-    //   formControlName: el.formControlName,
-    //   value: el.value,
-    // }));
-
-    //       inputValues?.forEach((el) => {
-    //         formControls[el.formControlName] = new FormControl(el.value);
-    //       });
-
-    //       this.userEditForm = new FormGroup(formControls);
-    //     }),
-    //     tap((el) => console.log(el))
-    //   )
-    //   .subscribe(console.log);
-
-    // this.userActiveStatus$ = this.userService.getUserActiveStatus();
-    // this.specialization$ = this.userService.getSpecialization();
-    // this.specialization$ = of('Angular');
-
-    // combineLatest([
-    //   this.userStoreService.getCurrentUserInputs(),
-    //   this.specialization$,
-    // ]).subscribe(([data]) => {
-    //   const formControls: { [prop: string]: AbstractControl } = {};
-    //   const inputValues = data?.map((el) => ({
-    //     formControlName: el.formControlName,
-    //     value: el.value,
-    //   }));
-    //   inputValues?.forEach((el) => {
-    //     formControls[el.formControlName] = new FormControl(el.value);
-    //   });
-    //   if (specialization) {
-    //     console.log(specialization);
-    //     formControls['specialization'] = new FormControl(specialization.value);
-    //   }
-    //   this.userEditForm = new FormGroup(formControls);
-    //   this.snapshot = this.userEditForm.value;
-    //   this.userEditForm?.valueChanges.subscribe((data) => {
-    //     let changed = false;
-    //     for (const key in data) {
-    //       if (this.snapshot && data[key] !== this.snapshot[key]) {
-    //         changed = true;
-    //         break;
-    //       }
-    //     }
-    //     if (changed) {
-    //       this.changesAreNotValid = false;
-    //       console.log('Changes detected');
-    //     } else {
-    //       this.changesAreNotValid = true;
-    //     }
-    //   });
-    // });
-    // console.log(this.userEditForm);
+    this.subscriptions?.push(changeSub);
   }
 
   public onSubmit() {
     const data = this.userEditForm.value;
+    if (!this.changesAreNotValid) {
+      this.authStoreService.editCurrentUser(data).subscribe();
+      this.changesAreNotValid = true;
+    }
+
     console.log(data);
     // this.authStoreService.editCurrentUser(data).subscribe(() => {
     //   this.changesAreNotValid = true;
