@@ -23,17 +23,22 @@
         [formControlName]="'startDate'"
       ></app-date-picker>
       <app-drop-down-menu
-        *ngIf="allTrainingTypes$ | async as allTrainingTypes"
         [label]="'Type'"
         [name]="'trainingType'"
         formControlName="trainingType"
         [options]="allTrainingTypes"
-        [type]="'training-type'"
+        [type]="'specialization'"
         [required]="true"
+        [initialValue]="allTrainingTypes[0]"
       ></app-drop-down-menu>
 
       <label for="description">Description</label>
-      <textarea rows="3" name="description" id="description"></textarea>
+      <textarea
+        rows="3"
+        name="description"
+        id="description"
+        formControlName="description"
+      ></textarea>
     </div>
     <div class="add-training__training-trainer">
       <app-drop-down-menu
@@ -44,11 +49,12 @@
         [options]="allTrainers"
         [type]="'trainer'"
         [required]="true"
+        [initialValue]="allTrainers[0].trainerName"
       ></app-drop-down-menu>
     </div>
   </div>
   <div class="add-training__controls">
     <app-button [content]="'Cancel'" [outlined]="false"></app-button>
-    <app-button [content]="'Add'"></app-button>
+    <app-button [content]="'Add'" [disabled]="!trainingForm.valid"></app-button>
   </div>
 </form>

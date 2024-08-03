@@ -145,3 +145,9 @@ export interface HeaderData {
   isAuthorized: boolean;
   accountData: HeaderDetails;
 }
+
+export interface TrainerOption {
+  trainerId: string;
+  trainerName: string;
+  specialization: string;
+}
