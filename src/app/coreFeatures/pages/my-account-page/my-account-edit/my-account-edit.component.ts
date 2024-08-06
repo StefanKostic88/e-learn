@@ -3,7 +3,7 @@ import {
   ButtonSize,
   ButtonState,
 } from '../../../../shared/models/button.model';
-import { combineLatest, map, Observable, of, Subscription, tap } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import {
   AbstractControl,
   FormControl,
@@ -99,7 +99,7 @@ export class MyAccountEditComponent implements OnInit {
           const formControls: { [prop: string]: AbstractControl } = {};
           const inputValues = this.inputsArr?.map((el) => ({
             formControlName: el.formControlName,
-            value: el.value,
+            value: el.value ? el.value : '',
           }));
 
           inputValues?.forEach((el) => {
@@ -145,15 +145,12 @@ export class MyAccountEditComponent implements OnInit {
   public onSubmit() {
     const data = this.userEditForm.value;
     if (!this.changesAreNotValid) {
-      this.authStoreService.editCurrentUser(data).subscribe();
-      this.changesAreNotValid = true;
+      this.authStoreService.editCurrentUser(data).subscribe({
+        next: () => {
+          this.changesAreNotValid = true;
+        },
+      });
     }
-
-    console.log(data);
-    // this.authStoreService.editCurrentUser(data).subscribe(() => {
-    //   this.changesAreNotValid = true;
-    //   this.navigateBack();
-    // });
   }
 
   canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {

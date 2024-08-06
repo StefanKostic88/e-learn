@@ -63,7 +63,6 @@ export class AuthService {
   }
 
   public changePassword(inputData: ChangePassword) {
-    console.log(inputData);
     return this.http
       .patch<ChangePasswordResponse>(
         environment.apiEndpoints.changePassword,

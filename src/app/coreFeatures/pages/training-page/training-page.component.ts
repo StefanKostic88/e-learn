@@ -10,6 +10,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { UserStoreService } from '../../services/user/user-store.service';
 
 const components = [
   DatePickerComponent,
@@ -33,6 +34,7 @@ export class TrainingPageComponent implements OnInit {
 
   trainingForm!: FormGroup;
 
+  role$?: Observable<string | undefined>;
   // public currentUser$ = this.userService.currentUser;
   // myTrainings$?: Observable<MyTrainingOutpup[]>;
   myTrainings$?: Observable<[]>;
@@ -42,7 +44,8 @@ export class TrainingPageComponent implements OnInit {
   constructor(
     // private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute // private trainingService: TrainingService
+    private route: ActivatedRoute, // private trainingService: TrainingService,
+    private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +57,7 @@ export class TrainingPageComponent implements OnInit {
     // this.myTrainings$ = this.trainingService.getMyTrainings();
 
     // const data = this.trainingService.getMyTrainingsForTrainer();
+    this.role$ = this.userStoreService.getCurrentUserRole();
   }
 
   public navigateToAddTrainer() {

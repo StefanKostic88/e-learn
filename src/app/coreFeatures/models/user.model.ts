@@ -31,8 +31,8 @@ export interface TrainerInterface {
 
 export interface TrainerRefined {
   name: string;
-  user_id: string;
-  specialization: string;
+  userId: string;
+  specialization?: string | undefined;
 }
 
 export interface StudentRefined {
@@ -124,10 +124,16 @@ export interface UserData {
   firstName: string;
   img?: string;
   dateOfBirth?: string;
+  myUsers?: string[];
 }
 
 export interface UserDataRespnse {
   data: UserData;
+}
+
+export interface MyUsersResponse {
+  data: UserData[];
+  message: string;
 }
 
 export interface UserEditResponse {
@@ -150,4 +156,10 @@ export interface TrainerOption {
   trainerId: string;
   trainerName: string;
   specialization: string;
+}
+
+export interface myStudent {
+  name: string;
+  isActive: boolean;
+  userId: string;
 }

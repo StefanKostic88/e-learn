@@ -1,26 +1,27 @@
-import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
-import { TrainerRefined } from '../../../coreFeatures';
+import { myStudent, TrainerRefined } from '../../../coreFeatures';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [ReactiveFormsModule, TableModule, NgIf, NgFor, DatePipe],
+  imports: [
+    ReactiveFormsModule,
+    TableModule,
+    NgIf,
+    NgFor,
+    DatePipe,
+    TitleCasePipe,
+  ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
 export class TableComponent implements OnInit {
-  @Input() tableHeaders?: string[] | undefined;
-  @Input() tableData?:
-    | TrainerRefined[]
-    | {
-        name: string;
-        isActive: boolean;
-        user_id: string;
-      }[];
+  @Input() tableHeaders?: string[] | undefined | null;
+  @Input() tableData?: TrainerRefined[] | myStudent[] | null;
 
   // @Input() tableData?:
   // | TrainerRefined[]

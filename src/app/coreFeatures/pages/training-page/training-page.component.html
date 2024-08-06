@@ -1,6 +1,7 @@
 <div class="training-page">
   <form class="traning-form" [formGroup]="trainingForm">
     <app-button
+      *ngIf="(role$ | async) === 'student'"
       [content]="'Add training'"
       [btnSize]="btnSize.MEDIUM"
       [btnType]="btnType.SECONDARY"

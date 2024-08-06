@@ -115,16 +115,12 @@ export class AuthStoreService {
         }
       }),
       catchError((err) => {
-        // this.errorMessage = err;
         this.uiService.errorMessage = err;
-        // this.loadingSpiner = false;
         this.uiService.loadingSpiner = false;
         return throwError(err);
       }),
       tap(() => {
-        // this.loadingSpiner = false;
         this.uiService.loadingSpiner = false;
-        // this.router.navigate(['/']);
       })
     );
   }
@@ -200,6 +196,10 @@ export class AuthStoreService {
       tap(() => {
         this.uiService.loadingSpiner = false;
         this.routerService.toMyAccount();
+      }),
+      catchError((err) => {
+        this.uiService.loadingSpiner = false;
+        return throwError(err);
       })
     );
   }

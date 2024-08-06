@@ -11,11 +11,23 @@
 
 .table-container {
   display: flex;
-  gap: 162px;
+  gap: 16.2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 8rem;
+  }
 }
 
 :host {
   & app-button {
     align-self: baseline;
   }
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  min-width: 12rem;
+  padding-top: 5rem;
 }

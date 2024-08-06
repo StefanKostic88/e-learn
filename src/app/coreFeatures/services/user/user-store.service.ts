@@ -4,16 +4,15 @@ import {
   BehaviorSubject,
   catchError,
   combineLatest,
-  exhaustMap,
   map,
   Observable,
   of,
   tap,
+  throwError,
 } from 'rxjs';
-import { HeaderData, UserData, UserDataRespnse } from '../../models/user.model';
+import { HeaderData, UserData, myStudent } from '../../models/user.model';
 import { AuthStoreService } from '../auth/auth-store.service';
-import { environment } from '../../../enviroment';
-import { AbstractControl, FormControl } from '@angular/forms';
+
 import { UiService } from '../uiService/ui.service';
 
 @Injectable({
@@ -92,10 +91,16 @@ export class UserStoreService {
           ],
           currentUser
         );
-      })
+      }),
+      tap((el) => console.log(el))
     );
   }
 
+  public getCurrentUserRole() {
+    return this.currentUser$.pipe(map((user) => user?.role));
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private selectedProperites<T extends Record<string, any>, K extends keyof T>(
     obj: T | null,
     props: K[],
@@ -199,6 +204,54 @@ export class UserStoreService {
       tap((el) => console.log(el, 'asdasd')),
       map((user) => user.specialization),
       tap((el) => console.log(el, 'asdasd'))
+    );
+  }
+
+  public getMyUsers(): Observable<myStudent[]> {
+    // this.uiService.tableLoading = true;
+    return this.userService.getMyUsers().pipe(
+      map((users) =>
+        users.map((user) => ({
+          isActive: Boolean(user.isActive),
+          userId: user.id,
+          name: user.firstName,
+        }))
+      ),
+      catchError((err) => {
+        // this.uiService.tableLoading = false;
+        return throwError(err);
+      })
+    );
+  }
+
+  public getMyTrainers() {
+    return this.userService.getMyUsers().pipe(
+      map((users) =>
+        users.map((user) => ({
+          specialization: user.specialization,
+          userId: user.id,
+          name: `${user.firstName} ${user.lastName}`,
+        }))
+      ),
+      catchError((err) => {
+        // this.uiService.tableLoading = false;
+        return throwError(err);
+      })
+    );
+  }
+
+  public getAllTrainers() {
+    return this.userService.getAllTrainers().pipe(
+      catchError((err) => {
+        return throwError(err);
+      })
+    );
+  }
+  public addMyUsers(myUsers: string[]) {
+    return this.userService.addMyUsers(myUsers).pipe(
+      catchError((err) => {
+        return throwError(err);
+      })
     );
   }
 }

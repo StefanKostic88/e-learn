@@ -40,6 +40,9 @@ export default [
       {
         path: 'trainings',
         loadChildren: () => import('../training-page/training-page-routes'),
+        resolve: {
+          user: UserResolverService,
+        },
       },
     ],
   },

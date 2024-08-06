@@ -82,7 +82,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authStoreService.isAuthorized.subscribe(console.log);
+    // this.authStoreService.isAuthorized.subscribe(console.log);
 
     // this.userHeaderData$ = of({
     //   accountData: {

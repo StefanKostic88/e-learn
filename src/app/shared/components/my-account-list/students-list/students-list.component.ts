@@ -1,33 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TableComponent } from '../../table/table.component';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { myStudent, UiService } from '../../../../coreFeatures';
+import { UserStoreService } from '../../../../coreFeatures/services/user/user-store.service';
+import { LoaderComponent } from '../../../ui/loader/loader.component';
 
 @Component({
   selector: 'app-students-list',
   standalone: true,
-  imports: [TableComponent, AsyncPipe, NgIf],
+  imports: [TableComponent, AsyncPipe, NgIf, LoaderComponent],
   templateUrl: './students-list.component.html',
   styleUrl: './students-list.component.scss',
 })
 export class StudentsListComponent implements OnInit {
   tableHeading = ['NAME', 'STATUS'];
-  tableData$?: Observable<
-    | {
-        name: string;
-        isActive: boolean;
-        user_id: string;
-      }[]
-    | undefined
-  >;
+  tableData$?: Observable<myStudent[] | undefined>;
+  // tableIsLoading$ = this.uiService.tableLoading;
 
-  // constructor(private trainerService: TrainerService) {}
+  constructor(
+    private userStoreService: UserStoreService,
+    private uiService: UiService
+  ) {}
 
   ngOnInit(): void {
-    console.log('asdasd');
-    // this.tableData$ = this.trainerService.getMyStudents();
-    this.tableData$ = of([
-      { name: 'Stefa', isActive: true, user_id: 'asdasd' },
-    ]);
+    this.tableData$ = this.userStoreService.getMyUsers();
   }
 }

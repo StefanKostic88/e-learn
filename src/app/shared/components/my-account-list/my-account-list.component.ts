@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -10,12 +10,13 @@ import { StudentsListComponent } from './students-list/students-list.component';
 import { MyTrainersComponent } from './my-trainers/my-trainers.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AsyncPipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
-import { Observable, map, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CustomImgComponent } from '../../ui/custom-img/custom-img.component';
 import { StatusMarkerComponent } from '../../ui/status-marker/status-marker.component';
 import { UserStoreService } from '../../../coreFeatures/services/user/user-store.service';
-import { UiService, UserData } from '../../../coreFeatures';
+import { myStudent, UiService, UserData } from '../../../coreFeatures';
 import { RouterService } from '../../../coreFeatures/services/router/router.service';
+import { LoaderComponent } from '../../ui/loader/loader.component';
 
 export interface AccountDataOutput {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,6 +31,7 @@ const components = [
   ModalBoxComponent,
   CustomImgComponent,
   StatusMarkerComponent,
+  LoaderComponent,
 ];
 
 @Component({
@@ -46,7 +48,7 @@ const components = [
   templateUrl: './my-account-list.component.html',
   styleUrl: './my-account-list.component.scss',
 })
-export class MyAccountListComponent {
+export class MyAccountListComponent implements OnInit {
   @ViewChild(ModalBoxComponent, { static: false })
   modalBoxComponent?: ModalBoxComponent;
 
@@ -59,6 +61,7 @@ export class MyAccountListComponent {
   public readonly userActiveStatus$: Observable<string> = of('Active');
 
   public readonly accountDataOutput = this.userStoreService.getAccountData();
+  public readonly role$ = this.userStoreService.getCurrentUserRole();
 
   // public readonly userActiveStatus$: Observable<string> =
   //   this.userService.getUserAccountStatus();
@@ -69,13 +72,12 @@ export class MyAccountListComponent {
 
   public readonly img$ = of('../../../assets/imgs/profile.jpg').pipe();
 
-  public readonly role$ = this.currentUser$.pipe(
-    map((currentUser) => currentUser?.role)
-  );
-
   public icon: IconDefinition = faCheck;
   public readonly btnType: typeof ButtonState = ButtonState;
   public readonly btnSize: typeof ButtonSize = ButtonSize;
+
+  public tableData$?: Observable<myStudent[]>;
+  // public tableLoading$?: Observable<boolean> = this.uiService.tableLoading;
 
   public modalMessageChunks = [
     {
@@ -99,6 +101,10 @@ export class MyAccountListComponent {
     private uiService: UiService,
     private routerService: RouterService
   ) {}
+
+  ngOnInit(): void {
+    this.tableData$ = this.userStoreService.getMyUsers();
+  }
 
   protected navigateTo(route: string): void {
     this.uiService.loadingSpiner = true;

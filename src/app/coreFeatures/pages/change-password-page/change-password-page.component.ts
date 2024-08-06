@@ -1,12 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -19,9 +12,9 @@ import {
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ButtonSize } from '../../../shared/models/button.model';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AuthStoreService } from '../../services/auth/auth-store.service';
-import { ActivatedRoute } from '@angular/router';
+
 import { ChangePassword } from '../../models/user.model';
 import { UiService } from '../../services/uiService/ui.service';
 import { RouterService } from '../../services/router/router.service';
@@ -118,9 +111,12 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
     const data: ChangePassword = this.passwordChangeForm.value;
 
     const sub = this.authStoreService.changeUserPassword(data).subscribe({
-      next: (data) => {
-        console.log(data);
+      next: () => {
         this.passwordChangeForm.reset();
+        this.changesAreNotValid = true;
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
 
@@ -145,6 +141,7 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
   }
 
   public navigateToMyAccount() {
+    this.uiService.resetErrorAndSucessState();
     this.routerService.toMyAccount();
   }
 

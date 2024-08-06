@@ -15,9 +15,9 @@
   <ng-container *ngIf="tableType === 'userList'">
     <ng-template pTemplate="body" let-data let-i="rowIndex">
       <tr class="custom-table-row">
-        <td class="font-bold">{{ data?.name }}</td>
+        <td class="font-bold">{{ data?.name | titlecase }}</td>
         <td *ngIf="role === 'student'">
-          {{ data?.specialization }}
+          {{ data?.specialization | titlecase }}
         </td>
         <td *ngIf="role === 'trainer'">
           {{ data?.isActive ? "Active" : "Not Active" }}

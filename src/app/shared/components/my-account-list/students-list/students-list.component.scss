@@ -13,3 +13,10 @@
     @include text-properties(2.4rem, 3.2rem, 700);
   }
 }
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  min-width: 12rem;
+  padding-top: 5rem;
+}
