@@ -214,7 +214,7 @@ export class UserStoreService {
         users.map((user) => ({
           isActive: Boolean(user.isActive),
           userId: user.id,
-          name: user.firstName,
+          name: `${user.firstName} ${user.lastName}`,
         }))
       ),
       catchError((err) => {

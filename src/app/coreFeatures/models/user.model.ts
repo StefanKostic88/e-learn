@@ -155,11 +155,24 @@ export interface HeaderData {
 export interface TrainerOption {
   trainerId: string;
   trainerName: string;
-  specialization: string;
+  specialization?: string;
 }
 
 export interface myStudent {
   name: string;
   isActive: boolean;
   userId: string;
+}
+
+export interface TrainingCreationAttribute {
+  trainer_id: string;
+  student_id: string;
+  specialization: string;
+  trainingName: string;
+  trainingType: string;
+  startDate: Date;
+  duration: string;
+  trainerName: string;
+  studentName: string;
+  description?: string;
 }

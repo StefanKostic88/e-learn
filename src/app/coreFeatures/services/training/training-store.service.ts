@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { TrainingService } from './training.service';
 import { map, Observable } from 'rxjs';
-import { TrainerOption } from '../../models/user.model';
+import {
+  TrainerOption,
+  TrainingCreationAttribute,
+} from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,5 +23,9 @@ export class TrainingStoreService {
         }))
       )
     );
+  }
+
+  public createTraining(data: TrainingCreationAttribute) {
+    return this.trainingService.createTraining(data);
   }
 }
