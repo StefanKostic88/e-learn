@@ -33,10 +33,10 @@ export default [
           user: EditUserReolverService,
         },
       },
-      // {
-      //   path: 'add-trainer',
-      //   component: MyAccountAddTrainerComponent,
-      // },
+      {
+        path: 'add-trainer',
+        component: MyAccountAddTrainerComponent,
+      },
       {
         path: 'trainings',
         loadChildren: () => import('../training-page/training-page-routes'),

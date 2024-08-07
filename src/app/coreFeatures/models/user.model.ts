@@ -171,8 +171,23 @@ export interface TrainingCreationAttribute {
   trainingName: string;
   trainingType: string;
   startDate: Date;
+  endDate: Date;
   duration: string;
   trainerName: string;
   studentName: string;
   description?: string;
+}
+
+export interface MyTrainingsResponse {
+  data: TrainingCreationAttribute[];
+  message: string;
+}
+
+export interface MyTrainingTableData {
+  startDate: Date;
+  trainingName: string;
+  trainingType: string;
+  trainer: string;
+  duration: string;
+  student: string;
 }

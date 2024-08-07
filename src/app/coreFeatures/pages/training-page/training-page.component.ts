@@ -11,6 +11,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { UserStoreService } from '../../services/user/user-store.service';
+import { TrainingStoreService } from '../../services/training/training-store.service';
+import { MyTrainingTableData } from '../../models/user.model';
 
 const components = [
   DatePickerComponent,
@@ -29,39 +31,59 @@ const components = [
 export class TrainingPageComponent implements OnInit {
   public readonly btnSize: typeof ButtonSize = ButtonSize;
   public readonly btnType: typeof ButtonState = ButtonState;
-  datePickerValueOne = new Date();
-  datePickerValueTwo = new Date();
 
   trainingForm!: FormGroup;
 
-  role$?: Observable<string | undefined>;
+  role$: Observable<string | undefined> =
+    this.userStoreService.getCurrentUserRole();
   // public currentUser$ = this.userService.currentUser;
   // myTrainings$?: Observable<MyTrainingOutpup[]>;
-  myTrainings$?: Observable<[]>;
+  myTrainings$: Observable<MyTrainingTableData[]> =
+    this.trainingStoreService.getMyTrainings();
 
   tableHeaders = ['DATE', 'TRAINING NAME', 'TYPE', 'TRAINER NAME', 'DURATION'];
+  teableHeadersTrainer = [
+    'DATE',
+    'TRAINING NAME',
+    'TYPE',
+    'STUDENT NAME',
+    'DURATION',
+  ];
 
   constructor(
     // private userService: UserService,
     private router: Router,
     private route: ActivatedRoute, // private trainingService: TrainingService,
-    private userStoreService: UserStoreService
+    private userStoreService: UserStoreService,
+    private trainingStoreService: TrainingStoreService
   ) {}
 
   ngOnInit(): void {
+    const currentDate = new Date();
+    const nextTenDays = new Date();
+    nextTenDays.setDate(currentDate.getDate() + 10);
+
     this.trainingForm = new FormGroup({
       searchStudent: new FormControl(''),
+      fromDate: new FormControl(currentDate),
+      toDate: new FormControl(nextTenDays),
       searchSpecialization: new FormControl(''),
     });
     // this.currentUser$.subscribe(console.log);
     // this.myTrainings$ = this.trainingService.getMyTrainings();
 
     // const data = this.trainingService.getMyTrainingsForTrainer();
-    this.role$ = this.userStoreService.getCurrentUserRole();
+    // this.role$ = this.userStoreService.getCurrentUserRole();
+
+    console.log();
   }
 
   public navigateToAddTrainer() {
     // this.router.navigate(['add-training'], { relativeTo: this.route.parent });
     this.router.navigate(['add-training'], { relativeTo: this.route });
+  }
+
+  public onSearch() {
+    console.log(this.trainingForm.value);
   }
 }

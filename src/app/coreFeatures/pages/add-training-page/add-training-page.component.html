@@ -8,7 +8,6 @@
         [labelName]="'Training Name'"
         [inputName]="'trainingName'"
         [placeholder]="'Name'"
-        [required]="true"
       ></app-input>
       <app-input
         [formControlName]="'duration'"
@@ -16,10 +15,9 @@
         [labelName]="'Duration'"
         [inputName]="'duration'"
         [placeholder]="'Duration'"
-        [required]="true"
       ></app-input>
       <app-date-picker
-        [label]="'Training Start Date'"
+        [label]="datePickerLabel"
         [formControlName]="'startDate'"
       ></app-date-picker>
       <app-drop-down-menu
@@ -28,7 +26,6 @@
         formControlName="trainingType"
         [options]="allTrainingTypes"
         [type]="'specialization'"
-        [required]="true"
         [initialValue]="allTrainingTypes[0]"
       ></app-drop-down-menu>
 

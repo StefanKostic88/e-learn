@@ -1,7 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, throwError } from 'rxjs';
-import { TrainingCreationAttribute } from '../../models/user.model';
+import {
+  MyTrainingsResponse,
+  MyUsersResponse,
+  TrainingCreationAttribute,
+} from '../../models/user.model';
 
 interface Trainer {
   isActive: string;
@@ -50,16 +54,23 @@ export class TrainingService {
       )
       .pipe(
         catchError((errResponse: HttpErrorResponse) => {
-          return throwError(errResponse.message);
+          console.log(errResponse);
+          return throwError(errResponse.error.message);
         })
       );
   }
 
-  // public getMyTrainings() {
-  //   return this.http.get('').pipe(
-  //     catchError((errResponse: HttpErrorResponse) => {
-  //       return throwError(errResponse.message);
-  //     })
-  //   );
-  // }
+  public getMyTrainings() {
+    return this.http
+      .get<MyTrainingsResponse>(
+        ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/my-trainings'
+      )
+      .pipe(
+        map(({ data }) => data),
+        catchError((errResponse: HttpErrorResponse) => {
+          console.log(errResponse);
+          return throwError(errResponse.message);
+        })
+      );
+  }
 }

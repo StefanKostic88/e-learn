@@ -5,7 +5,12 @@ import {
   DropDownMenuComponent,
   InputComponent,
 } from '../../../shared';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { map, Observable, of } from 'rxjs';
 import { specializations, trainingType } from '../../constants/dictionary';
@@ -15,6 +20,7 @@ import {
   TrainingCreationAttribute,
 } from '../../models/user.model';
 import { UserStoreService } from '../../services/user/user-store.service';
+import { checkNumberValidator } from '../../../shared/validators/check-number-validator/checkNumberDirective';
 
 const components = [
   InputComponent,
@@ -39,6 +45,7 @@ export class AddTrainingPageComponent implements OnInit {
   public currentUserId?: string;
 
   public allTrainingTypes: string[] = trainingType;
+  datePickerLabel = 'Training Start Date';
 
   constructor(
     private trainingStoreService: TrainingStoreService,
@@ -72,9 +79,13 @@ export class AddTrainingPageComponent implements OnInit {
 
         // this.allTrainers$ = of(data);
         this.trainingForm = new FormGroup({
-          trainingName: new FormControl(''),
+          trainingName: new FormControl('', [Validators.required]),
           startDate: new FormControl(new Date()),
-          duration: new FormControl(''),
+          duration: new FormControl(1, [
+            Validators.required,
+            Validators.min(1),
+            checkNumberValidator(),
+          ]),
           trainingType: new FormControl(this.allTrainingTypes[0]),
           trainer: new FormControl({
             specialization: data[0].specialization,
@@ -117,6 +128,10 @@ export class AddTrainingPageComponent implements OnInit {
     // }
 
     const data = this.trainingForm.value;
+    const startDate = new Date(data.startDate);
+    const duration = Number(data.duration);
+    const endDate = new Date();
+    endDate.setDate(startDate.getDate() + duration);
 
     const finalData: TrainingCreationAttribute = {
       trainer_id: data.trainer.trainerId,
@@ -125,12 +140,19 @@ export class AddTrainingPageComponent implements OnInit {
       trainingName: data.trainingName,
       trainingType: data.trainingType,
       startDate: data.startDate,
-      duration: data.duration,
+      endDate: endDate,
+      duration: data.duration + ' d',
       trainerName: data.trainer.trainerName,
       studentName: this.currentUserFullName as string,
       description: data.description,
     };
 
-    this.trainingStoreService.createTraining(finalData).subscribe(console.log);
+    console.log(finalData);
+
+    this.trainingStoreService.createTraining(finalData).subscribe({
+      error: (err) => {
+        this.datePickerLabel = err;
+      },
+    });
   }
 }

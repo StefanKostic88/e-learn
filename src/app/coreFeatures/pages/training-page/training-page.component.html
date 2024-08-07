@@ -7,15 +7,17 @@
       [btnType]="btnType.SECONDARY"
       (click)="navigateToAddTrainer()"
     ></app-button>
+    <h2>Trainings</h2>
     <div class="traning-form__controles">
       <app-input
         [formControlName]="'searchStudent'"
         [parentForm]="trainingForm"
-        [labelName]="'Students'"
+        [labelName]="'Student Name'"
         [inputName]="'searchStudent'"
         [placeholder]="'Name'"
       ></app-input>
       <app-input
+        *ngIf="(role$ | async) === 'student'"
         [formControlName]="'searchSpecialization'"
         [parentForm]="trainingForm"
         [labelName]="'Specialization'"
@@ -23,20 +25,42 @@
         [placeholder]="'Specialization'"
       ></app-input>
       <div class="traning-form__date-picker-container">
-        <app-date-picker [initialValue]="datePickerValueOne"></app-date-picker>
-        <app-date-picker [initialValue]="datePickerValueTwo"></app-date-picker>
+        <app-date-picker
+          [label]="'From'"
+          [formControlName]="'fromDate'"
+        ></app-date-picker>
+        <app-date-picker
+          [label]="'To'"
+          [formControlName]="'toDate'"
+          [initialValue]="trainingForm.get('toDate')?.value"
+        ></app-date-picker>
       </div>
     </div>
-    <app-button [content]="'Search'" [btnSize]="btnSize.MEDIUM"></app-button>
+    <app-button
+      [content]="'Search'"
+      [btnSize]="btnSize.MEDIUM"
+      (click)="onSearch()"
+    ></app-button>
   </form>
   <div>
-    My Passed Trainings
+    <ng-container *ngIf="(role$ | async) === 'student'">
+      <h2>My Passed Trainings</h2>
+      <app-table
+        *ngIf="myTrainings$ | async as myTrainings"
+        [tableHeaders]="tableHeaders"
+        [tableData]="myTrainings"
+        [tableType]="'studentTrainingList'"
+      ></app-table>
+    </ng-container>
 
-    <app-table
-      *ngIf="myTrainings$ | async as myTrainings"
-      [tableHeaders]="tableHeaders"
-      [tableData]="myTrainings"
-      [tableType]="'studentTrainingList'"
-    ></app-table>
+    <ng-container *ngIf="(role$ | async) === 'trainer'">
+      <h2>Result</h2>
+      <app-table
+        *ngIf="myTrainings$ | async as myTrainings"
+        [tableHeaders]="teableHeadersTrainer"
+        [tableData]="myTrainings"
+        [tableType]="'trainerTrainingList'"
+      ></app-table>
+    </ng-container>
   </div>
 </div>

@@ -2,7 +2,11 @@ import { DatePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
-import { myStudent, TrainerRefined } from '../../../coreFeatures';
+import {
+  myStudent,
+  MyTrainingTableData,
+  TrainerRefined,
+} from '../../../coreFeatures';
 
 @Component({
   selector: 'app-table',
@@ -21,7 +25,11 @@ import { myStudent, TrainerRefined } from '../../../coreFeatures';
 })
 export class TableComponent implements OnInit {
   @Input() tableHeaders?: string[] | undefined | null;
-  @Input() tableData?: TrainerRefined[] | myStudent[] | null;
+  @Input() tableData?:
+    | TrainerRefined[]
+    | myStudent[]
+    | null
+    | MyTrainingTableData[];
 
   // @Input() tableData?:
   // | TrainerRefined[]

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { TrainingService } from './training.service';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import {
+  MyTrainingTableData,
   TrainerOption,
   TrainingCreationAttribute,
 } from '../../models/user.model';
@@ -26,6 +27,25 @@ export class TrainingStoreService {
   }
 
   public createTraining(data: TrainingCreationAttribute) {
-    return this.trainingService.createTraining(data);
+    return this.trainingService.createTraining(data).pipe(
+      catchError((err) => {
+        return throwError(err);
+      })
+    );
+  }
+
+  public getMyTrainings(): Observable<MyTrainingTableData[]> {
+    return this.trainingService.getMyTrainings().pipe(
+      map((trainings) =>
+        trainings.map((training) => ({
+          startDate: training.startDate,
+          trainingName: training.trainingName,
+          trainingType: training.trainingType,
+          trainer: training.trainerName,
+          duration: training.duration,
+          student: training.studentName,
+        }))
+      )
+    );
   }
 }
