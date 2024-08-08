@@ -38,16 +38,22 @@
       ></textarea>
     </div>
     <div class="add-training__training-trainer">
-      <app-drop-down-menu
-        *ngIf="allTrainers$ | async as allTrainers"
-        [label]="'Trainers'"
-        [name]="'trainer'"
-        formControlName="trainer"
-        [options]="allTrainers"
-        [type]="'trainer'"
-        [required]="true"
-        [initialValue]="allTrainers[0].trainerName"
-      ></app-drop-down-menu>
+      <ng-container *ngIf="allTrainers$ | async as allTrainers">
+        <app-drop-down-menu
+          *ngIf="allTrainers.length > 0; else noTrainers"
+          [label]="'Trainers'"
+          [name]="'trainer'"
+          formControlName="trainer"
+          [options]="allTrainers"
+          [type]="'trainer'"
+          [required]="true"
+          [initialValue]="allTrainers[0].trainerName"
+        ></app-drop-down-menu>
+
+        <ng-template #noTrainers>
+          <div>No Trainers added, please use add trainer feature</div>
+        </ng-template>
+      </ng-container>
     </div>
   </div>
   <div class="add-training__controls">

@@ -88,9 +88,9 @@ export class AddTrainingPageComponent implements OnInit {
           ]),
           trainingType: new FormControl(this.allTrainingTypes[0]),
           trainer: new FormControl({
-            specialization: data[0].specialization,
-            trainerId: data[0].userId,
-            trainerName: data[0].name,
+            specialization: data[0]?.specialization,
+            trainerId: data[0]?.userId,
+            trainerName: data[0]?.name,
           }),
           logedInUser: new FormControl(''),
           description: new FormControl(''),

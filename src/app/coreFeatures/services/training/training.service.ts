@@ -73,4 +73,17 @@ export class TrainingService {
         })
       );
   }
+  public getMyTrainingsWithParams(params: string) {
+    return this.http
+      .get<MyTrainingsResponse>(
+        `https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/my-trainings?${params}`
+      )
+      .pipe(
+        map(({ data }) => data),
+        catchError((errResponse: HttpErrorResponse) => {
+          console.log(errResponse);
+          return throwError(errResponse.message);
+        })
+      );
+  }
 }

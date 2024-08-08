@@ -12,7 +12,9 @@
       <app-input
         [formControlName]="'searchStudent'"
         [parentForm]="trainingForm"
-        [labelName]="'Student Name'"
+        [labelName]="
+          (role$ | async) === 'trainer' ? 'Student Name' : 'Trainer Name'
+        "
         [inputName]="'searchStudent'"
         [placeholder]="'Name'"
       ></app-input>
@@ -46,7 +48,7 @@
     <ng-container *ngIf="(role$ | async) === 'student'">
       <h2>My Passed Trainings</h2>
       <app-table
-        *ngIf="myTrainings$ | async as myTrainings"
+        *ngIf="myTrainings$ | async as myTrainings; else loader"
         [tableHeaders]="tableHeaders"
         [tableData]="myTrainings"
         [tableType]="'studentTrainingList'"
@@ -56,7 +58,7 @@
     <ng-container *ngIf="(role$ | async) === 'trainer'">
       <h2>Result</h2>
       <app-table
-        *ngIf="myTrainings$ | async as myTrainings"
+        *ngIf="myTrainings$ | async as myTrainings; else loader"
         [tableHeaders]="teableHeadersTrainer"
         [tableData]="myTrainings"
         [tableType]="'trainerTrainingList'"
@@ -64,3 +66,9 @@
     </ng-container>
   </div>
 </div>
+
+<ng-template #loader>
+  <div class="loader-container">
+    <app-loader></app-loader>
+  </div>
+</ng-template>

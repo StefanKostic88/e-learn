@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { TrainingService } from './training.service';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import {
   MyTrainingTableData,
   TrainerOption,
@@ -36,6 +36,23 @@ export class TrainingStoreService {
 
   public getMyTrainings(): Observable<MyTrainingTableData[]> {
     return this.trainingService.getMyTrainings().pipe(
+      map((trainings) =>
+        trainings.map((training) => ({
+          startDate: training.startDate,
+          trainingName: training.trainingName,
+          trainingType: training.trainingType,
+          trainer: training.trainerName,
+          duration: training.duration,
+          student: training.studentName,
+        }))
+      )
+    );
+  }
+  public getMyTrainingsWithParams(
+    params: string
+  ): Observable<MyTrainingTableData[]> {
+    return this.trainingService.getMyTrainingsWithParams(params).pipe(
+      tap((el) => console.log(el)),
       map((trainings) =>
         trainings.map((training) => ({
           startDate: training.startDate,
