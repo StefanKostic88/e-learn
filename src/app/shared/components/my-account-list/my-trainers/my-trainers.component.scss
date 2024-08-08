@@ -1,0 +1,39 @@
+.my-trainers {
+  width: 100%;
+  margin-bottom: 11.2rem;
+
+  @media (min-width: 768px) {
+    min-width: 39.6rem;
+    margin-bottom: unset;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2.8rem;
+    gap: 1.6rem;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+    & h3 {
+      font-size: 2.4rem;
+      line-height: 3.2rem;
+    }
+  }
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  min-width: 12rem;
+  padding-top: 5rem;
+}
+
+.user-missing {
+  max-width: 32rem;
+  margin: auto;
+  text-align: center;
+}

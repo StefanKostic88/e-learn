@@ -1,9 +1,21 @@
 <div class="sutdent-list w-full md:min-w-[396px] mb-28 md:mb-0">
   <h3 class="mb-7 text-2xl">My Students</h3>
-  <app-table
-    *ngIf="tableData$ | async as tableData"
-    [tableHeaders]="tableHeading"
-    [tableData]="tableData"
-    [role]="'trainer'"
-  ></app-table>
+  <ng-container *ngIf="tableData$ | async as tableData; else loader">
+    <div *ngIf="tableData.length <= 0; else tableElement">
+      There are no students
+    </div>
+
+    <ng-template #tableElement>
+      <app-table
+        [tableHeaders]="tableHeading"
+        [tableData]="tableData"
+        [role]="'trainer'"
+      ></app-table>
+    </ng-template>
+  </ng-container>
 </div>
+
+<ng-template #loader>
+  <div class="loader-container">
+    <app-loader></app-loader></div
+></ng-template>

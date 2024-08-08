@@ -39,6 +39,7 @@
     display: block;
     color: var(--primary);
     transform: translateY(-0.8rem);
+    cursor: pointer;
     @media (min-width: 600px) {
       display: none;
     }

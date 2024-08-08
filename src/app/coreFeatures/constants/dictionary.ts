@@ -7,3 +7,11 @@ export const specializations = [
   'Cloud',
   'Javascript',
 ];
+
+export const trainingType = [
+  'Webinar',
+  'Workshop',
+  'Seminar',
+  'Online Course',
+  'Conference',
+];

@@ -15,6 +15,9 @@ import {
 } from '../../../shared';
 import { CommonModule } from '@angular/common';
 import { specializations } from '../../constants/dictionary';
+import { RegisterUser } from '../../models/user.model';
+import { AuthStoreService } from '../../services/auth/auth-store.service';
+import { UiService } from '../../services/uiService/ui.service';
 interface RegistrationInputInterface {
   formControlName: string;
   labelName: string;
@@ -40,8 +43,8 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
   // public readonly allSpecializations$ =
   //   this.specializationService.allSpecializations;
 
-  // public readonly registrationError$ = this.authStoreService.errorMessage;
-  public readonly registrationError$ = of(null);
+  public readonly registrationError$ = this.uiService.errorMessage;
+  // public readonly registrationError$ = of(null);
 
   public subscriptions: Subscription[] = [];
 
@@ -55,13 +58,12 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
   public img?: string;
 
   constructor(
-    private route: ActivatedRoute // private specializationService: SpecializationService, // private authStoreService: AuthStoreService
+    private route: ActivatedRoute, // private specializationService: SpecializationService, // private authStoreService: AuthStoreService
+    private authStoreService: AuthStoreService,
+    private uiService: UiService
   ) {}
 
   ngOnInit(): void {
-    // this.subscriptions.push(
-    //   this.specializationService.getAllSpecialization().subscribe()
-    // );
     this.subscriptions.push(
       this.route.data
         .pipe(
@@ -80,12 +82,13 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     const role = this.roleSubject.getValue();
-    // const data: RegisterUser = { ...this.registrationForm.value, role };
-    // this.subscriptions.push(
-    //   this.authStoreService.registerAndGetInfo(data).subscribe((data) => data)
-    // );
-    console.log(role);
-    console.log(this.registrationForm.value);
+    const data: RegisterUser = { ...this.registrationForm.value, role };
+
+    this.subscriptions.push(
+      this.authStoreService.registerAndGetInfo(data).subscribe((data) => data)
+    );
+
+    console.log(data);
   }
 
   private generateRegistrationForm() {
@@ -104,18 +107,15 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       dateOfBirth: new FormControl(''),
-      adress: new FormControl(''),
+      address: new FormControl(''),
     });
   }
 
   private generateTrainerForm() {
     return new FormGroup({
-      firstName: new FormControl('Stefan', [Validators.required]),
-      lastName: new FormControl('Kostic', [Validators.required]),
-      email: new FormControl('a@email', [
-        Validators.required,
-        Validators.email,
-      ]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       specialization: new FormControl('', [Validators.required]),
     });
   }

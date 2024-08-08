@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -12,7 +12,12 @@ import {
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { ButtonSize } from '../../../shared/models/button.model';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { Observable, of } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { AuthStoreService } from '../../services/auth/auth-store.service';
+
+import { ChangePassword } from '../../models/user.model';
+import { UiService } from '../../services/uiService/ui.service';
+import { RouterService } from '../../services/router/router.service';
 
 const modules = [ReactiveFormsModule, FontAwesomeModule, CommonModule];
 const components = [
@@ -30,30 +35,41 @@ const components = [
   templateUrl: './change-password-page.component.html',
   styleUrl: './change-password-page.component.scss',
 })
-export class ChangePasswordPageComponent implements OnInit {
+export class ChangePasswordPageComponent implements OnInit, OnDestroy {
+  private subscriptions?: Subscription[];
   public readonly btnSize: typeof ButtonSize = ButtonSize;
   public lock: IconDefinition = faLock;
   protected passwordChangeForm!: FormGroup;
   public disabled = true;
 
-  public readonly errorMsg$: Observable<string | null> = of(null);
+  public readonly errorMsg$: Observable<string | null> =
+    this.uiService.errorMessage;
 
-  public readonly spinner$: Observable<boolean> = of(false);
+  public readonly spinner$: Observable<boolean> = this.uiService.loadingSpiner;
 
-  public readonly sucessMessage$: Observable<boolean> = of(false);
+  public readonly sucessMessage$: Observable<boolean> =
+    this.uiService.actionSuccess;
 
-  // public readonly errorMsg$: Observable<string | null> =
-  //   this.authStoreService.errorMessage;
+  public changesAreNotValid = true;
 
-  // public readonly spinner$: Observable<boolean> =
-  //   this.authStoreService.loadingSpiner;
+  snapshot: Record<string, string> = {
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  };
 
-  // public readonly sucessMessage$: Observable<boolean> =
-  //   this.authStoreService.registrationSuccess;
-
-  // constructor(private authStoreService: AuthStoreService) {}
+  constructor(
+    private authStoreService: AuthStoreService,
+    private uiService: UiService,
+    private routerService: RouterService
+  ) {}
 
   ngOnInit(): void {
+    const timer = setTimeout(() => {
+      this.uiService.loadingSpiner = false;
+      clearTimeout(timer);
+    }, 300);
+
     this.passwordChangeForm = new FormGroup({
       currentPassword: new FormControl(''),
       newPassword: new FormControl(''),
@@ -62,6 +78,21 @@ export class ChangePasswordPageComponent implements OnInit {
 
     this.generateInputs();
     this.passwordChangeForm.valueChanges.subscribe((val) => {
+      let changed = false;
+      for (const key in val) {
+        if (this.snapshot[key] !== val[key]) {
+          changed = true;
+          break;
+        }
+      }
+
+      if (changed) {
+        this.changesAreNotValid = false;
+        console.log('Changes detected');
+      } else {
+        this.changesAreNotValid = true;
+      }
+
       const { currentPassword, newPassword, confirmPassword } = val;
 
       if (newPassword === confirmPassword && currentPassword) {
@@ -72,14 +103,24 @@ export class ChangePasswordPageComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions?.forEach((sub) => sub.unsubscribe());
+  }
+
   protected onSubmit() {
-    // const data: ChangePassword = this.passwordChangeForm.value;
-    // this.authStoreService.chnagUserPasswrod(data).subscribe({
-    //   next: () => {
-    //     this.passwordChangeForm.reset();
-    //   },
-    // });
-    console.log(this.passwordChangeForm.value);
+    const data: ChangePassword = this.passwordChangeForm.value;
+
+    const sub = this.authStoreService.changeUserPassword(data).subscribe({
+      next: () => {
+        this.passwordChangeForm.reset();
+        this.changesAreNotValid = true;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+
+    this.subscriptions?.push(sub);
   }
   protected generateInputs() {
     return Object.entries(this.passwordChangeForm.controls).map((el) => {
@@ -100,10 +141,22 @@ export class ChangePasswordPageComponent implements OnInit {
   }
 
   public navigateToMyAccount() {
-    // this.authStoreService.switchToMyaccount();
+    this.uiService.resetErrorAndSucessState();
+    this.routerService.toMyAccount();
   }
 
   protected trackByIndex(index: number): number {
     return index;
+  }
+
+  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+    if (this.changesAreNotValid) {
+      console.log('asdsd');
+      return true;
+    } else {
+      return confirm(
+        'Are you sure you want to leave this page? Any unsaved changes will be lost.'
+      );
+    }
   }
 }

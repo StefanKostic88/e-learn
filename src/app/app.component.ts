@@ -2,6 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { FooterComponent, HeaderComponent, UiService } from './coreFeatures';
 import { Subscription, filter, take } from 'rxjs';
+import { UserStoreService } from './coreFeatures/services/user/user-store.service';
 
 const components = [FooterComponent, HeaderComponent];
 
@@ -18,7 +19,8 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private uiService: UiService,
     private router: Router,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +36,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe({
         complete: () => console.log('closed'),
       });
+
+    // this.userStoreService.logedInUser().subscribe();
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());

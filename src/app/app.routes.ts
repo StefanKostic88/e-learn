@@ -1,10 +1,16 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './coreFeatures/pages/home-page/home-page.component';
+import { AuthorizedGuard } from './coreFeatures/guards/authorized.guard';
+import { SignedInGuard } from './coreFeatures/guards/isSignedIn.guard';
+import { UserResolverService } from './coreFeatures/resolvers/user.resolver.service';
 
 export const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
+    resolve: {
+      user: UserResolverService,
+    },
   },
   {
     path: 'blog',
@@ -30,17 +36,19 @@ export const routes: Routes = [
     path: 'my-account',
     loadChildren: () =>
       import('./coreFeatures/pages/my-account-page/my-account-page-routes'),
+    canActivate: [AuthorizedGuard],
   },
   {
     path: 'sign-in',
     loadChildren: () =>
       import('./coreFeatures/pages/login-page/login-page-routes'),
-    // canActivate: [SignedInGuard],
+    canActivate: [SignedInGuard],
   },
 
   {
     path: 'join-us',
     loadChildren: () =>
       import('./coreFeatures/pages/join-us-page/join-us-page-routes'),
+    canActivate: [SignedInGuard],
   },
 ];

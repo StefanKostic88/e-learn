@@ -1,13 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ButtonComponent,
   DatePickerComponent,
   DropDownMenuComponent,
   InputComponent,
 } from '../../../shared';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Observable, map, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
+import { specializations, trainingType } from '../../constants/dictionary';
+import { TrainingStoreService } from '../../services/training/training-store.service';
+import {
+  TrainerOption,
+  TrainingCreationAttribute,
+} from '../../models/user.model';
+import { UserStoreService } from '../../services/user/user-store.service';
+import { checkNumberValidator } from '../../../shared/validators/check-number-validator/checkNumberDirective';
 
 const components = [
   InputComponent,
@@ -23,111 +36,123 @@ const components = [
   templateUrl: './add-training-page.component.html',
   styleUrl: './add-training-page.component.scss',
 })
-export class AddTrainingPageComponent {
+export class AddTrainingPageComponent implements OnInit {
   trainingForm!: FormGroup;
-  // public allSpecializations$ = this.specializationService.allSpecializations;
-  public allSpecializations$ = of(['React, Angular']);
-  public allTrainers$ = of(['Stefan', 'Ivica']);
-  // public allTrainers$?: Observable<
-  //   {
-  //     name: string;
-  //     specialization: string;
-  //     user_id: string;
-  //   }[]
-  // >;
-  // public allTrainingTypes$?: Observable<TrainingType[]>;
-  public allTrainingTypes$?: Observable<string[]> = of(['Webinar', 'Course']);
 
-  constructor() {} // private userService: UserService // private trainingService: TrainingService, // private trainerService: TrainerService, // private specializationService: SpecializationService,
+  public allSpecializations = specializations;
+  public allTrainers$?: Observable<TrainerOption[]>;
+  public currentUserFullName?: string;
+  public currentUserId?: string;
+
+  public allTrainingTypes: string[] = trainingType;
+  datePickerLabel = 'Training Start Date';
+
+  constructor(
+    private trainingStoreService: TrainingStoreService,
+    private userStoreService: UserStoreService
+  ) {} // private userService: UserService // private trainingService: TrainingService, // private trainerService: TrainerService, // private specializationService: SpecializationService,
 
   ngOnInit(): void {
-    // this.specializationService.getAllSpecialization().subscribe();
-
-    // this.allSpecializations$.subscribe(console.log);
-    // this.allTrainingTypes$ = this.trainingService.getAllTrainingTypes();
-    // this.allTrainingTypes$.subscribe(console.log);
-
-    // this.allTrainers$ = this.trainerService.getAllTrainers().pipe(
-    //   map((trainers) =>
-    //     trainers.map((trainer) => ({
-    //       name: `${trainer.firstName} ${trainer.lastName}`,
-    //       specialization: trainer.trainer.specialization._id,
-    //       user_id: trainer.id,
-    //     }))
-    //   ),
-    //   tap((el) => console.log(el))
-    // );
-
-    of({ role: 'Trainer2', id: 'asdadasd' })
+    this.userStoreService.currentUser
       .pipe(
         map((user) => ({
-          role: user?.role,
-          id: user?.id,
+          fullName: `${user?.firstName} ${user?.lastName}`,
+          currentUserId: user?.id,
         }))
       )
-      .subscribe((data) => {
-        this.trainingForm = new FormGroup({
-          trainingName: new FormControl(''),
-          startDate: new FormControl(new Date()),
-          duration: new FormControl(''),
-          trainingType: new FormControl(''),
-          trainer: new FormControl({
-            userId: '',
-            sprcializationId: '',
-          }),
-          userId: new FormControl(data.id),
-          description: new FormControl(''),
-        });
+      .subscribe(({ fullName, currentUserId }) => {
+        this.currentUserFullName = fullName;
+        this.currentUserId = currentUserId;
       });
 
-    // this.userService.currentUser
-    //   .pipe(
-    //     map((user) => ({
-    //       role: user?.role,
-    //       id: user?.id,
-    //     }))
-    //   )
-    //   .subscribe((data) => {
-    //     this.trainingForm = new FormGroup({
-    //       trainingName: new FormControl(''),
-    //       startDate: new FormControl(new Date()),
-    //       duration: new FormControl(''),
-    //       trainingType: new FormControl(''),
-    //       trainer: new FormControl({
-    //         userId: '',
-    //         sprcializationId: '',
-    //       }),
-    //       userId: new FormControl(data.id),
-    //     });
-    //   });
+    // this.allTrainers$ = this.trainingStoreService.getAllTrainers();
+    this.userStoreService.getMyTrainers().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.allTrainers$ = of(
+          data.map((el) => ({
+            trainerId: el.userId,
+            trainerName: el.name,
+            specialization: el?.specialization,
+          }))
+        );
+
+        // this.allTrainers$ = of(data);
+        this.trainingForm = new FormGroup({
+          trainingName: new FormControl('', [Validators.required]),
+          startDate: new FormControl(new Date()),
+          duration: new FormControl(1, [
+            Validators.required,
+            Validators.min(1),
+            checkNumberValidator(),
+          ]),
+          trainingType: new FormControl(this.allTrainingTypes[0]),
+          trainer: new FormControl({
+            specialization: data[0]?.specialization,
+            trainerId: data[0]?.userId,
+            trainerName: data[0]?.name,
+          }),
+          logedInUser: new FormControl(''),
+          description: new FormControl(''),
+        });
+      },
+    });
+
+    this.trainingForm = new FormGroup({
+      trainingName: new FormControl(''),
+      startDate: new FormControl(new Date()),
+      duration: new FormControl(''),
+      trainingType: new FormControl(''),
+      trainer: new FormControl({
+        specialization: '',
+        trainerId: '',
+        trainerName: '',
+      }),
+      logedInUser: new FormControl(''),
+      description: new FormControl(''),
+    });
   }
 
   onSubmit() {
-    console.log(this.trainingForm.valid);
+    // interface TrainingCreationAttribute {
+    //   trainer_id: string;
+    //   student_id: string;
+    //   specialization: string;
+    //   trainingName: string;
+    //   trainingType: string;
+    //   startDate: Date;
+    //   duration: string;
+    //   trainerName: string;
+    //   studentName: string;
+    //   description?: string;
+    // }
 
     const data = this.trainingForm.value;
+    const startDate = new Date(data.startDate);
+    const duration = Number(data.duration);
+    const endDate = new Date();
+    endDate.setDate(startDate.getDate() + duration);
 
-    const dataForCreation = {
-      trainer_id: data.trainer.userId,
-      student_id: data.userId,
-      trainingType: data.trainingType,
+    const finalData: TrainingCreationAttribute = {
+      trainer_id: data.trainer.trainerId,
+      student_id: this.currentUserId as string,
+      specialization: data.trainer.specialization,
       trainingName: data.trainingName,
+      trainingType: data.trainingType,
       startDate: data.startDate,
-      duration: data.duration,
-      specialization: data.trainer.sprcializationId,
+      endDate: endDate,
+      duration: data.duration + ' d',
+      trainerName: data.trainer.trainerName,
+      studentName: this.currentUserFullName as string,
+      description: data.description,
     };
-    // const dataForCreation: TrainingCreationAttributes = {
-    //   trainer_id: data.trainer.userId,
-    //   student_id: data.userId,
-    //   trainingType: data.trainingType,
-    //   trainingName: data.trainingName,
-    //   startDate: data.startDate,
-    //   duration: data.duration,
-    //   specialization: data.trainer.sprcializationId,
-    // };
-    console.log(data);
-    console.log(dataForCreation);
 
-    // this.trainingService.createTraining(dataForCreation).subscribe(console.log);
+    console.log(finalData);
+
+    this.trainingStoreService.createTraining(finalData).subscribe({
+      error: (err) => {
+        this.datePickerLabel = err;
+      },
+    });
   }
 }

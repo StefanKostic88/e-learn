@@ -1,16 +1,23 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, throwError } from 'rxjs';
 
 import {
   LoginUser,
-  RegisterUser,
-  CreatedUserResponse,
+  // RegisterUser,
+  // CreatedUserResponse,
   ChangePassword,
   EditInterface,
   ChangePasswordResponse,
   LoginResponse,
   UserDataRespnse,
+  RegisterUser,
+  CreatedUserResponse,
+  UserEditResponse,
 } from '../../models/user.model';
 import { environment } from '../../../enviroment';
 
@@ -21,12 +28,22 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   public login(data: LoginUser) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
     return this.http
-      .post<LoginResponse>(environment.apiEndpoints.login, data)
+      .post<LoginResponse>(
+        'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/login',
+        data,
+        {
+          headers,
+        }
+      )
       .pipe(
         map(({ token }) => token),
-        catchError((err: HttpErrorResponse) =>
-          throwError(err.error.error.message)
+        catchError((errorResponse: HttpErrorResponse) =>
+          throwError(errorResponse.error.message)
         )
       );
   }
@@ -38,14 +55,14 @@ export class AuthService {
         registerData
       )
       .pipe(
+        map((createdUserResponse) => createdUserResponse.data),
         catchError((err: HttpErrorResponse) => {
-          return throwError(err.error.error.message);
+          return throwError(err.error.message);
         })
       );
   }
 
   public changePassword(inputData: ChangePassword) {
-    console.log(inputData);
     return this.http
       .patch<ChangePasswordResponse>(
         environment.apiEndpoints.changePassword,
@@ -53,20 +70,18 @@ export class AuthService {
       )
       .pipe(
         map(({ data }) => data),
-        catchError((err: HttpErrorResponse) =>
-          throwError(err.error.error.message)
-        )
+        catchError((err: HttpErrorResponse) => {
+          return throwError(err.error.message);
+        })
       );
   }
 
   public editUser(inputData: EditInterface) {
     return this.http
-      .patch<UserDataRespnse>(environment.apiEndpoints.editUser, inputData)
+      .patch<UserEditResponse>(environment.apiEndpoints.editUser, inputData)
       .pipe(
-        map(({ data }) => data),
-        catchError((err: HttpErrorResponse) =>
-          throwError(err.error.error.message)
-        )
+        map(({ message }) => message),
+        catchError((err: HttpErrorResponse) => throwError(err.error.message))
       );
   }
 }

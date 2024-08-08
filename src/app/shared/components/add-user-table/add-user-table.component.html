@@ -19,10 +19,10 @@
       <ng-template pTemplate="body" let-row let-i="rowIndex">
         <tr class="custom-table-row" [formGroup]="getFormGroup(i)">
           <td><input type="checkbox" formControlName="selected" /></td>
-          <td class="font-bold">{{ row.value.name }}</td>
+          <td class="font-bold">{{ row.value.name | titlecase }}</td>
 
           <td>
-            {{ row.value.specialization }}
+            {{ row.value.specialization | titlecase }}
           </td>
         </tr>
       </ng-template>

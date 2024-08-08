@@ -16,6 +16,29 @@ export class UiService {
 
   public darkMode$: Observable<boolean> = this.darkMode$$.asObservable();
 
+  private loadingSpiner$$: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
+  public loadingSpiner$: Observable<boolean> =
+    this.loadingSpiner$$.asObservable();
+
+  private errorMessage$$: BehaviorSubject<null | string> = new BehaviorSubject<
+    string | null
+  >(null);
+
+  public errorMessage$: Observable<string | null> =
+    this.errorMessage$$.asObservable();
+
+  private actionSuccess$$: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
+
+  public actionSuccess$ = this.actionSuccess$$.asObservable();
+
+  // private tableLoading$$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  // private tableLoading$: Observable<boolean> =
+  //   this.tableLoading$$.asObservable();
+
   constructor(private sessionStorageService: SessionStorageService) {}
 
   get isNavigationIsOpened(): Observable<boolean> {
@@ -32,6 +55,34 @@ export class UiService {
   set darkMode(value: boolean) {
     this.darkMode$$.next(value);
   }
+
+  set loadingSpiner(val: boolean) {
+    this.loadingSpiner$$.next(val);
+  }
+  get loadingSpiner(): Observable<boolean> {
+    return this.loadingSpiner$;
+  }
+
+  set errorMessage(value: null | string) {
+    this.errorMessage$$.next(value);
+  }
+  get errorMessage(): Observable<null | string> {
+    return this.errorMessage$;
+  }
+
+  set actionSuccess(val: boolean) {
+    this.actionSuccess$$.next(val);
+  }
+  get actionSuccess(): Observable<boolean> {
+    return this.actionSuccess$;
+  }
+
+  // set tableLoading(val: boolean) {
+  //   this.tableLoading$$.next(val);
+  // }
+  // get tableLoading(): Observable<boolean> {
+  //   return this.tableLoading$;
+  // }
 
   public toggleNavigationMenu(): void {
     const currentValue = this.navigationIsOpened$$.getValue();
@@ -67,5 +118,10 @@ export class UiService {
         }
       })
     );
+  }
+
+  public resetErrorAndSucessState() {
+    this.actionSuccess = false;
+    this.errorMessage = null;
   }
 }

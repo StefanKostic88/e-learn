@@ -9,10 +9,10 @@ export interface RegisterUser {
   email: string;
   firstName: string;
   lastName: string;
-  specialization: string;
   role: string;
+  specialization?: string;
   adress?: string;
-  dateOfBirth: string;
+  dateOfBirth?: string;
 }
 
 export interface TrainerInterface {
@@ -31,8 +31,8 @@ export interface TrainerInterface {
 
 export interface TrainerRefined {
   name: string;
-  user_id: string;
-  specialization: string;
+  userId: string;
+  specialization?: string | undefined;
 }
 
 export interface StudentRefined {
@@ -72,29 +72,29 @@ export interface TrainerData {
   }[];
 }
 
-export interface UserData {
-  id: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  isActive: boolean;
-  img?: string;
-  adress?: string;
-  dateOfBirth?: string;
-  student: {
-    _id: string;
-    user_id: string;
-    myTrainers: {
-      trainer: TrainerData;
-      firstName: string;
-      lastName: string;
-      id: string;
-    }[];
-  } | null;
-  trainer: TrainerData | null;
-}
+// export interface UserData {
+//   id: string;
+//   username: string;
+//   firstName: string;
+//   lastName: string;
+//   email: string;
+//   role: string;
+//   isActive: boolean;
+//   img?: string;
+//   adress?: string;
+//   dateOfBirth?: string;
+//   student: {
+//     _id: string;
+//     user_id: string;
+//     myTrainers: {
+//       trainer: TrainerData;
+//       firstName: string;
+//       lastName: string;
+//       id: string;
+//     }[];
+//   } | null;
+//   trainer: TrainerData | null;
+// }
 
 export interface CreatedUserResponse {
   message: string;
@@ -103,12 +103,91 @@ export interface CreatedUserResponse {
 
 export interface LoginResponse {
   token: string;
+  message: string;
+  headers: Record<string, string>;
 }
 
 export interface ChangePasswordResponse {
   data: string;
 }
 
+export interface UserData {
+  isActive: string;
+  password: string;
+  specialization?: string;
+  role: string;
+  lastName: string;
+  username: string;
+  address: string;
+  email: string;
+  id: string;
+  firstName: string;
+  img?: string;
+  dateOfBirth?: string;
+  myUsers?: string[];
+}
+
 export interface UserDataRespnse {
   data: UserData;
+}
+
+export interface MyUsersResponse {
+  data: UserData[];
+  message: string;
+}
+
+export interface UserEditResponse {
+  message: string;
+}
+
+// HEADER DATA
+export interface HeaderDetails {
+  email: string | null;
+  username: string | null;
+  img: string;
+}
+
+export interface HeaderData {
+  isAuthorized: boolean;
+  accountData: HeaderDetails;
+}
+
+export interface TrainerOption {
+  trainerId: string;
+  trainerName: string;
+  specialization?: string;
+}
+
+export interface myStudent {
+  name: string;
+  isActive: boolean;
+  userId: string;
+}
+
+export interface TrainingCreationAttribute {
+  trainer_id: string;
+  student_id: string;
+  specialization: string;
+  trainingName: string;
+  trainingType: string;
+  startDate: Date;
+  endDate: Date;
+  duration: string;
+  trainerName: string;
+  studentName: string;
+  description?: string;
+}
+
+export interface MyTrainingsResponse {
+  data: TrainingCreationAttribute[];
+  message: string;
+}
+
+export interface MyTrainingTableData {
+  startDate: Date;
+  trainingName: string;
+  trainingType: string;
+  trainer: string;
+  duration: string;
+  student: string;
 }

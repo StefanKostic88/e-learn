@@ -11,18 +11,21 @@ import {
   ButtonComponent,
   MyAccountListComponent,
   PageWraperComponent,
+  SpinerComponent,
 } from '../../../shared';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { UiService } from '../../services/uiService/ui.service';
 
 const components = [
   PageWraperComponent,
   MyAccountListComponent,
   ButtonComponent,
   BreadcrumbsComponent,
+  SpinerComponent,
 ];
 
 const pipes = [AsyncPipe];
-const modules = [RouterModule];
+const modules = [RouterModule, NgIf];
 
 @Component({
   selector: 'app-my-account-page',
@@ -34,7 +37,12 @@ const modules = [RouterModule];
 export class MyAccountPageComponent implements OnInit {
   public currentPage?: string;
   public title$?: Observable<string | null>;
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  public isLoading$ = this.uiService.loadingSpiner;
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private uiService: UiService
+  ) {}
   ngOnInit(): void {
     this.title$ = this.title$ = this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),

@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
@@ -6,7 +6,7 @@ import { TableModule } from 'primeng/table';
 @Component({
   selector: 'app-add-user-table',
   standalone: true,
-  imports: [TableModule, ReactiveFormsModule, NgIf, NgFor],
+  imports: [TableModule, ReactiveFormsModule, NgIf, NgFor, TitleCasePipe],
   templateUrl: './add-user-table.component.html',
   styleUrl: './add-user-table.component.scss',
 })

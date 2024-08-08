@@ -4,7 +4,6 @@ import {
   HostListener,
   OnInit,
   ViewChild,
-  viewChild,
 } from '@angular/core';
 import { ButtonSize } from '../../../shared/models/button.model';
 import { headerLinksList } from '../../constants/linksData';
@@ -33,6 +32,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { Observable, filter, map, of } from 'rxjs';
 import { UiService } from '../../services/uiService/ui.service';
+import { AuthStoreService } from '../../services/auth/auth-store.service';
+import { UserStoreService } from '../../services/user/user-store.service';
+import { HeaderData } from '../../models/user.model';
 
 const components = [
   NavigationComponent,
@@ -63,14 +65,7 @@ export class HeaderComponent implements OnInit {
   @ViewChild('header') headerEl?: ElementRef;
   @ViewChild(AccountBoxComponent) accountBoxComponent?: AccountBoxComponent;
   // public userHeaderData$?: Observable<UserHeaderData>;
-  public userHeaderData$?: Observable<{
-    accountData: {
-      email: string;
-      username: string;
-      img: string;
-    };
-    isAuthorized: boolean;
-  }>;
+  public userHeaderData$?: Observable<HeaderData>;
   public readonly linksList = headerLinksList;
   public readonly moonIcon: IconDefinition = faMoon;
   public readonly userIcon: IconDefinition = faCircleUser;
@@ -81,19 +76,25 @@ export class HeaderComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private uiService: UiService
+    private uiService: UiService,
+    private authStoreService: AuthStoreService,
+    private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
-    this.userHeaderData$ = of({
-      accountData: {
-        email: 'testemail',
-        username: 'sadasd',
-        img: '../../../../assets/imgs/profile.jpg',
-      },
-      isAuthorized: true,
-    });
-    this.darkMode$.subscribe(console.log);
+    // this.authStoreService.isAuthorized.subscribe(console.log);
+
+    // this.userHeaderData$ = of({
+    //   accountData: {
+    //     email: 'testemail',
+    //     username: 'sadasd',
+    //     img: '../../../../assets/imgs/profile.jpg',
+    //   },
+    //   isAuthorized: false,
+    // });
+    // this.darkMode$.subscribe(console.log);
+
+    this.userHeaderData$ = this.userStoreService.getUserHeaderData();
 
     this.signInPage$ = this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd),

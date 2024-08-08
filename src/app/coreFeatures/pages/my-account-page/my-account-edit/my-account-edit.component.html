@@ -47,7 +47,7 @@
       </figure>
       <div class="edit-form__top-section__inner-left-section__form-controls">
         <app-input
-          *ngFor="let input of inputsArr | async"
+          *ngFor="let input of inputsArr"
           [formControlName]="input.formControlName"
           [parentForm]="userEditForm"
           [labelName]="input.labelName"
@@ -65,12 +65,14 @@
       </div>
     </div>
 
-    <div class="edit-form__top-section__specialization-container">
+    <div
+      class="edit-form__top-section__specialization-container"
+      *ngIf="role === 'trainer'"
+    >
       <p>Specialization</p>
 
       <app-drop-down-menu
-        *ngIf="allSpecializations$ | async as allSpecializations"
-        [initialValue]="'React'"
+        [initialValue]="userSpecialization"
         [name]="'specialization'"
         [formControlName]="'specialization'"
         [options]="allSpecializations"
@@ -88,8 +90,8 @@
     <app-button
       [content]="'Save Changes'"
       [btnSize]="btnSize.MEDIUM"
-      [disabled]="changesAreNotValid"
       (click)="onSubmit()"
     ></app-button>
   </div>
 </form>
+<!-- [disabled]="changesAreNotValid" -->

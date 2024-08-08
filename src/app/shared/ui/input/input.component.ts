@@ -65,13 +65,24 @@ export class InputComponent {
   protected errorMsg() {
     const requiredMsg = this.formControl.errors?.['required'];
     const invalidEmailMsg = this.formControl.errors?.['email'];
+    const minNumber = this.formControl.errors?.['min'];
+    const invalidNumberFormat =
+      this.formControl.errors?.['invalidNumberFormat'];
     let msg = '';
 
     if (requiredMsg) {
-      msg = 'required';
+      msg = 'Required';
     }
     if (invalidEmailMsg) {
-      msg = 'invalid format';
+      msg = 'Invalid format';
+    }
+
+    if (minNumber) {
+      msg = `Minimum value is ${minNumber.min}`;
+    }
+
+    if (invalidNumberFormat) {
+      msg = `Invalid number format`;
     }
 
     return msg;

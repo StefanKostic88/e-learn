@@ -1,1 +1,28 @@
-<p>my-trainers works!</p>
+<div class="my-trainers">
+  <div class="my-trainers__title">
+    <h3 class="text-2xl">My Trainers</h3>
+    <app-button
+      [content]="'Add Trainer'"
+      [btnSize]="btnSize.MEDIUM"
+      (click)="navigateToAddTrainer()"
+    ></app-button>
+  </div>
+
+  <ng-container *ngIf="myTrainers$ | async as myTrainers; else loader">
+    <div class="user-missing" *ngIf="myTrainers.length <= 0; else appTableRef">
+      No Trainers Avaliable
+    </div>
+    <ng-template #appTableRef>
+      <app-table
+        [tableHeaders]="tableHeader"
+        [tableData]="myTrainers"
+      ></app-table>
+    </ng-template>
+  </ng-container>
+</div>
+
+<ng-template #loader>
+  <div class="loader-container">
+    <app-loader></app-loader>
+  </div>
+</ng-template>

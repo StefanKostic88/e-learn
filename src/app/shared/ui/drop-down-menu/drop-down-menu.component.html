@@ -11,15 +11,29 @@
     <fa-icon [icon]="icon" class="dropdown-btn-icon"></fa-icon>
   </div>
   <div class="drop-down-menu" *ngIf="menuIsOpened">
-    <div
-      *ngFor="let option of options"
-      class="drop-down-menu-item"
-      (click)="selectOption(option)"
-      tabindex="0"
-      (keydown)="handleSelectKeydown($event, option)"
-    >
-      {{ option }}
-    </div>
+    <ng-container *ngIf="type === 'specialization'">
+      <div
+        *ngFor="let option of optionsAsStringArray()"
+        class="drop-down-menu-item"
+        (click)="selectOption(option)"
+        tabindex="0"
+        (keydown)="handleSelectKeydown($event, option)"
+      >
+        {{ option }}
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="type === 'trainer'">
+      <div
+        *ngFor="let option of opTionsAsTrainerOptions()"
+        class="drop-down-menu-item"
+        (click)="selectOption(option)"
+        tabindex="0"
+        (keydown)="handleSelectKeydown($event, option)"
+      >
+        {{ option.trainerName }}
+      </div>
+    </ng-container>
   </div>
 </div>
 <select
@@ -28,7 +42,15 @@
   [id]="name"
   [(ngModel)]="selectedOption"
 >
-  <option *ngFor="let option of options" [value]="option">
-    {{ option | titlecase }}
-  </option>
+  <ng-container *ngIf="type === 'specialization'">
+    <option *ngFor="let option of optionsAsStringArray()" [value]="option">
+      {{ option | titlecase }}
+    </option>
+  </ng-container>
+
+  <ng-container *ngIf="type === 'trainer'">
+    <option *ngFor="let option of opTionsAsTrainerOptions()" [value]="option">
+      {{ option.trainerId | titlecase }}
+    </option>
+  </ng-container>
 </select>

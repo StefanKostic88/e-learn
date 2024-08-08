@@ -12,8 +12,8 @@
 
 .custom-table-row {
   & td {
-    background-color: inherit;
-    color: inherit;
+    background-color: var(--bg-color);
+    color: var(--text);
     font-size: var(--custom-table-font, 16px);
     line-height: var(--custom-table-line-height, 26px);
     font-weight: 400;

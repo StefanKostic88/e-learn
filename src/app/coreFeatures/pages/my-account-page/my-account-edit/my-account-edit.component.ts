@@ -3,9 +3,14 @@ import {
   ButtonSize,
   ButtonState,
 } from '../../../../shared/models/button.model';
-import { Observable, of } from 'rxjs';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Observable, Subscription, tap } from 'rxjs';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ButtonComponent,
   CustomImgComponent,
@@ -16,6 +21,9 @@ import {
 } from '../../../../shared';
 import { CommonModule } from '@angular/common';
 import { specializations } from '../../../constants/dictionary';
+import { UserStoreService } from '../../../services/user/user-store.service';
+import { AuthStoreService } from '../../../services/auth/auth-store.service';
+import { UiService } from '../../../services/uiService/ui.service';
 
 const components = [
   CustomImgComponent,
@@ -42,104 +50,118 @@ export class MyAccountEditComponent implements OnInit {
   public readonly btnSize: typeof ButtonSize = ButtonSize;
   public changesAreNotValid = true;
 
-  protected inputsArr?: Observable<
-    | {
-        formControlName:
-          | 'firstName'
-          | 'lastName'
-          | 'username'
-          | 'email'
-          | 'adress'
-          | 'dateOfBirth';
-        labelName: string;
-        value: string | undefined;
-      }[]
-    | undefined
-  >;
+  public subscriptions?: Subscription[];
 
-  // currentUser$: Observable<UserData | null> = this.userService.currentUser;
+  protected inputsArr?: {
+    formControlName:
+      | 'firstName'
+      | 'lastName'
+      | 'username'
+      | 'email'
+      | 'dateOfBirth'
+      | 'address';
+    labelName: string;
+    value: string | undefined;
+  }[];
+
   snapshot?: { [props: string]: string };
   userActiveStatus$?: Observable<boolean>;
-  specialization$?: Observable<{
-    labelName: string | undefined;
-    value: string | undefined;
-  }>;
-  public readonly allSpecializations$ = of(specializations);
+
+  public readonly allSpecializations = specializations;
+  public userSpecialization?: string;
+  public role?: string;
 
   constructor(
-    private router: Router // private userService: UserService, // private specializationService: SpecializationService, // private authStoreService: AuthStoreService
+    private router: Router,
+    private userStoreService: UserStoreService,
+    private route: ActivatedRoute,
+    private authStoreService: AuthStoreService,
+    private uiService: UiService
   ) {}
 
   ngOnInit(): void {
-    // this.specializationService.getAllSpecialization().subscribe();
-    // this.inputsArr = this.userService.getCurrentUserInputs();
-    // this.userActiveStatus$ = this.userService.getUserActiveStatus();
-    // this.specialization$ = this.userService.getSpecialization();
-    // combineLatest([
-    //   this.userService.getCurrentUserInputs(),
-    //   this.specialization$,
-    // ]).subscribe(([data, specialization]) => {
-    //   const formControls: { [prop: string]: AbstractControl } = {};
-    //   const inputValues = data?.map((el) => ({
-    //     formControlName: el.formControlName,
-    //     value: el.value,
-    //   }));
-    //   inputValues?.forEach((el) => {
-    //     formControls[el.formControlName] = new FormControl(el.value);
-    //   });
-    //   if (specialization) {
-    //     console.log(specialization);
-    //     formControls['specialization'] = new FormControl(specialization.value);
-    //   }
-    //   this.userEditForm = new FormGroup(formControls);
-    //   this.snapshot = this.userEditForm.value;
-    //   this.userEditForm?.valueChanges.subscribe((data) => {
-    //     let changed = false;
-    //     for (const key in data) {
-    //       if (this.snapshot && data[key] !== this.snapshot[key]) {
-    //         changed = true;
-    //         break;
-    //       }
-    //     }
-    //     if (changed) {
-    //       this.changesAreNotValid = false;
-    //       console.log('Changes detected');
-    //     } else {
-    //       this.changesAreNotValid = true;
-    //     }
-    //   });
-    // });
-    // console.log(this.userEditForm);
-
     this.userEditForm = new FormGroup({
-      firstName: new FormControl('asd'),
-      lastName: new FormControl('asd'),
-      username: new FormControl('asd'),
-      email: new FormControl('asd'),
-      adress: new FormControl('asd'),
-      dateOfBirth: new FormControl('asd'),
-      specialization: new FormControl('React'),
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+      username: new FormControl(''),
+      email: new FormControl(''),
+      address: new FormControl(''),
+      dateOfBirth: new FormControl(''),
+      specialization: new FormControl(''),
     });
+
+    const data = this.route.data
+      .pipe(
+        tap(({ user }) => {
+          this.userSpecialization = user.specialization;
+          this.inputsArr = user.userInputsFinal;
+          this.role = user.role;
+          const formControls: { [prop: string]: AbstractControl } = {};
+          const inputValues = this.inputsArr?.map((el) => ({
+            formControlName: el.formControlName,
+            value: el.value ? el.value : '',
+          }));
+
+          inputValues?.forEach((el) => {
+            formControls[el.formControlName] = new FormControl(el.value);
+          });
+          if (this.userSpecialization) {
+            console.log(this.userSpecialization, 'asdasd');
+            formControls['specialization'] = new FormControl(
+              this.userSpecialization
+            );
+          }
+
+          this.userEditForm = new FormGroup(formControls);
+          this.snapshot = this.userEditForm.value;
+        })
+      )
+      .subscribe();
+
+    this.subscriptions?.push(data);
+
+    const changeSub = this.userEditForm.valueChanges.subscribe({
+      next: (data) => {
+        let changed = false;
+        for (const key in data) {
+          if (this.snapshot && data[key] !== this.snapshot[key]) {
+            changed = true;
+            break;
+          }
+        }
+        if (changed) {
+          this.changesAreNotValid = false;
+          console.log('Changes detected');
+        } else {
+          console.log('Changes NOT detected');
+          this.changesAreNotValid = true;
+        }
+      },
+    });
+
+    this.subscriptions?.push(changeSub);
   }
 
   public onSubmit() {
-    console.log('asdasd');
-    // const data: EditInterface = this.userEditForm.value;
-    // this.authStoreService.editCurrentUser(data).subscribe(() => {
-    //   this.changesAreNotValid = true;
-    //   this.navigateBack();
-    // });
+    const data = this.userEditForm.value;
+    if (!this.changesAreNotValid) {
+      this.authStoreService.editCurrentUser(data).subscribe({
+        next: () => {
+          this.changesAreNotValid = true;
+        },
+      });
+    }
   }
 
-  // canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
-  //   if (this.changesAreNotValid) {
-  //     return true;
-  //   } else {
-  //     return confirm(
-  //       'Are you sure you want to leave this page? Any unsaved changes will be lost.'
-  //     );
-  //   }
-  // }
+  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+    if (this.changesAreNotValid) {
+      return true;
+    } else {
+      return confirm(
+        'Are you sure you want to leave this page? Any unsaved changes will be lost.'
+      );
+    }
+  }
 
   navigateBack() {
     this.router.navigate(['/my-account']);

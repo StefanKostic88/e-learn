@@ -18,40 +18,17 @@
       <div
         class="my-account-list__content__profile__details ps-4 flex flex-col gap-2 mb-16 md:mb-12"
       >
-        <div>
-          <span class="font-bold">First Name</span>
-          <span>John</span>
-        </div>
-        <div>
-          <span class="font-bold">Last Name</span>
-          <span>Black</span>
-        </div>
-        <div>
-          <span class="font-bold">User name</span>
-          <span>John_12</span>
-        </div>
-        <div>
-          <span class="font-bold">Specialization</span>
-          <span>Java</span>
-        </div>
-        <div>
-          <span class="font-bold">Adress</span>
-          <span>456 Lake Shore Drive, Chicago, IL 60611, United States</span>
-        </div>
-        <div>
-          <span class="font-bold">Email</span>
-          <span>John_12gmail.com</span>
-        </div>
-
-        <!-- <div *ngFor="let accData of accountDataOutput | async">
+        <div *ngFor="let accData of accountDataOutput | async">
           <span class="font-bold">{{ getBojectKeys(accData) }}</span>
           <span>{{ getObjectVal(accData) }}</span>
-        </div> -->
+        </div>
       </div>
     </div>
+
     <app-students-list
       *ngIf="(role$ | async) === 'trainer'"
     ></app-students-list>
+
     <app-my-trainers *ngIf="(role$ | async) === 'student'"></app-my-trainers>
 
     <app-table class="flex-1"></app-table>

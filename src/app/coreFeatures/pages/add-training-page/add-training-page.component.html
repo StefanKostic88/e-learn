@@ -8,7 +8,6 @@
         [labelName]="'Training Name'"
         [inputName]="'trainingName'"
         [placeholder]="'Name'"
-        [required]="true"
       ></app-input>
       <app-input
         [formControlName]="'duration'"
@@ -16,39 +15,49 @@
         [labelName]="'Duration'"
         [inputName]="'duration'"
         [placeholder]="'Duration'"
-        [required]="true"
       ></app-input>
       <app-date-picker
-        [label]="'Training Start Date'"
+        [label]="datePickerLabel"
         [formControlName]="'startDate'"
       ></app-date-picker>
       <app-drop-down-menu
-        *ngIf="allTrainingTypes$ | async as allTrainingTypes"
         [label]="'Type'"
         [name]="'trainingType'"
         formControlName="trainingType"
         [options]="allTrainingTypes"
-        [type]="'training-type'"
-        [required]="true"
+        [type]="'specialization'"
+        [initialValue]="allTrainingTypes[0]"
       ></app-drop-down-menu>
 
       <label for="description">Description</label>
-      <textarea rows="3" name="description" id="description"></textarea>
+      <textarea
+        rows="3"
+        name="description"
+        id="description"
+        formControlName="description"
+      ></textarea>
     </div>
     <div class="add-training__training-trainer">
-      <app-drop-down-menu
-        *ngIf="allTrainers$ | async as allTrainers"
-        [label]="'Trainers'"
-        [name]="'trainer'"
-        formControlName="trainer"
-        [options]="allTrainers"
-        [type]="'trainer'"
-        [required]="true"
-      ></app-drop-down-menu>
+      <ng-container *ngIf="allTrainers$ | async as allTrainers">
+        <app-drop-down-menu
+          *ngIf="allTrainers.length > 0; else noTrainers"
+          [label]="'Trainers'"
+          [name]="'trainer'"
+          formControlName="trainer"
+          [options]="allTrainers"
+          [type]="'trainer'"
+          [required]="true"
+          [initialValue]="allTrainers[0].trainerName"
+        ></app-drop-down-menu>
+
+        <ng-template #noTrainers>
+          <div>No Trainers added, please use add trainer feature</div>
+        </ng-template>
+      </ng-container>
     </div>
   </div>
   <div class="add-training__controls">
     <app-button [content]="'Cancel'" [outlined]="false"></app-button>
-    <app-button [content]="'Add'"></app-button>
+    <app-button [content]="'Add'" [disabled]="!trainingForm.valid"></app-button>
   </div>
 </form>
