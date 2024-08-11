@@ -27,6 +27,7 @@
   </ng-container>
   <ng-container *ngIf="tableType === 'studentTrainingList'">
     <ng-template pTemplate="body" let-data let-i="rowIndex">
+      <div>CHECK RENDER {{ checkRender() }}</div>
       <tr class="custom-table-row">
         <td class="font-bold">{{ data?.startDate | date }}</td>
         <td>

@@ -1,7 +1,7 @@
 <app-page-wraper>
   <ng-container class="main">
     <h2>Sign in</h2>
-    <h3 #loginForm>Welcome back</h3>
+    <h3>Welcome back</h3>
     <app-login-form></app-login-form>
     <span class="custom-span">Or</span>
     <span class="custom-span"
@@ -10,5 +10,6 @@
     <app-custom-img [img]="captcha"></app-custom-img>
 
     <app-spiner *ngIf="isLoading$ | async"></app-spiner>
+    {{ changeDET() }}
   </ng-container>
 </app-page-wraper>

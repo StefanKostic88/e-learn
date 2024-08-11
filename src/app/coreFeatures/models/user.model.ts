@@ -108,7 +108,7 @@ export interface LoginResponse {
 }
 
 export interface ChangePasswordResponse {
-  data: string;
+  message: string;
 }
 
 export interface UserData {

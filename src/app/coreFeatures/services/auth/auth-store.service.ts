@@ -3,6 +3,7 @@ import {
   Observable,
   catchError,
   exhaustMap,
+  finalize,
   from,
   map,
   of,
@@ -23,6 +24,7 @@ import { Injectable } from '@angular/core';
 import { SessionStorageService } from '../session-storage/session-storage.service';
 import { UiService } from '../uiService/ui.service';
 import { RouterService } from '../router/router.service';
+import { ToasterService } from '../toaster/toaster.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,31 +39,13 @@ export class AuthStoreService {
 
   public createdUser$ = this.createdUser$$.asObservable();
 
-  // private errorMessage$$: BehaviorSubject<null | string> = new BehaviorSubject<
-  //   string | null
-  // >(null);
-
-  // public errorMessage$: Observable<string | null> =
-  //   this.errorMessage$$.asObservable();
-
-  // private loadingSpiner$$: BehaviorSubject<boolean> = new BehaviorSubject(
-  //   false
-  // );
-  // public loadingSpiner$: Observable<boolean> =
-  //   this.loadingSpiner$$.asObservable();
-
-  // private registrationSuccess$$: BehaviorSubject<boolean> = new BehaviorSubject(
-  //   false
-  // );
-
-  // public registrationSuccess$ = this.registrationSuccess$$.asObservable();
-
   constructor(
     private authService: AuthService,
     private sessionStorageService: SessionStorageService,
     private uiService: UiService,
     private router: Router,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private toasterService: ToasterService
   ) {}
 
   set isAuthorized(value: boolean) {
@@ -73,27 +57,6 @@ export class AuthStoreService {
     return this.isAuthorized$;
   }
 
-  // set errorMessage(value: null | string) {
-  //   this.errorMessage$$.next(value);
-  // }
-  // get errorMessage(): Observable<null | string> {
-  //   return this.errorMessage$;
-  // }
-
-  // set loadingSpiner(val: boolean) {
-  //   this.loadingSpiner$$.next(val);
-  // }
-  // get loadingSpiner(): Observable<boolean> {
-  //   return this.loadingSpiner$;
-  // }
-
-  // set registrationSuccess(val: boolean) {
-  //   this.registrationSuccess$$.next(val);
-  // }
-  // get registrationSuccess(): Observable<boolean> {
-  //   return this.registrationSuccess$;
-  // }
-
   set createdUser(val: CreatedUser | null) {
     this.createdUser$$.next(val);
   }
@@ -102,9 +65,7 @@ export class AuthStoreService {
   }
 
   public logInUser(data: LoginUser): Observable<string | null> {
-    // this.errorMessage = null;
     this.uiService.errorMessage = null;
-    // this.loadingSpiner = true;
     this.uiService.loadingSpiner = true;
 
     return this.authService.login(data).pipe(
@@ -112,14 +73,14 @@ export class AuthStoreService {
         if (JWT_TOKEN) {
           this.sessionStorageService.setToken(JWT_TOKEN);
           this.isAuthorized = !!this.sessionStorageService.getToken();
+          this.uiService.errorMessage = null;
         }
       }),
       catchError((err) => {
         this.uiService.errorMessage = err;
-        this.uiService.loadingSpiner = false;
-        return throwError(err);
+        return of(null);
       }),
-      tap(() => {
+      finalize(() => {
         this.uiService.loadingSpiner = false;
       })
     );
@@ -128,16 +89,14 @@ export class AuthStoreService {
   public logOut(): void {
     this.sessionStorageService.deleteToken();
     this.isAuthorized = !!this.sessionStorageService.getToken();
-    this.router.navigate(['/']);
-  }
-
-  public resetErrorMsgState(): void {
-    // this.errorMessage = null;
     this.uiService.errorMessage = null;
+    this.uiService.loadingSpiner = false;
+    this.router.navigate(['/']);
   }
 
   public registerAndGetInfo(data: RegisterUser) {
     this.uiService.loadingSpiner = true;
+    this.uiService.actionSuccess = false;
     return this.authService.userRegistration(data).pipe(
       tap((user) => {
         this.createdUser = user;
@@ -146,40 +105,48 @@ export class AuthStoreService {
         this.uiService.loadingSpiner = false;
         return this.resetRegisterStateAndShowError(err);
       }),
-      exhaustMap((createdUser) =>
-        from(this.logInUser(createdUser as CreatedUser)).pipe(
-          catchError((err: string) => {
-            return this.resetRegisterStateAndShowError(err);
-          }),
-          tap(() => {
-            this.uiService.actionSuccess = true;
-            this.uiService.loadingSpiner = false;
-          })
-        )
-      )
+      exhaustMap((createdUser) => {
+        if (createdUser) {
+          return from(this.logInUser(createdUser as CreatedUser)).pipe(
+            catchError((err: string) => {
+              return this.resetRegisterStateAndShowError(err);
+            }),
+            tap(() => {
+              this.uiService.actionSuccess = true;
+            })
+          );
+        }
+
+        return of(null);
+      })
     );
   }
 
-  // public switchToMyaccount(): void {
-  //   // this.registrationSuccess = false;
-  //   // this.errorMessage = null;
-  //   this.router.navigate(['/my-account']);
-  // }
+  public resetRegisterMyAccount() {
+    this.uiService.resetErrorAndSucessState();
+    this.createdUser = null;
+    this.routerService.toMyAccount();
+  }
 
   public changeUserPassword(inputData: ChangePassword) {
-    this.uiService.errorMessage = null;
     this.uiService.loadingSpiner = true;
+
     return this.authService.changePassword(inputData).pipe(
-      map((data) => data),
       tap(() => {
-        this.uiService.actionSuccess = true;
+        this.toasterService.toasterState = {
+          isOpened: true,
+          message: 'Password changed',
+        };
         this.uiService.loadingSpiner = false;
+        this.uiService.resetErrorMessage();
+        this.routerService.toMyAccount();
       }),
       catchError((err: string) => {
         this.uiService.errorMessage = err;
         this.uiService.loadingSpiner = false;
-        this.uiService.actionSuccess = false;
-        return of(null);
+        this.toasterService.resetToasterState();
+
+        return throwError(err);
       })
     );
   }

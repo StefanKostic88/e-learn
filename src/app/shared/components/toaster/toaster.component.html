@@ -1,7 +1,9 @@
-<figure class="toaster">
-  <div class="toaster__content">
-    <fa-icon [icon]="checkIcon"></fa-icon>
-    <p>{{ toasterMessage }}</p>
-    <fa-icon [icon]="closIcon" (click)="close()"></fa-icon>
-  </div>
-</figure>
+<ng-container *ngIf="toasterState$ | async as toasterState">
+  <figure class="toaster" *ngIf="toasterState.isOpened">
+    <div class="toaster__content">
+      <fa-icon [icon]="checkIcon"></fa-icon>
+      <p>{{ toasterState.message }}</p>
+      <fa-icon [icon]="closIcon" (click)="close()"></fa-icon>
+    </div>
+  </figure>
+</ng-container>

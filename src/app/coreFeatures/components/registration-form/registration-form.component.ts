@@ -1,10 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, map, of, tap } from 'rxjs';
 import {
@@ -18,10 +13,8 @@ import { specializations } from '../../constants/dictionary';
 import { RegisterUser } from '../../models/user.model';
 import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { UiService } from '../../services/uiService/ui.service';
-interface RegistrationInputInterface {
-  formControlName: string;
-  labelName: string;
-}
+import { RegistrationInputInterface, Role } from '../../models/shared.models';
+import { FormService } from '../../services/form/form.service';
 
 const components = [
   CustomImgComponent,
@@ -39,15 +32,11 @@ const modules = [ReactiveFormsModule, CommonModule];
   styleUrl: './registration-form.component.scss',
 })
 export class RegistrationFormComponent implements OnInit, OnDestroy {
-  public readonly allSpecializations$ = of(specializations);
-  // public readonly allSpecializations$ =
-  //   this.specializationService.allSpecializations;
+  private readonly checkRole: typeof Role = Role;
+  private subscriptions: Subscription[] = [];
 
-  public readonly registrationError$ = this.uiService.errorMessage;
-  // public readonly registrationError$ = of(null);
-
-  public subscriptions: Subscription[] = [];
-
+  protected readonly allSpecializations$ = of(specializations);
+  protected readonly registrationError$ = this.uiService.errorMessage;
   protected roleSubject: BehaviorSubject<string> = new BehaviorSubject('');
 
   protected inputsArr: BehaviorSubject<RegistrationInputInterface[]> =
@@ -55,12 +44,13 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
 
   protected registrationForm!: FormGroup;
 
-  public img?: string;
+  protected img?: string;
 
   constructor(
-    private route: ActivatedRoute, // private specializationService: SpecializationService, // private authStoreService: AuthStoreService
+    private route: ActivatedRoute,
     private authStoreService: AuthStoreService,
-    private uiService: UiService
+    private uiService: UiService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -78,6 +68,7 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.uiService.resetErrorMessage();
   }
 
   public onSubmit(): void {
@@ -85,39 +76,8 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
     const data: RegisterUser = { ...this.registrationForm.value, role };
 
     this.subscriptions.push(
-      this.authStoreService.registerAndGetInfo(data).subscribe((data) => data)
+      this.authStoreService.registerAndGetInfo(data).subscribe()
     );
-
-    console.log(data);
-  }
-
-  private generateRegistrationForm() {
-    if (this.roleSubject.getValue() === 'student') {
-      this.img = '../../../assets/imgs/register-student.jpeg';
-      return this.generateStudentForm();
-    } else {
-      this.img = '../../../assets/imgs/register-trainer.jpg';
-      return this.generateTrainerForm();
-    }
-  }
-
-  private generateStudentForm() {
-    return new FormGroup({
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      dateOfBirth: new FormControl(''),
-      address: new FormControl(''),
-    });
-  }
-
-  private generateTrainerForm() {
-    return new FormGroup({
-      firstName: new FormControl('', [Validators.required]),
-      lastName: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email]),
-      specialization: new FormControl('', [Validators.required]),
-    });
   }
 
   private generateInputs(): void {
@@ -142,5 +102,15 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
       this.roleSubject.getValue() === 'trainer' ? data.slice(0, -1) : data;
 
     this.inputsArr.next(updatedData);
+  }
+
+  private generateRegistrationForm() {
+    if (this.roleSubject.getValue() === this.checkRole.STUDENT) {
+      this.img = '../../../assets/imgs/register-student.jpeg';
+      return this.formService.generateStudentRegistrationFormFields();
+    } else {
+      this.img = '../../../assets/imgs/register-trainer.jpg';
+      return this.formService.generateTrainerRegistrationFormFields();
+    }
   }
 }

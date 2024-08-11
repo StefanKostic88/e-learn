@@ -12,6 +12,7 @@ import {
   MyAccountListComponent,
   PageWraperComponent,
   SpinerComponent,
+  ToasterComponent,
 } from '../../../shared';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { UiService } from '../../services/uiService/ui.service';
@@ -22,6 +23,7 @@ const components = [
   ButtonComponent,
   BreadcrumbsComponent,
   SpinerComponent,
+  ToasterComponent,
 ];
 
 const pipes = [AsyncPipe];

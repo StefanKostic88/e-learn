@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ButtonSize, ButtonState } from '../../models/button.model';
 import { ButtonDirective } from '../../directives/button/button.directive';
 
@@ -10,6 +10,7 @@ const directives = [ButtonDirective];
   imports: [directives],
   templateUrl: './button.component.html',
   styleUrl: './button.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent {
   readonly btnState: typeof ButtonState = ButtonState;

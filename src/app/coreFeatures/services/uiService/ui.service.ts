@@ -124,4 +124,8 @@ export class UiService {
     this.actionSuccess = false;
     this.errorMessage = null;
   }
+
+  public resetErrorMessage() {
+    this.errorMessage = null;
+  }
 }

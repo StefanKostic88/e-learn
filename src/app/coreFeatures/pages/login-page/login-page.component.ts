@@ -1,6 +1,6 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
   OnDestroy,
   ViewChild,
@@ -13,7 +13,6 @@ import {
 } from '../../../shared';
 import { RouterLink } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { UiService } from '../../services/uiService/ui.service';
 
@@ -23,30 +22,28 @@ const components = [
   PageWraperComponent,
   SpinerComponent,
 ];
+const modules = [RouterLink, NgIf, AsyncPipe];
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [components, RouterLink, NgIf, AsyncPipe],
+  imports: [components, modules],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent implements OnDestroy, AfterViewInit {
   public captchaUnchecked = '../../../assets/imgs/captcha-uncheced.png';
   public captchaChecked = '../../../assets/imgs/captcha-checed.png';
   private formSubscription?: Subscription;
-  // public isLoading$: Observable<boolean> = this.authStoreService.loadingSpiner;
+
   public isLoading$: Observable<boolean> = this.uiService.loadingSpiner;
 
   public captcha = this.captchaUnchecked;
 
   @ViewChild(LoginFormComponent) loginFormComponent?: LoginFormComponent;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private authStoreService: AuthStoreService,
-    private uiService: UiService
-  ) {}
+  constructor(private uiService: UiService) {}
 
   ngAfterViewInit(): void {
     this.formSubscription =
@@ -59,5 +56,9 @@ export class LoginPageComponent implements OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.formSubscription?.unsubscribe();
+  }
+
+  changeDET() {
+    console.log('RENDER LOGIN PAGE');
   }
 }

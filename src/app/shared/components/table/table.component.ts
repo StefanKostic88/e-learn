@@ -1,5 +1,11 @@
 import { DatePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import {
@@ -22,6 +28,7 @@ import {
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit {
   @Input() tableHeaders?: string[] | undefined | null;
@@ -45,5 +52,9 @@ export class TableComponent implements OnInit {
     console.log(this.tableLength);
 
     this.addPaginator = Number(this.tableData?.length) > this.tableLength;
+  }
+
+  checkRender() {
+    console.log('CHECK RENDER', true);
   }
 }

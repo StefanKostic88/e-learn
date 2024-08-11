@@ -4,17 +4,14 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, tap, throwError } from 'rxjs';
 
 import {
   LoginUser,
-  // RegisterUser,
-  // CreatedUserResponse,
   ChangePassword,
   EditInterface,
   ChangePasswordResponse,
   LoginResponse,
-  UserDataRespnse,
   RegisterUser,
   CreatedUserResponse,
   UserEditResponse,
@@ -69,8 +66,9 @@ export class AuthService {
         inputData
       )
       .pipe(
-        map(({ data }) => data),
+        map(({ message }) => message),
         catchError((err: HttpErrorResponse) => {
+          console.log(err);
           return throwError(err.error.message);
         })
       );

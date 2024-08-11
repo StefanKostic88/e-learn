@@ -1,24 +1,25 @@
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UiService } from '../../../coreFeatures/services/uiService/ui.service';
+import { NavigationLink } from '../../../coreFeatures/models/shared.models';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, NgClass, NgFor],
+  imports: [RouterLink, RouterLinkActive, NgClass, NgFor, NgIf],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
 })
 export class NavigationComponent {
-  @Input() navigationTitle?: string;
-  @Input() linksList?: { path: string; linkName: string; active?: boolean }[];
-  @Input() isMainNav: boolean = false;
-  @Input() accountBoxNav: boolean = false;
+  @Input() public navigationTitle?: string;
+  @Input() public linksList?: NavigationLink[];
+  @Input() public isMainNav: boolean = false;
+  @Input() public accountBoxNav: boolean = false;
 
   constructor(private uiService: UiService) {}
 
-  trackByIndex(index: number) {
+  protected trackByIndex(index: number) {
     return index;
   }
   public closeNavigation(): void {
