@@ -1,6 +1,5 @@
 import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-page-wraper',
@@ -12,5 +11,5 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PageWraperComponent {
   @Input() public pageTitle?: string | null;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor() {}
 }

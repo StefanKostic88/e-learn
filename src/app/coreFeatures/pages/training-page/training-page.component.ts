@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ButtonComponent,
   DatePickerComponent,
@@ -6,14 +6,19 @@ import {
   TableComponent,
 } from '../../../shared';
 import { ButtonSize, ButtonState } from '../../../shared/models/button.model';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { UserStoreService } from '../../services/user/user-store.service';
 import { TrainingStoreService } from '../../services/training/training-store.service';
 import { MyTrainingTableData } from '../../models/user.model';
 import { LoaderComponent } from '../../../shared/ui/loader/loader.component';
+import { FormService } from '../../services/form/form.service';
+import {
+  trainingPageTableHeaders,
+  trainingPageTeableHeadersTrainer,
+} from '../../constants/dictionary';
 
 const components = [
   DatePickerComponent,
@@ -31,74 +36,39 @@ const components = [
   styleUrl: './training-page.component.scss',
 })
 export class TrainingPageComponent implements OnInit {
-  public readonly btnSize: typeof ButtonSize = ButtonSize;
-  public readonly btnType: typeof ButtonState = ButtonState;
+  protected readonly btnSize: typeof ButtonSize = ButtonSize;
+  protected readonly btnType: typeof ButtonState = ButtonState;
+  protected readonly tableHeaders = trainingPageTableHeaders;
+  protected readonly teableHeadersTrainer = trainingPageTeableHeadersTrainer;
 
-  trainingForm!: FormGroup;
+  protected trainingForm!: FormGroup;
 
-  role$: Observable<string | undefined> =
+  protected readonly role$: Observable<string | undefined> =
     this.userStoreService.getCurrentUserRole();
-  // public currentUser$ = this.userService.currentUser;
-  // myTrainings$?: Observable<MyTrainingOutpup[]>;
-  myTrainings$: Observable<MyTrainingTableData[]> = this.trainingStoreService
-    .getMyTrainings()
-    .pipe(tap((el) => console.log(el)));
-
-  tableHeaders = ['DATE', 'TRAINING NAME', 'TYPE', 'TRAINER NAME', 'DURATION'];
-  teableHeadersTrainer = [
-    'DATE',
-    'TRAINING NAME',
-    'TYPE',
-    'STUDENT NAME',
-    'DURATION',
-  ];
+  protected myTrainings$: Observable<MyTrainingTableData[]> =
+    this.trainingStoreService.getMyTrainings();
 
   constructor(
-    // private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute, // private trainingService: TrainingService,
+    private route: ActivatedRoute,
     private userStoreService: UserStoreService,
-    private trainingStoreService: TrainingStoreService
+    private trainingStoreService: TrainingStoreService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
-    const currentDate = new Date();
-    const nextTenDays = new Date();
-    nextTenDays.setDate(currentDate.getDate() + 10);
-
-    this.trainingForm = new FormGroup({
-      searchStudent: new FormControl(''),
-      fromDate: new FormControl(currentDate),
-      toDate: new FormControl(nextTenDays),
-      searchSpecialization: new FormControl(''),
-    });
-    // this.currentUser$.subscribe(console.log);
-    // this.myTrainings$ = this.trainingService.getMyTrainings();
-
-    // const data = this.trainingService.getMyTrainingsForTrainer();
-    this.role$.subscribe(console.log);
-
-    console.log();
+    this.trainingForm = this.formService.generateSearchFormFeailds();
   }
 
-  public navigateToAddTrainer() {
-    // this.router.navigate(['add-training'], { relativeTo: this.route.parent });
+  protected navigateToAddTrainer() {
     this.router.navigate(['add-training'], { relativeTo: this.route });
   }
 
-  public onSearch() {
-    console.log(this.trainingForm.value);
+  protected onSearch() {
     const data = this.trainingForm.value;
-
     const params = `name=${data.searchStudent}&specialization=${data.searchSpecialization}&createdBefore=${data.fromDate}&createdAfter=${data.toDate}`;
-    // const params = `name=${data.searchStudent}&specialization=${
-    //   data.searchSpecialization
-    // }&createdBefore=${data.fromDate.toISOString()}&createdAfter=${data.toDate.toISOString()}`;
 
-    console.log(params);
-
-    this.myTrainings$ = this.trainingStoreService
-      .getMyTrainingsWithParams(params)
-      .pipe(tap((el) => console.log(el)));
+    this.myTrainings$ =
+      this.trainingStoreService.getMyTrainingsWithParams(params);
   }
 }

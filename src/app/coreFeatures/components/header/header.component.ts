@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   HostListener,
@@ -30,7 +31,7 @@ import {
 import { AccountBoxComponent } from '../account-box/account-box.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
-import { Observable, filter, map, of } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 import { UiService } from '../../services/uiService/ui.service';
 import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { UserStoreService } from '../../services/user/user-store.service';
@@ -65,7 +66,8 @@ export class HeaderComponent implements OnInit {
   @ViewChild('header') headerEl?: ElementRef;
   @ViewChild(AccountBoxComponent) accountBoxComponent?: AccountBoxComponent;
   // public userHeaderData$?: Observable<UserHeaderData>;
-  public userHeaderData$?: Observable<HeaderData>;
+  // public userHeaderData$?: Observable<HeaderData>;
+  public userHeaderData$?: Observable<any>;
   public readonly linksList = headerLinksList;
   public readonly moonIcon: IconDefinition = faMoon;
   public readonly userIcon: IconDefinition = faCircleUser;

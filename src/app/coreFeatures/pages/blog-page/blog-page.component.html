@@ -5,7 +5,7 @@
         class="blog__box-container flex flex-wrap gap-6 items-center justify-center"
       >
         <app-box
-          *ngFor="let blog of blogData"
+          *ngFor="let blog of blogData; trackBy: trackByIndex"
           [title]="blog.title"
           [readTime]="blog.readTime"
           [creationDate]="blog.creationDate"

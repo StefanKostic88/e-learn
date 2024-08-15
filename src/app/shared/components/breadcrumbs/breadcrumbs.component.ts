@@ -32,7 +32,6 @@ export class BreadcrumbsComponent implements OnInit {
   private transformCurrentUrl(url: string) {
     const currentPath = url.slice(1);
     const urlArray = currentPath.split('/');
-
     return urlArray.map((path) => path.split('-').join(' ')).join(' > ');
   }
 }

@@ -13,7 +13,7 @@
       </div>
       <div class="teams-section__members">
         <app-profile-card
-          *ngFor="let profile of teamData"
+          *ngFor="let profile of teamData; trackBy: trackByIndex"
           [memberData]="profile"
         ></app-profile-card>
       </div>

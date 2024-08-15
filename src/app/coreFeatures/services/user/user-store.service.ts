@@ -4,9 +4,12 @@ import {
   BehaviorSubject,
   catchError,
   combineLatest,
+  exhaustMap,
   map,
   Observable,
   of,
+  switchMap,
+  take,
   tap,
   throwError,
 } from 'rxjs';
@@ -14,6 +17,7 @@ import { HeaderData, UserData, myStudent } from '../../models/user.model';
 import { AuthStoreService } from '../auth/auth-store.service';
 
 import { UiService } from '../uiService/ui.service';
+import { SessionStorageService } from '../session-storage/session-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +34,8 @@ export class UserStoreService {
   constructor(
     private userService: UserService,
     private authStoreService: AuthStoreService,
-    private uiService: UiService
+    private uiService: UiService,
+    private sessionStorageService: SessionStorageService
   ) {}
 
   set currentUser(val: null | UserData) {
@@ -42,26 +47,69 @@ export class UserStoreService {
   }
 
   public getCurrentUser(): Observable<UserData | null> {
-    return this.userService.getCurrentUser().pipe(
-      tap((user) => {
-        this.currentUser = user;
-      }),
-      catchError(() => {
-        return of(null);
+    return this.authStoreService.isAuthorized.pipe(
+      exhaustMap((isAuthorized) => {
+        console.log(isAuthorized);
+        if (isAuthorized) {
+          return this.userService.getCurrentUser().pipe(
+            tap((user) => {
+              this.currentUser = user;
+            }),
+            catchError(() => {
+              return of(null);
+            })
+          );
+        } else {
+          return of(null);
+        }
       })
     );
+    // return this.userService.getCurrentUser().pipe(
+    //   tap((user) => {
+    //     this.currentUser = user;
+    //   }),
+    //   catchError(() => {
+    //     return of(null);
+    //   })
+    // );
   }
 
   public getUserHeaderData(): Observable<HeaderData> {
     const isAuthorized = this.authStoreService.isAuthorized;
+
+    // const currentUserData = this.currentUser$.pipe(
+    //   map((user) => {
+    //     const userData = {
+    //       email: user && user.email,
+    //       username: user && user.username,
+    //       img: user?.img ? user.img : this.defaultImgPath,
+    //     };
+    //     return userData;
+    //   })
+    // );
     const currentUserData = this.currentUser$.pipe(
       map((user) => {
-        const userData = {
-          email: user && user.email,
-          username: user && user.username,
-          img: user?.img ? user.img : this.defaultImgPath,
-        };
-        return userData;
+        if (user) {
+          const userData = {
+            email: user && user.email,
+            username: user && user.username,
+            img: user?.img ? user.img : this.defaultImgPath,
+          };
+          this.sessionStorageService.setHeaderData(userData);
+          return userData;
+        } else {
+          const data = this.sessionStorageService.getHeaderData();
+          console.log(data);
+          const userData = data
+            ? JSON.parse(data)
+            : {
+                email: null,
+                username: null,
+                img: null,
+              };
+
+          return userData;
+        }
       })
     );
 
@@ -71,6 +119,7 @@ export class UserStoreService {
           isAuthorized,
           accountData: currentUserData,
         };
+
         return result;
       })
     );

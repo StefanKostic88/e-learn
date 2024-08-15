@@ -5,7 +5,6 @@ import {
   exhaustMap,
   finalize,
   from,
-  map,
   of,
   tap,
   throwError,
@@ -88,6 +87,7 @@ export class AuthStoreService {
 
   public logOut(): void {
     this.sessionStorageService.deleteToken();
+    this.sessionStorageService.deleteHeaderData();
     this.isAuthorized = !!this.sessionStorageService.getToken();
     this.uiService.errorMessage = null;
     this.uiService.loadingSpiner = false;
@@ -162,10 +162,15 @@ export class AuthStoreService {
     return this.authService.editUser(inputData).pipe(
       tap(() => {
         this.uiService.loadingSpiner = false;
+        this.toasterService.toasterState = {
+          isOpened: true,
+          message: 'User data changed',
+        };
         this.routerService.toMyAccount();
       }),
       catchError((err) => {
         this.uiService.loadingSpiner = false;
+        this.toasterService.resetToasterState();
         return throwError(err);
       })
     );

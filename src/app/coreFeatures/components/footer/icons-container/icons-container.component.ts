@@ -1,5 +1,5 @@
 import { NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   IconDefinition,
@@ -14,7 +14,17 @@ import {
   imports: [FontAwesomeModule, NgFor],
   templateUrl: './icons-container.component.html',
   styleUrl: './icons-container.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconsContainerComponent {
-  iconData: IconDefinition[] = [faTwitter, faFacebook, faYoutube];
+  protected readonly iconData: IconDefinition[] = [
+    faTwitter,
+    faFacebook,
+    faYoutube,
+  ];
+
+  protected trackByIndex(index: number): number {
+    console.log(index, 'ADASD');
+    return index;
+  }
 }

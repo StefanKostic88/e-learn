@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -38,6 +43,7 @@ const pipes = [GenerateInputsPipe];
   imports: [modules, components, pipes],
   templateUrl: './change-password-page.component.html',
   styleUrl: './change-password-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordPageComponent implements OnInit, OnDestroy {
   protected readonly btnSize: typeof ButtonSize = ButtonSize;
@@ -71,7 +77,7 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
     const timer = setTimeout(() => {
       this.uiService.loadingSpiner = false;
       clearTimeout(timer);
-    }, 300);
+    }, 100);
 
     this.passwordChangeForm =
       this.formService.generatePasswordChangeFomrFields();
@@ -87,7 +93,7 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions?.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   protected onSubmit(): void {
@@ -131,5 +137,9 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
     }
 
     this.changesAreNotValid = changed ? false : true;
+  }
+
+  render() {
+    console.log('PASS CHANGE RENDER');
   }
 }

@@ -13,6 +13,7 @@
   <ng-container *ngIf="userHeaderData$ | async as userHeaderData">
     <ng-container *ngIf="userHeaderData.isAuthorized; else notAuthorized">
       <div
+        *ngIf="userHeaderData.accountData.username"
         #accountDetails
         class="header__account-detailes"
         (click)="toggleAccountBox()"

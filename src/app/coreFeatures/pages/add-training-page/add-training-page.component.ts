@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import {
   ButtonComponent,
   DatePickerComponent,
   DropDownMenuComponent,
   InputComponent,
 } from '../../../shared';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, Subscription, tap } from 'rxjs';
 import { specializations, trainingType } from '../../constants/dictionary';
 import { TrainingStoreService } from '../../services/training/training-store.service';
 import {
@@ -20,7 +20,11 @@ import {
   TrainingCreationAttribute,
 } from '../../models/user.model';
 import { UserStoreService } from '../../services/user/user-store.service';
-import { checkNumberValidator } from '../../../shared/validators/check-number-validator/checkNumberDirective';
+
+import { RouterService } from '../../services/router/router.service';
+import { ActivatedRoute } from '@angular/router';
+import { TrainingForm } from '../../models/user.model';
+import { FormService } from '../../services/form/form.service';
 
 const components = [
   InputComponent,
@@ -35,105 +39,66 @@ const components = [
   imports: [components, ReactiveFormsModule, AsyncPipe, NgIf],
   templateUrl: './add-training-page.component.html',
   styleUrl: './add-training-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddTrainingPageComponent implements OnInit {
-  trainingForm!: FormGroup;
+export class AddTrainingPageComponent implements OnInit, OnDestroy {
+  protected allSpecializations: string[] = specializations;
+  protected allTrainingTypes: string[] = trainingType;
+  protected datePickerLabel: string = 'Training Start Date';
+  protected trainingForm!: FormGroup;
+  protected allTrainers$?: Observable<TrainerOption[]>;
 
-  public allSpecializations = specializations;
-  public allTrainers$?: Observable<TrainerOption[]>;
-  public currentUserFullName?: string;
-  public currentUserId?: string;
-
-  public allTrainingTypes: string[] = trainingType;
-  datePickerLabel = 'Training Start Date';
+  private subsciptions: Subscription[] = [];
+  private currentUserFullName?: string;
+  private currentUserId?: string;
 
   constructor(
     private trainingStoreService: TrainingStoreService,
-    private userStoreService: UserStoreService
-  ) {} // private userService: UserService // private trainingService: TrainingService, // private trainerService: TrainerService, // private specializationService: SpecializationService,
+    private userStoreService: UserStoreService,
+    private routerService: RouterService,
+    private route: ActivatedRoute,
+    private formService: FormService
+  ) {}
 
   ngOnInit(): void {
-    this.userStoreService.currentUser
-      .pipe(
-        map((user) => ({
-          fullName: `${user?.firstName} ${user?.lastName}`,
-          currentUserId: user?.id,
-        }))
-      )
-      .subscribe(({ fullName, currentUserId }) => {
-        this.currentUserFullName = fullName;
-        this.currentUserId = currentUserId;
-      });
+    this.subsciptions.push(this.getCurrentUserIdAndFullName().subscribe());
 
-    // this.allTrainers$ = this.trainingStoreService.getAllTrainers();
-    this.userStoreService.getMyTrainers().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.allTrainers$ = of(
-          data.map((el) => ({
-            trainerId: el.userId,
-            trainerName: el.name,
-            specialization: el?.specialization,
-          }))
-        );
+    this.allTrainers$ = this.getAllTrainersAndSetOptionField();
 
-        // this.allTrainers$ = of(data);
-        this.trainingForm = new FormGroup({
-          trainingName: new FormControl('', [Validators.required]),
-          startDate: new FormControl(new Date()),
-          duration: new FormControl(1, [
-            Validators.required,
-            Validators.min(1),
-            checkNumberValidator(),
-          ]),
-          trainingType: new FormControl(this.allTrainingTypes[0]),
-          trainer: new FormControl({
-            specialization: data[0]?.specialization,
-            trainerId: data[0]?.userId,
-            trainerName: data[0]?.name,
-          }),
-          logedInUser: new FormControl(''),
-          description: new FormControl(''),
-        });
-      },
-    });
-
-    this.trainingForm = new FormGroup({
-      trainingName: new FormControl(''),
-      startDate: new FormControl(new Date()),
-      duration: new FormControl(''),
-      trainingType: new FormControl(''),
-      trainer: new FormControl({
-        specialization: '',
-        trainerId: '',
-        trainerName: '',
-      }),
-      logedInUser: new FormControl(''),
-      description: new FormControl(''),
-    });
+    this.trainingForm = this.formService.generateCreateTrainingField(
+      this.allTrainingTypes[0]
+    );
   }
 
   onSubmit() {
-    // interface TrainingCreationAttribute {
-    //   trainer_id: string;
-    //   student_id: string;
-    //   specialization: string;
-    //   trainingName: string;
-    //   trainingType: string;
-    //   startDate: Date;
-    //   duration: string;
-    //   trainerName: string;
-    //   studentName: string;
-    //   description?: string;
-    // }
-
     const data = this.trainingForm.value;
+    const finalData = this.generateSubmitData(data);
+
+    this.subsciptions.push(
+      this.trainingStoreService
+        .createTraining(finalData, this.route)
+        .subscribe({
+          error: (err) => {
+            this.datePickerLabel = err;
+          },
+        })
+    );
+  }
+  ngOnDestroy(): void {
+    this.subsciptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  protected backToTrainings() {
+    this.routerService.toTrainings(this.route);
+  }
+
+  private generateSubmitData(data: TrainingForm): TrainingCreationAttribute {
     const startDate = new Date(data.startDate);
     const duration = Number(data.duration);
     const endDate = new Date();
     endDate.setDate(startDate.getDate() + duration);
 
-    const finalData: TrainingCreationAttribute = {
+    return {
       trainer_id: data.trainer.trainerId,
       student_id: this.currentUserId as string,
       specialization: data.trainer.specialization,
@@ -146,13 +111,30 @@ export class AddTrainingPageComponent implements OnInit {
       studentName: this.currentUserFullName as string,
       description: data.description,
     };
+  }
 
-    console.log(finalData);
+  private getCurrentUserIdAndFullName() {
+    return this.userStoreService.currentUser.pipe(
+      map((user) => ({
+        fullName: `${user?.firstName} ${user?.lastName}`,
+        currentUserId: user?.id,
+      })),
+      tap(({ fullName, currentUserId }) => {
+        this.currentUserFullName = fullName;
+        this.currentUserId = currentUserId;
+      })
+    );
+  }
 
-    this.trainingStoreService.createTraining(finalData).subscribe({
-      error: (err) => {
-        this.datePickerLabel = err;
-      },
-    });
+  private getAllTrainersAndSetOptionField() {
+    return this.route.data.pipe(
+      map((data) => data['myTrainers']),
+      tap((data) =>
+        this.formService.generateTrainerSelectOptionData(
+          this.trainingForm,
+          data[0]
+        )
+      )
+    );
   }
 }

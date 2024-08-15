@@ -8,7 +8,6 @@ import { FormGroup } from '@angular/forms';
 export class GenerateInputsPipe implements PipeTransform {
   transform(formGrop: FormGroup): any[] {
     return Object.entries(formGrop.controls).map((el) => {
-      console.log('GENERATE INPUTS');
       const name = (el[0] as string)
         .replace(/([a-z])([A-Z])/g, '$1 $2')
         .replace(/\b\w/g, (char) => char.toUpperCase());

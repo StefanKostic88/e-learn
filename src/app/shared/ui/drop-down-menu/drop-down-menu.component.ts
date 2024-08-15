@@ -24,24 +24,24 @@ import { TrainerOption } from '../../../coreFeatures';
   ],
 })
 export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
-  @Input() required: boolean = false;
-  @Input() type: string = 'specialization';
-  @Input() label?: string;
-  @Input() initialValue?: string | null;
+  @Input() public required: boolean = false;
+  @Input() public type: string = 'specialization';
+  @Input() public label?: string;
+  @Input() public initialValue?: string | null;
   @Input() public name: string = 'specialization';
   @Input() public options?: string[] | TrainerOption[];
 
-  public menuIsOpened = false;
-  public readonly icon = faChevronDown;
-  public formControlName?: string;
-  public value!: string;
+  protected readonly icon = faChevronDown;
+  protected menuIsOpened = false;
+  protected formControlName?: string;
+  protected value!: string;
 
-  public chnaged!: (value: string | TrainerOption) => void;
-  public touched!: () => void;
-  public isDisabled!: boolean;
+  protected chnaged!: (value: string | TrainerOption) => void;
+  protected touched!: () => void;
+  protected isDisabled!: boolean;
 
   // public selectedOption?: string;
-  public selectedOption?: string | TrainerOption;
+  protected selectedOption?: string | TrainerOption;
 
   protected title?: string;
 
@@ -89,14 +89,6 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
       this.toggleMenu();
     }
   }
-  // public selectOption(option: string): void {
-  //   console.log(option);
-  //   this.selectedOption = option;
-  //   this.chnaged(option);
-  //   this.touched();
-  //   this.title = option;
-  //   this.toggleMenu();
-  // }
 
   public writeValue(value: string): void {
     if (value !== undefined) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   BoxComponent,
   ButtonComponent,
@@ -14,6 +14,7 @@ const components = [PageWraperComponent, BoxComponent, ButtonComponent];
   imports: [components, NgFor],
   templateUrl: './blog-page.component.html',
   styleUrl: './blog-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogPageComponent {
   public blogData = [
@@ -60,4 +61,8 @@ export class BlogPageComponent {
       tag: 'Lorem, ipsum.',
     },
   ];
+
+  public trackByIndex(index: number): number {
+    return index;
+  }
 }

@@ -7,12 +7,21 @@ import {
   TrainerOption,
   TrainingCreationAttribute,
 } from '../../models/user.model';
+import { ToasterService } from '../toaster/toaster.service';
+import { RouterService } from '../router/router.service';
+import { ActivatedRoute } from '@angular/router';
+import { UiService } from '../uiService/ui.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TrainingStoreService {
-  constructor(private trainingService: TrainingService) {}
+  constructor(
+    private trainingService: TrainingService,
+    private toasterService: ToasterService,
+    private routerService: RouterService,
+    private uiService: UiService
+  ) {}
 
   public getAllTrainers(): Observable<TrainerOption[]> {
     return this.trainingService.getAllTrainers().pipe(
@@ -26,9 +35,24 @@ export class TrainingStoreService {
     );
   }
 
-  public createTraining(data: TrainingCreationAttribute) {
+  public createTraining(
+    data: TrainingCreationAttribute,
+    route: ActivatedRoute
+  ) {
+    this.uiService.loadingSpiner = true;
     return this.trainingService.createTraining(data).pipe(
+      tap(() => {
+        this.toasterService.toasterState = {
+          message: 'Training created',
+          isOpened: true,
+        };
+
+        this.routerService.toTrainings(route);
+        this.uiService.loadingSpiner = false;
+      }),
       catchError((err) => {
+        this.toasterService.resetToasterState();
+        this.uiService.loadingSpiner = false;
         return throwError(err);
       })
     );

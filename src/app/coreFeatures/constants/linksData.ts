@@ -1,3 +1,5 @@
+import { HeaderLinkList } from '../models/shared.models';
+
 export const footerLinksData = [
   {
     NavigationTitle: 'Products',
@@ -44,7 +46,7 @@ export const footerLinksData = [
   },
 ];
 
-export const headerLinksList = [
+export const headerLinksList: HeaderLinkList[] = [
   { path: 'blog', linkName: 'Blog', active: true },
   { path: 'pricing', linkName: 'Pricing' },
   { path: 'about-us', linkName: 'About Us' },

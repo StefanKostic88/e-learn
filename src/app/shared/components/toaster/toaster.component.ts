@@ -16,7 +16,7 @@ import { ToasterService } from '../../../coreFeatures/services/toaster/toaster.s
   styleUrl: './toaster.component.scss',
 })
 export class ToasterComponent {
-  @Input() toasterMessage: string = 'Traineing Added';
+  @Input() toasterMessage: string = 'Training Added';
   @Input() public closeHandler?: () => void;
 
   protected toasterState$ = this.toasterService.toasterState;
@@ -27,7 +27,6 @@ export class ToasterComponent {
   constructor(private toasterService: ToasterService) {}
 
   public close() {
-    // this.authStoreService.switchToMyaccount();
     this.toasterService.resetToasterState();
   }
 }

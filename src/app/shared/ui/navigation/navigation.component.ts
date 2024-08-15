@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UiService } from '../../../coreFeatures/services/uiService/ui.service';
 import { NavigationLink } from '../../../coreFeatures/models/shared.models';
@@ -10,6 +10,7 @@ import { NavigationLink } from '../../../coreFeatures/models/shared.models';
   imports: [RouterLink, RouterLinkActive, NgClass, NgFor, NgIf],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
   @Input() public navigationTitle?: string;

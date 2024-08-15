@@ -25,7 +25,6 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const authorized = this.authStoreService.isAuthorized;
     const JWT_TOKEN = this.sessionStorageService.getToken();
-    console.log(JWT_TOKEN);
 
     if (authorized) {
       const tokenizedRequest = req.clone({

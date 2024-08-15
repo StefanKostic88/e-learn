@@ -191,3 +191,19 @@ export interface MyTrainingTableData {
   duration: string;
   student: string;
 }
+
+export interface TrainerFormControlData {
+  specialization: string;
+  trainerId: string;
+  trainerName: string;
+}
+
+export interface TrainingForm {
+  trainingName: string;
+  startDate: Date;
+  duration: number;
+  trainingType: string;
+  trainer: TrainerFormControlData;
+  logedInUser: string;
+  description: string;
+}

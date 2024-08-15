@@ -1,4 +1,4 @@
-<form [formGroup]="trainingForm" (ngSubmit)="onSubmit()" class="add-training">
+<form [formGroup]="trainingForm" class="add-training">
   <h3>Training</h3>
   <div class="add-training__trainings">
     <div class="add-training__training-spec">
@@ -57,7 +57,15 @@
     </div>
   </div>
   <div class="add-training__controls">
-    <app-button [content]="'Cancel'" [outlined]="false"></app-button>
-    <app-button [content]="'Add'" [disabled]="!trainingForm.valid"></app-button>
+    <app-button
+      [content]="'Cancel'"
+      [outlined]="false"
+      (click)="backToTrainings()"
+    ></app-button>
+    <app-button
+      [content]="'Add'"
+      (click)="onSubmit()"
+      [disabled]="!trainingForm.valid"
+    ></app-button>
   </div>
 </form>
