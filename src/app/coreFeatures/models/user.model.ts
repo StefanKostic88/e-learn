@@ -15,19 +15,19 @@ export interface RegisterUser {
   dateOfBirth?: string;
 }
 
-export interface TrainerInterface {
-  id: string;
-  firstName: string;
-  lastName: string;
-  trainer: {
-    specialization: {
-      specializationName: string;
-      _id: string;
-    };
-    _id: string;
-    user_id: string;
-  };
-}
+// export interface TrainerInterface {
+//   id: string;
+//   firstName: string;
+//   lastName: string;
+//   trainer: {
+//     specialization: {
+//       specializationName: string;
+//       _id: string;
+//     };
+//     _id: string;
+//     user_id: string;
+//   };
+// }
 
 export interface TrainerRefined {
   name: string;
@@ -57,20 +57,20 @@ export interface EditInterface {
   specialization?: string;
 }
 
-export interface TrainerData {
-  _id: string;
-  user_id: string;
-  specialization: {
-    specializationName: string;
-    _id: string;
-  };
-  myStudents: {
-    firstName: string;
-    lastName: string;
-    id: string;
-    isActive: boolean;
-  }[];
-}
+// export interface TrainerData {
+//   _id: string;
+//   user_id: string;
+//   specialization: {
+//     specializationName: string;
+//     _id: string;
+//   };
+//   myStudents: {
+//     firstName: string;
+//     lastName: string;
+//     id: string;
+//     isActive: boolean;
+//   }[];
+// }
 
 // export interface UserData {
 //   id: string;
@@ -140,7 +140,6 @@ export interface UserEditResponse {
   message: string;
 }
 
-// HEADER DATA
 export interface HeaderDetails {
   email: string | null;
   username: string | null;

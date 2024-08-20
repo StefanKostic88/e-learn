@@ -1,7 +1,7 @@
 <app-page-wraper [pageTitle]="'Join us'">
   <ng-container class="main">
     <app-join-us-box
-      *ngFor="let joinUsElement of joinUsElements"
+      *ngFor="let joinUsElement of joinUsElements; trackBy: trackByIndex"
       [title]="joinUsElement.title"
       [content]="joinUsElement.content"
       [img]="joinUsElement.img"

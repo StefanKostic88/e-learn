@@ -173,3 +173,37 @@ export const faqData: FaqDataInterface[] = [
     answer: `Yes, we offer a refund policy. If you are not satisfied with a course, you can request a refund within 14 days of purchase, provided you have not completed more than 25% of the course content. To request a refund, go to your account settings, find the course under your enrolled courses, and click on "Request Refund."`,
   },
 ];
+
+export interface BoxItem {
+  title: string;
+  creationDate: Date;
+  img: string;
+  readTime: number;
+  tag: string;
+}
+
+export const boxItems: BoxItem[] = [
+  {
+    title: 'Revolutionizing Education: How AI is Transforming E-Learning',
+    creationDate: new Date(),
+    img: '../../../assets/imgs/box-image-1.jpg',
+    readTime: 5,
+    tag: 'Elearning Transformation',
+  },
+  {
+    title:
+      'Mastering New Frontiers: The Rise of Virtual Reality in Online Education',
+    creationDate: new Date(),
+    img: '../../../assets/imgs/box-image-2.jpg',
+    readTime: 10,
+    tag: 'Artificial Intelligence',
+  },
+  {
+    title:
+      'Unlocking Potential: Personalized Learning in the Digital Classroom',
+    creationDate: new Date(),
+    img: '../../../assets/imgs/box-image-3.jpg',
+    readTime: 15,
+    tag: 'Digital Learning',
+  },
+];

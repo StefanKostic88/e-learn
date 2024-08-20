@@ -13,9 +13,27 @@ export class RouterService {
   public toMyAccount(): void {
     this.router.navigate(['/my-account']);
   }
+  public toJoinUs(): void {
+    this.router.navigate(['/join-us']);
+  }
   public toTrainings(route: ActivatedRoute) {
     this.router.navigate(['..'], { relativeTo: route });
   }
-}
 
-//
+  public toTrainerRegister(route: ActivatedRoute) {
+    this.router.navigate(['trainer-register'], {
+      relativeTo: route,
+      state: {
+        role: 'trainer',
+      },
+    });
+  }
+  public toStudentRegister(route: ActivatedRoute) {
+    this.router.navigate(['student-register'], {
+      relativeTo: route,
+      state: {
+        role: 'student',
+      },
+    });
+  }
+}

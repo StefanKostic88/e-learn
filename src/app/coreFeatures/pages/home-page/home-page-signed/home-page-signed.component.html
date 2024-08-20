@@ -11,7 +11,7 @@
   <div class="home-page-signed-botton">
     <div class="box-conrainer">
       <app-box
-        *ngFor="let boxItem of boxItems"
+        *ngFor="let boxItem of boxItems; trackBy: trackByIndex"
         [title]="boxItem.title"
         [img]="boxItem.img"
         [readTime]="boxItem.readTime"
