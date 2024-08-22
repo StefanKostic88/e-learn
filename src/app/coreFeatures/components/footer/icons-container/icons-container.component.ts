@@ -24,7 +24,6 @@ export class IconsContainerComponent {
   ];
 
   protected trackByIndex(index: number): number {
-    console.log(index, 'ADASD');
     return index;
   }
 }

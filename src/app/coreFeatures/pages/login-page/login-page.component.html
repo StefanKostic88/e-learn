@@ -7,13 +7,12 @@
     <span class="custom-span"
       >Dont have an accoun? <a [routerLink]="'/join-us'">Sign up</a></span
     >
-    <!-- <app-custom-img [img]="captcha"></app-custom-img> -->
+
     <re-captcha
       (resolved)="resolvedCaptcha($event)"
-      siteKey="6LcqCisqAAAAAISuj2t66F2XokMGPh9H60ZUPseG"
+      [siteKey]="siteKey"
     ></re-captcha>
 
     <app-spiner *ngIf="isLoading$ | async"></app-spiner>
-    {{ changeDET() }}
   </ng-container>
 </app-page-wraper>

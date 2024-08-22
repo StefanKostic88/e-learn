@@ -1,42 +1,38 @@
-<app-spiner *ngIf="isLoading$ | async; else content"></app-spiner>
-
-<ng-template #content>
-  <div class="add-trainer-component">
-    <div class="add-trainer-component__comment">
-      <p class="text-small-to-medium">
-        Please select trainers for adding them into your trainers list
-      </p>
-      <p class="text-small-to-medium">
-        There is no possibility to remove trainer
-      </p>
-    </div>
-    <div class="table-container">
-      <div class="w-[478px]">
-        <h2>All Trainers</h2>
-        <div class="loader-container" *ngIf="tableL$ | async">
-          <app-loader></app-loader>
-        </div>
-
-        <app-add-user-table
-          *ngIf="addTrainerForm"
-          [tableHeader]="addTrainerTableHeader"
-          [trainersForm]="addTrainerForm"
-        ></app-add-user-table>
-      </div>
-      <div class="w-[428px]">
-        <h2>My Trainers</h2>
-
-        <app-table
-          *ngIf="myTrainers$ | async as myTrainers; else loader"
-          [tableHeaders]="myTrainersTableHeader"
-          [tableData]="myTrainers"
-        ></app-table>
-      </div>
-    </div>
-
-    <app-button [content]="'Add Trainer'" (click)="addTrainer()"></app-button>
+<div class="add-trainer-component">
+  <div class="add-trainer-component__comment">
+    <p class="text-small-to-medium">
+      Please select trainers for adding them into your trainers list
+    </p>
+    <p class="text-small-to-medium">
+      There is no possibility to remove trainer
+    </p>
   </div>
-</ng-template>
+  <div class="table-container">
+    <div class="w-[478px]">
+      <h2>All Trainers</h2>
+      <div class="loader-container" *ngIf="tableL$ | async">
+        <app-loader></app-loader>
+      </div>
+
+      <app-add-user-table
+        *ngIf="addTrainerForm"
+        [tableHeader]="addTrainerTableHeader"
+        [trainersForm]="addTrainerForm"
+      ></app-add-user-table>
+    </div>
+    <div class="w-[428px]">
+      <h2>My Trainers</h2>
+
+      <app-table
+        *ngIf="myTrainers$ | async as myTrainers; else loader"
+        [tableHeaders]="myTrainersTableHeader"
+        [tableData]="myTrainers"
+      ></app-table>
+    </div>
+  </div>
+
+  <app-button [content]="'Add Trainer'" (click)="addTrainer()"></app-button>
+</div>
 
 <ng-template #loader>
   <div class="loader-container"><app-loader></app-loader></div>

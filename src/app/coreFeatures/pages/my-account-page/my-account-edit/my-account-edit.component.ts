@@ -28,6 +28,8 @@ import { RouterService } from '../../../services/router/router.service';
 import { FormService } from '../../../services/form/form.service';
 import { EditFormInput } from '../../../models/shared.models';
 import { ToasterService } from '../../../services/toaster/toaster.service';
+import { ModalService } from '../../../services/modal/modal.service';
+import { ModaltestComponent } from '../../../../shared/components/modaltest/modaltest.component';
 
 const components = [
   CustomImgComponent,
@@ -36,6 +38,7 @@ const components = [
   DropDownMenuComponent,
   SwitcherComponent,
   ModalBoxComponent,
+  ModaltestComponent,
 ];
 
 const modules = [ReactiveFormsModule, CommonModule];
@@ -69,7 +72,8 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private authStoreService: AuthStoreService,
     private formService: FormService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -149,10 +153,17 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+  // boolean | Observable<boolean> | Promise<boolean>
+  canDeactivate() {
     if (this.changesAreNotValid) {
       return true;
     } else {
+      return this.modalService.confirmLeavePage('Leave Edit Profile', [
+        {
+          chunk:
+            'Are you sure you want to leave this page? Any unsaved changes will be lost.',
+        },
+      ]);
       return confirm(
         'Are you sure you want to leave this page? Any unsaved changes will be lost.'
       );

@@ -11,6 +11,7 @@ import { FooterComponent, HeaderComponent, UiService } from './coreFeatures';
 import { Subscription, filter, take, tap } from 'rxjs';
 import { UserStoreService } from './coreFeatures/services/user/user-store.service';
 import { NgIf } from '@angular/common';
+import { ModaltestComponent } from './shared/components/modaltest/modaltest.component';
 
 const components = [FooterComponent, HeaderComponent];
 

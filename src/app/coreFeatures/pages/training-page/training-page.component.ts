@@ -7,7 +7,7 @@ import {
 } from '../../../shared';
 import { ButtonSize, ButtonState } from '../../../shared/models/button.model';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { UserStoreService } from '../../services/user/user-store.service';
@@ -19,6 +19,7 @@ import {
   trainingPageTableHeaders,
   trainingPageTeableHeadersTrainer,
 } from '../../constants/dictionary';
+import { RouterService } from '../../services/router/router.service';
 
 const components = [
   DatePickerComponent,
@@ -49,11 +50,11 @@ export class TrainingPageComponent implements OnInit {
     this.trainingStoreService.getMyTrainings();
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private userStoreService: UserStoreService,
     private trainingStoreService: TrainingStoreService,
-    private formService: FormService
+    private formService: FormService,
+    private routerService: RouterService
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +62,7 @@ export class TrainingPageComponent implements OnInit {
   }
 
   protected navigateToAddTrainer() {
-    this.router.navigate(['add-training'], { relativeTo: this.route });
+    this.routerService.toAddTrainer(this.route);
   }
 
   protected onSearch() {

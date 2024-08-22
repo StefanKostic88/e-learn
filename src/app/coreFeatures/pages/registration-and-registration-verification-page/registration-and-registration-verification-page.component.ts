@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { IconDefinition, faCheck } from '@fortawesome/free-solid-svg-icons';
 import {
   ButtonComponent,
@@ -30,6 +30,7 @@ const modules = [FontAwesomeModule, NgIf, AsyncPipe];
   templateUrl:
     './registration-and-registration-verification-page.component.html',
   styleUrl: './registration-and-registration-verification-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegistrationAndRegistrationVerificationPageComponent {
   protected readonly checkIcon: IconDefinition = faCheck;

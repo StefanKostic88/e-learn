@@ -89,7 +89,7 @@ export class AddTrainingPageComponent implements OnInit, OnDestroy {
   }
 
   protected backToTrainings() {
-    this.routerService.toTrainings(this.route);
+    this.routerService.toTrainingsBack(this.route);
   }
 
   private generateSubmitData(data: TrainingForm): TrainingCreationAttribute {

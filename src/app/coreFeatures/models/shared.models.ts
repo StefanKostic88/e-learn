@@ -34,6 +34,10 @@ export interface HeaderLinkList {
   active?: boolean;
 }
 
+export interface ModalMessage {
+  chunk: string;
+}
+
 // ENUMS
 
 export enum Role {

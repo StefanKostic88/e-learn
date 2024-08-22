@@ -10,13 +10,14 @@ import { StudentsListComponent } from './students-list/students-list.component';
 import { MyTrainersComponent } from './my-trainers/my-trainers.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AsyncPipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { CustomImgComponent } from '../../ui/custom-img/custom-img.component';
 import { StatusMarkerComponent } from '../../ui/status-marker/status-marker.component';
 import { UserStoreService } from '../../../coreFeatures/services/user/user-store.service';
 import { myStudent, UiService, UserData } from '../../../coreFeatures';
 import { RouterService } from '../../../coreFeatures/services/router/router.service';
 import { LoaderComponent } from '../../ui/loader/loader.component';
+import { ModalService } from '../../../coreFeatures/services/modal/modal.service';
 
 export interface AccountDataOutput {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,6 +63,7 @@ export class MyAccountListComponent implements OnInit {
 
   public readonly accountDataOutput = this.userStoreService.getAccountData();
   public readonly role$ = this.userStoreService.getCurrentUserRole();
+  public readonly userId$ = this.userStoreService.getUserId();
 
   // public readonly userActiveStatus$: Observable<string> =
   //   this.userService.getUserAccountStatus();
@@ -99,7 +101,8 @@ export class MyAccountListComponent implements OnInit {
     private route: ActivatedRoute,
     private userStoreService: UserStoreService,
     private uiService: UiService,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -112,11 +115,16 @@ export class MyAccountListComponent implements OnInit {
   }
 
   toggleDeletAccountModal() {
-    this.modalBoxComponent?.toggleModal();
+    this.modalService.confirmDeleteProfile(
+      'Profile Deletion Confirmation',
+      this.modalMessageChunks,
+      this.userId$
+    );
   }
 
   confirmDeleteAndCloseModal() {
-    this.modalBoxComponent?.toggleModal();
+    console.log('DELETE');
+    // this.modalBoxComponent?.toggleModal();
   }
 
   getBojectKeys(obj: object) {

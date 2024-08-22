@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   faEyeSlash,
   faLock,
@@ -33,10 +27,9 @@ const modules = [FontAwesomeModule, ReactiveFormsModule, CommonModule];
   imports: [components, modules],
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginFormComponent implements OnInit, OnDestroy {
-  @Input() captchValid: boolean = false;
+  @Input() public captchValid: boolean = false;
 
   protected readonly buttonSize: typeof ButtonSize = ButtonSize;
 
@@ -47,7 +40,7 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   protected readonly lock = faLock;
   protected readonly eye = faEyeSlash;
 
-  public loginForm!: FormGroup;
+  protected loginForm!: FormGroup;
 
   private subscriptions: Subscription[] = [];
 
@@ -73,9 +66,8 @@ export class LoginFormComponent implements OnInit, OnDestroy {
   }
 
   protected onSubmit(): void {
-    const userCredentials: LoginUser = this.loginForm.value;
-
     if (this.captchValid) {
+      const userCredentials: LoginUser = this.loginForm.value;
       this.subscriptions.push(
         this.authStoreService.logInUser(userCredentials).subscribe({
           next: (sucess) => {
@@ -90,9 +82,5 @@ export class LoginFormComponent implements OnInit, OnDestroy {
     } else {
       this.uiService.errorMessage = 'Please verify that you are human';
     }
-  }
-
-  checkRENDER() {
-    console.log('RENDER Login FORM');
   }
 }

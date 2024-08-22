@@ -26,6 +26,7 @@ import { RouterService } from '../../services/router/router.service';
 import { ToasterService } from '../../services/toaster/toaster.service';
 import { GenerateInputsPipe } from '../../../shared/pipes/generate-inputs.pipe';
 import { FormService } from '../../services/form/form.service';
+import { ModalService } from '../../services/modal/modal.service';
 
 const modules = [ReactiveFormsModule, FontAwesomeModule, CommonModule];
 const components = [
@@ -68,7 +69,8 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
     private uiService: UiService,
     private routerService: RouterService,
     private toasterService: ToasterService,
-    private formService: FormService
+    private formService: FormService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -121,9 +123,12 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
     if (this.changesAreNotValid) {
       return true;
     } else {
-      return confirm(
-        'Are you sure you want to leave this page? Any unsaved changes will be lost.'
-      );
+      return this.modalService.confirmLeavePage('Leave Change Password Page', [
+        {
+          chunk:
+            'Are you sure you want to leave this page? Any unsaved changes will be lost.',
+        },
+      ]);
     }
   }
 

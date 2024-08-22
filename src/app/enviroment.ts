@@ -20,4 +20,5 @@ export const environment = {
     myTrainingTrainer:
       'http://localhost:8000/api/trainings/my-trainings-trainer',
   },
+  captchaSiteKey: '6LcqCisqAAAAAISuj2t66F2XokMGPh9H60ZUPseG',
 };

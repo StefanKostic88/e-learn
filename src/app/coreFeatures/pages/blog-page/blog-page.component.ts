@@ -3,20 +3,29 @@ import {
   BoxComponent,
   ButtonComponent,
   PageWraperComponent,
+  SpinerComponent,
 } from '../../../shared';
-import { NgFor } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { UiService } from '../../services/uiService/ui.service';
 
-const components = [PageWraperComponent, BoxComponent, ButtonComponent];
+const components = [
+  PageWraperComponent,
+  BoxComponent,
+  ButtonComponent,
+  SpinerComponent,
+];
 
 @Component({
   selector: 'app-blog-page',
   standalone: true,
-  imports: [components, NgFor],
+  imports: [components, NgFor, NgIf, AsyncPipe],
   templateUrl: './blog-page.component.html',
   styleUrl: './blog-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogPageComponent {
+  public isLoading$ = this.uiService.loadingSpiner;
+
   public blogData = [
     {
       title: 'Blog',
@@ -61,6 +70,8 @@ export class BlogPageComponent {
       tag: 'Lorem, ipsum.',
     },
   ];
+
+  constructor(private uiService: UiService) {}
 
   public trackByIndex(index: number): number {
     return index;

@@ -47,7 +47,7 @@ export class TrainingStoreService {
           isOpened: true,
         };
 
-        this.routerService.toTrainings(route);
+        this.routerService.toTrainingsBack(route);
         this.uiService.loadingSpiner = false;
       }),
       catchError((err) => {

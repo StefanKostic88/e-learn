@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageWraperComponent } from '../../../shared';
 import { PricingCardComponent } from './pricing-card/pricing-card.component';
 import { NgFor } from '@angular/common';
@@ -13,8 +13,9 @@ const components = [FaqComponent, PageWraperComponent, PricingCardComponent];
   imports: [components, NgFor, NgFor],
   templateUrl: './pricing-page.component.html',
   styleUrl: './pricing-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PricingPageComponent {
-  public readonly pricingData = pricingCardData;
-  public readonly faqData = faqData;
+  protected readonly pricingData = pricingCardData;
+  protected readonly faqData = faqData;
 }

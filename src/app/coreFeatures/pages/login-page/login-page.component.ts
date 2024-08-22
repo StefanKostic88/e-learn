@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LoginFormComponent } from '../../components/login-form/login-form.component';
 import {
   CustomImgComponent,
@@ -12,10 +6,11 @@ import {
   SpinerComponent,
 } from '../../../shared';
 import { RouterLink } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { UiService } from '../../services/uiService/ui.service';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { environment } from '../../../enviroment';
 
 const components = [
   CustomImgComponent,
@@ -33,41 +28,15 @@ const modules = [RouterLink, NgIf, AsyncPipe, RecaptchaModule];
   styleUrl: './login-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPageComponent implements OnDestroy, AfterViewInit {
-  // public captchaUnchecked = '../../../assets/imgs/captcha-uncheced.png';
-  // public captchaChecked = '../../../assets/imgs/captcha-checed.png';
-  private formSubscription?: Subscription;
-
-  public isLoading$: Observable<boolean> = this.uiService.loadingSpiner;
-  public captchaIsValid = false;
-  protected siteKey = 'siteKey';
-
-  // public captcha = this.captchaUnchecked;
-
-  @ViewChild(LoginFormComponent) loginFormComponent?: LoginFormComponent;
+export class LoginPageComponent {
+  protected captchaIsValid = false;
+  protected isLoading$: Observable<boolean> = this.uiService.loadingSpiner;
+  protected siteKey = environment.captchaSiteKey;
 
   constructor(private uiService: UiService) {}
 
-  ngAfterViewInit(): void {
-    this.formSubscription =
-      this.loginFormComponent?.loginForm.valueChanges.subscribe((el) => {
-        if (el['username'].length > 0 && el['password'].length > 0) {
-          // this.captcha = this.captchaChecked;
-        }
-      });
-    console.log(this.loginFormComponent);
-  }
-
-  ngOnDestroy(): void {
-    this.formSubscription?.unsubscribe();
-  }
-
-  changeDET() {
-    console.log('RENDER LOGIN PAGE');
-  }
-
-  resolvedCaptcha(captchaResponse: string | null) {
+  protected resolvedCaptcha(captchaResponse: string | null) {
+    this.uiService.resetErrorMessage();
     this.captchaIsValid = !!captchaResponse;
-    console.log(this.captchaIsValid);
   }
 }

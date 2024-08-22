@@ -8,8 +8,6 @@ import {
   map,
   Observable,
   of,
-  switchMap,
-  take,
   tap,
   throwError,
 } from 'rxjs';
@@ -147,6 +145,10 @@ export class UserStoreService {
 
   public getCurrentUserRole() {
     return this.currentUser$.pipe(map((user) => user?.role));
+  }
+
+  public getUserId() {
+    return this.currentUser$.pipe(map((user) => user?.id));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

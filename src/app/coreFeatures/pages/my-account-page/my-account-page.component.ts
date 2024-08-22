@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  Router,
-  RouterModule,
-} from '@angular/router';
-import { Observable, filter, map, mergeMap, startWith, switchMap } from 'rxjs';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Observable } from 'rxjs';
 import {
   BreadcrumbsComponent,
   ButtonComponent,
@@ -16,6 +11,8 @@ import {
 } from '../../../shared';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { UiService } from '../../services/uiService/ui.service';
+import { RouterService } from '../../services/router/router.service';
+import { ModaltestComponent } from '../../../shared/components/modaltest/modaltest.component';
 
 const components = [
   PageWraperComponent,
@@ -24,6 +21,7 @@ const components = [
   BreadcrumbsComponent,
   SpinerComponent,
   ToasterComponent,
+  ModaltestComponent,
 ];
 
 const pipes = [AsyncPipe];
@@ -37,53 +35,15 @@ const modules = [RouterModule, NgIf];
   styleUrl: './my-account-page.component.scss',
 })
 export class MyAccountPageComponent implements OnInit {
-  public currentPage?: string;
-  public title$?: Observable<string | null>;
-  public isLoading$ = this.uiService.loadingSpiner;
+  protected title$?: Observable<string | null>;
+  protected isLoading$ = this.uiService.loadingSpiner;
+
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
-    private uiService: UiService
+    private uiService: UiService,
+    private routerService: RouterService
   ) {}
   ngOnInit(): void {
-    this.title$ = this.title$ = this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      startWith(null),
-      map(() => {
-        return this.route;
-      }),
-      mergeMap((route) => route.children),
-      switchMap((route) => route.url),
-      map((urlSegments) => {
-        const url = urlSegments.join('/');
-        return this.generateTitle(url);
-      })
-    );
-  }
-
-  private generateTitle(url: string): null | string {
-    if (!url) {
-      return 'My Account';
-    }
-
-    switch (url) {
-      case 'change-password':
-        return null;
-      case 'edit':
-        return 'My Account';
-      case 'add-trainer':
-        return 'Add Trainer';
-      default:
-        // eslint-disable-next-line no-case-declarations
-        const lastSegment = this.router.url.split('/').at(-1);
-        switch (lastSegment) {
-          case 'trainings':
-            return 'Trainings';
-          case 'add-training':
-            return 'Add Passed Trainings';
-          default:
-            return null;
-        }
-    }
+    this.title$ = this.routerService.getCurrentRoute(this.route);
   }
 }
