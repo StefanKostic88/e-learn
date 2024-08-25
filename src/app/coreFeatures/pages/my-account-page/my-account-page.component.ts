@@ -10,7 +10,7 @@ import {
   ToasterComponent,
 } from '../../../shared';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { UiService } from '../../services/uiService/ui.service';
+
 import { RouterService } from '../../services/router/router.service';
 import { ModaltestComponent } from '../../../shared/components/modaltest/modaltest.component';
 
@@ -36,11 +36,9 @@ const modules = [RouterModule, NgIf];
 })
 export class MyAccountPageComponent implements OnInit {
   protected title$?: Observable<string | null>;
-  protected isLoading$ = this.uiService.loadingSpiner;
 
   constructor(
     private route: ActivatedRoute,
-    private uiService: UiService,
     private routerService: RouterService
   ) {}
   ngOnInit(): void {

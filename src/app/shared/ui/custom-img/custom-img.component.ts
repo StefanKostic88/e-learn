@@ -8,5 +8,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './custom-img.component.scss',
 })
 export class CustomImgComponent {
-  @Input() public img?: string;
+  // @Input() public img?: string;
+  @Input() public img?: string | ArrayBuffer | null;
 }

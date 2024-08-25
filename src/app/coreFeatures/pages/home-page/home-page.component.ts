@@ -34,7 +34,7 @@ export class HomePageComponent implements OnInit {
   ) {}
 
   protected readonly isAuthorized$ = this.authStoreService.isAuthorized;
-  protected readonly isLoading$ = this.uiService.loadingSpiner;
+  // protected readonly isLoading$ = this.uiService.loadingSpiner;
   protected pageTitle?: Observable<string>;
 
   private readonly currentUser$ = this.userStoreService.currentUser;

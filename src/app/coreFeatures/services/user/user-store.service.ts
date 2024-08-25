@@ -47,7 +47,6 @@ export class UserStoreService {
   public getCurrentUser(): Observable<UserData | null> {
     return this.authStoreService.isAuthorized.pipe(
       exhaustMap((isAuthorized) => {
-        console.log(isAuthorized);
         if (isAuthorized) {
           return this.userService.getCurrentUser().pipe(
             tap((user) => {
@@ -62,29 +61,10 @@ export class UserStoreService {
         }
       })
     );
-    // return this.userService.getCurrentUser().pipe(
-    //   tap((user) => {
-    //     this.currentUser = user;
-    //   }),
-    //   catchError(() => {
-    //     return of(null);
-    //   })
-    // );
   }
 
   public getUserHeaderData(): Observable<HeaderData> {
     const isAuthorized = this.authStoreService.isAuthorized;
-
-    // const currentUserData = this.currentUser$.pipe(
-    //   map((user) => {
-    //     const userData = {
-    //       email: user && user.email,
-    //       username: user && user.username,
-    //       img: user?.img ? user.img : this.defaultImgPath,
-    //     };
-    //     return userData;
-    //   })
-    // );
     const currentUserData = this.currentUser$.pipe(
       map((user) => {
         if (user) {
@@ -97,7 +77,7 @@ export class UserStoreService {
           return userData;
         } else {
           const data = this.sessionStorageService.getHeaderData();
-          console.log(data);
+
           const userData = data
             ? JSON.parse(data)
             : {
@@ -138,8 +118,7 @@ export class UserStoreService {
           ],
           currentUser
         );
-      }),
-      tap((el) => console.log(el))
+      })
     );
   }
 
@@ -259,7 +238,6 @@ export class UserStoreService {
   }
 
   public getMyUsers(): Observable<myStudent[]> {
-    // this.uiService.tableLoading = true;
     return this.userService.getMyUsers().pipe(
       map((users) =>
         users.map((user) => ({
@@ -269,7 +247,6 @@ export class UserStoreService {
         }))
       ),
       catchError((err) => {
-        // this.uiService.tableLoading = false;
         return throwError(err);
       })
     );
@@ -285,7 +262,6 @@ export class UserStoreService {
         }))
       ),
       catchError((err) => {
-        // this.uiService.tableLoading = false;
         return throwError(err);
       })
     );

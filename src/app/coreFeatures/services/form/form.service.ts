@@ -101,6 +101,7 @@ export class FormService {
       [this.editFormFeilds.ADDRESS]: new FormControl(''),
       [this.editFormFeilds.DATE_OF_BIRTH]: new FormControl(''),
       [this.editFormFeilds.SPECIALIZATION]: new FormControl(''),
+      [this.editFormFeilds.PROFILE_PHOTO]: new FormControl(''),
     });
   }
 

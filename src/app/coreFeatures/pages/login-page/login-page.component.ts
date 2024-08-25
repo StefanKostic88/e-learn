@@ -6,7 +6,7 @@ import {
   SpinerComponent,
 } from '../../../shared';
 import { RouterLink } from '@angular/router';
-import { Observable } from 'rxjs';
+
 import { AsyncPipe, NgIf } from '@angular/common';
 import { UiService } from '../../services/uiService/ui.service';
 import { RecaptchaModule } from 'ng-recaptcha';
@@ -30,7 +30,7 @@ const modules = [RouterLink, NgIf, AsyncPipe, RecaptchaModule];
 })
 export class LoginPageComponent {
   protected captchaIsValid = false;
-  protected isLoading$: Observable<boolean> = this.uiService.loadingSpiner;
+
   protected siteKey = environment.captchaSiteKey;
 
   constructor(private uiService: UiService) {}

@@ -20,6 +20,7 @@ const components = [
 })
 export class AboutUsPageComponent {
   protected readonly aboutUsImg = '../../../../assets/imgs/about-us-img.jpg';
+
   protected readonly teamData = teamData;
 
   protected trackByIndex(index: number) {

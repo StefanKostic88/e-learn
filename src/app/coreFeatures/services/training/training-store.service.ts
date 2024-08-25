@@ -69,7 +69,10 @@ export class TrainingStoreService {
           duration: training.duration,
           student: training.studentName,
         }))
-      )
+      ),
+      tap((trainings) => {
+        console.log(trainings);
+      })
     );
   }
   public getMyTrainingsWithParams(

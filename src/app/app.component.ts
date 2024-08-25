@@ -1,36 +1,30 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { FooterComponent, HeaderComponent, UiService } from './coreFeatures';
 import { Subscription, filter, take, tap } from 'rxjs';
-import { UserStoreService } from './coreFeatures/services/user/user-store.service';
-import { NgIf } from '@angular/common';
-import { ModaltestComponent } from './shared/components/modaltest/modaltest.component';
 
-const components = [FooterComponent, HeaderComponent];
+import { AsyncPipe, NgIf } from '@angular/common';
+
+import { SpinerComponent } from './shared';
+
+const components = [FooterComponent, HeaderComponent, SpinerComponent];
+const modules = [AsyncPipe, RouterOutlet, NgIf];
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [components, RouterOutlet, NgIf],
+  imports: [components, modules],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {
+  protected isLoading$ = this.uiService.loadingSpiner;
   private subscriptions: Subscription[] = [];
   appLoading = true;
 
   constructor(
     private uiService: UiService,
     private router: Router,
-    private elementRef: ElementRef,
-    private userStoreService: UserStoreService,
     private renderer: Renderer2
   ) {}
 
@@ -52,8 +46,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe({
         complete: () => console.log('closed'),
       });
-
-    // this.userStoreService.logedInUser().subscribe();
 
     this.renderer.listen('window', 'load', () => {
       console.log('LOADING DONE');

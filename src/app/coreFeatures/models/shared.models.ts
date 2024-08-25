@@ -78,6 +78,7 @@ export enum EditFormFeilds {
   ADDRESS = 'address',
   DATE_OF_BIRTH = 'dateOfBirth',
   SPECIALIZATION = 'specialization',
+  PROFILE_PHOTO = 'profilePhoto',
 }
 
 export enum SearchFormFeild {

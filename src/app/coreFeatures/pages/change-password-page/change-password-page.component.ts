@@ -51,8 +51,7 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
   protected lock: IconDefinition = faLock;
   protected readonly errorMsg$: Observable<string | null> =
     this.uiService.errorMessage;
-  protected readonly spinner$: Observable<boolean> =
-    this.uiService.loadingSpiner;
+
   protected changesAreNotValid = true;
 
   protected passwordChangeForm!: FormGroup;

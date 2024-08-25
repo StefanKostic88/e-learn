@@ -15,17 +15,17 @@ const components = [
   SpinerComponent,
 ];
 
+const modules = [NgFor, NgIf, AsyncPipe];
+
 @Component({
   selector: 'app-blog-page',
   standalone: true,
-  imports: [components, NgFor, NgIf, AsyncPipe],
+  imports: [components, modules],
   templateUrl: './blog-page.component.html',
   styleUrl: './blog-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogPageComponent {
-  public isLoading$ = this.uiService.loadingSpiner;
-
   public blogData = [
     {
       title: 'Blog',

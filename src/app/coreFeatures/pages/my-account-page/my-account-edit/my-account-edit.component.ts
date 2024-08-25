@@ -3,7 +3,15 @@ import {
   ButtonSize,
   ButtonState,
 } from '../../../../shared/models/button.model';
-import { Observable, Subscription, tap } from 'rxjs';
+import {
+  exhaustMap,
+  map,
+  Observable,
+  of,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import {
   AbstractControl,
   FormControl,
@@ -30,6 +38,7 @@ import { EditFormInput } from '../../../models/shared.models';
 import { ToasterService } from '../../../services/toaster/toaster.service';
 import { ModalService } from '../../../services/modal/modal.service';
 import { ModaltestComponent } from '../../../../shared/components/modaltest/modaltest.component';
+import { HttpClient } from '@angular/common/http';
 
 const components = [
   CustomImgComponent,
@@ -53,7 +62,8 @@ const modules = [ReactiveFormsModule, CommonModule];
 export class MyAccountEditComponent implements OnInit, OnDestroy {
   public userEditForm!: FormGroup;
 
-  protected img: string = '../../../assets/imgs/no-user-img.jpg';
+  protected img: string | ArrayBuffer | null =
+    '../../../assets/imgs/no-user-img.jpg';
   protected readonly btnState: typeof ButtonState = ButtonState;
   protected readonly btnSize: typeof ButtonSize = ButtonSize;
   protected changesAreNotValid = true;
@@ -67,13 +77,16 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
 
   protected inputsArr?: EditFormInput[];
 
+  fileName: string | null = null;
+
   constructor(
     private routerService: RouterService,
     private route: ActivatedRoute,
     private authStoreService: AuthStoreService,
     private formService: FormService,
     private toasterService: ToasterService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +104,7 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
         },
       })
     );
+    console.log(this.userEditForm);
   }
 
   ngOnDestroy(): void {
@@ -99,15 +113,23 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
 
   protected onSubmit() {
     const data = this.userEditForm.value;
-    if (!this.changesAreNotValid) {
-      this.subscriptions.push(
-        this.authStoreService.editCurrentUser(data).subscribe({
-          next: () => {
-            this.changesAreNotValid = true;
-          },
-        })
-      );
+    console.log(this.userEditForm.value);
+    const uploadedImageChange = this.userEditForm.get('profilePhoto');
+    console.log();
+    if (uploadedImageChange?.value) {
+      console.log('Handle S3 upload and save');
+    } else {
+      console.log('Save without s3 upload');
     }
+    // if (!this.changesAreNotValid) {
+    //   this.subscriptions.push(
+    //     this.authStoreService.editCurrentUser(data).subscribe({
+    //       next: () => {
+    //         this.changesAreNotValid = true;
+    //       },
+    //     })
+    //   );
+    // }
   }
 
   protected navigateBack(): void {
@@ -132,6 +154,7 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
         this.userSpecialization = user.specialization;
         this.inputsArr = user.userInputsFinal;
         this.role = user.role;
+
         const formControls: { [prop: string]: AbstractControl } = {};
         const inputValues = this.inputsArr?.map((el) => ({
           formControlName: el.formControlName,
@@ -139,6 +162,7 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
         }));
 
         inputValues?.forEach((el) => {
+          console.log(el);
           formControls[el.formControlName] = new FormControl(el.value);
         });
         if (this.userSpecialization) {
@@ -147,8 +171,11 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
           );
         }
 
+        formControls['profilePhoto'] = new FormControl('');
+
         this.userEditForm = new FormGroup(formControls);
         this.snapshot = this.userEditForm.value;
+        console.log(this.snapshot);
       })
     );
   }
@@ -164,9 +191,56 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
             'Are you sure you want to leave this page? Any unsaved changes will be lost.',
         },
       ]);
-      return confirm(
-        'Are you sure you want to leave this page? Any unsaved changes will be lost.'
-      );
     }
   }
+
+  onFileSelect(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      // const fileType = encodeURIComponent(file.type);
+      const fileType = file.type;
+      console.log(file);
+      this.fileName = file.name;
+
+      const photoName = 'TEST_USER_PICK';
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.img = reader.result;
+        console.log();
+      };
+
+      reader.readAsDataURL(file);
+
+      // const dataasdasd = this.http
+      //   .get<TESTRESPONSE>(
+      //     `https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/import-photo?fileType=${fileType}&photoName=${photoName}`
+      //   )
+      //   .pipe(
+      //     map(({ key, data }) => ({ key, data })),
+      //     exhaustMap(({ key, data }) => {
+      //       console.log(key);
+      //       return this.http.put(data, file);
+      //     })
+      //   );
+
+      // dataasdasd.subscribe(console.log);
+    }
+  }
+  removePhoto() {
+    this.fileName = null;
+    this.img = '../../../assets/imgs/no-user-img.jpg';
+    const input = document.getElementById('file-upload') as HTMLInputElement;
+    if (input) {
+      input.value = '';
+    }
+  }
+}
+
+interface TESTRESPONSE {
+  data: string;
+  key: string;
 }

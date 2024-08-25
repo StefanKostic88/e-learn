@@ -6,19 +6,68 @@ export const environment = {
     myAccount:
       'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/myAccount',
     logout: 'http://localhost:8000/api/logout',
-    allSpecializations: 'http://localhost:8000/api/specialization',
-    allTrainers: 'http://localhost:8000/api/trainers',
-    addTrainerInStudent: 'http://localhost:8000/api/add-trainer',
-    addStudentInTrainer: 'http://localhost:8000/api/add-student',
     changePassword:
       'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/change-password',
     editUser:
       ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/edit',
-    trainings: 'http://localhost:8000/api/trainings',
-    trainingTypes: 'http://localhost:8000/api/training-type',
-    myTrainings: 'http://localhost:8000/api/trainings/my-trainings',
+
     myTrainingTrainer:
       'http://localhost:8000/api/trainings/my-trainings-trainer',
+
+    // allSpecializations: 'http://localhost:8000/api/specialization',
+    // allTrainers: 'http://localhost:8000/api/trainers',
+    // addTrainerInStudent: 'http://localhost:8000/api/add-trainer',
+    // addStudentInTrainer: 'http://localhost:8000/api/add-student',
+
+    // trainings: 'http://localhost:8000/api/trainings',
+    // trainingTypes: 'http://localhost:8000/api/training-type',
+    // myTrainings: 'http://localhost:8000/api/trainings/my-trainings',
   },
   captchaSiteKey: '6LcqCisqAAAAAISuj2t66F2XokMGPh9H60ZUPseG',
+  // staticImages: {
+  //   aboutUs:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/about-us-img.jpg',
+  //   noUserImage:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/no-user-img.jpg',
+  //   registerStudentImage:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/register-student.jpeg',
+  //   registerTrainerImage:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/register-trainer.jpg',
+  //   boxImageOne:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/box-image-1.jpg',
+  //   boxImageTwo:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/box-image-2.jpg',
+  //   boxImageThree:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/box-image-3.jpg',
+  //   featureImageOne:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/feature-img-1.jpg',
+  //   featureImageTwo:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/feature-img-2.jpg',
+  //   teamMemberOne:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/team-member-1.jpg',
+  //   teamMemberTwo:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/team-member-2.jpg',
+  //   teamMemberThree:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/team-member-3.jpg',
+  //   studentsImage:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/students.jpeg',
+  //   trainersImage:
+  //     'https://d354odvv3vtkqh.cloudfront.net/static-files/trainers.png',
+  // },
+  staticImages: {
+    aboutUs: '',
+    noUserImage: '',
+    registerStudentImage: '',
+    registerTrainerImage: '',
+    boxImageOne: '',
+    boxImageTwo: '',
+    boxImageThree: '',
+    featureImageOne: '',
+    featureImageTwo: '',
+    teamMemberOne: '',
+    teamMemberTwo: '',
+    teamMemberThree: '',
+    studentsImage: '',
+    trainersImage: '',
+  },
 };
