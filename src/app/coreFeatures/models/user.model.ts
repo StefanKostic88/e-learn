@@ -15,20 +15,6 @@ export interface RegisterUser {
   dateOfBirth?: string;
 }
 
-// export interface TrainerInterface {
-//   id: string;
-//   firstName: string;
-//   lastName: string;
-//   trainer: {
-//     specialization: {
-//       specializationName: string;
-//       _id: string;
-//     };
-//     _id: string;
-//     user_id: string;
-//   };
-// }
-
 export interface TrainerRefined {
   name: string;
   userId: string;
@@ -52,49 +38,11 @@ export interface EditInterface {
   lastName?: string;
   email?: string;
   username?: string;
-  adress?: string;
+  address?: string;
   dateOfBirth?: string;
   specialization?: string;
+  img?: string;
 }
-
-// export interface TrainerData {
-//   _id: string;
-//   user_id: string;
-//   specialization: {
-//     specializationName: string;
-//     _id: string;
-//   };
-//   myStudents: {
-//     firstName: string;
-//     lastName: string;
-//     id: string;
-//     isActive: boolean;
-//   }[];
-// }
-
-// export interface UserData {
-//   id: string;
-//   username: string;
-//   firstName: string;
-//   lastName: string;
-//   email: string;
-//   role: string;
-//   isActive: boolean;
-//   img?: string;
-//   adress?: string;
-//   dateOfBirth?: string;
-//   student: {
-//     _id: string;
-//     user_id: string;
-//     myTrainers: {
-//       trainer: TrainerData;
-//       firstName: string;
-//       lastName: string;
-//       id: string;
-//     }[];
-//   } | null;
-//   trainer: TrainerData | null;
-// }
 
 export interface CreatedUserResponse {
   message: string;
@@ -205,4 +153,9 @@ export interface TrainingForm {
   trainer: TrainerFormControlData;
   logedInUser: string;
   description: string;
+}
+
+export interface S3PutResponse {
+  data: string;
+  key: string;
 }

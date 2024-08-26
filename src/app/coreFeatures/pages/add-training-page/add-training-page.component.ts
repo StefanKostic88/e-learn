@@ -33,10 +33,12 @@ const components = [
   ButtonComponent,
 ];
 
+const modules = [ReactiveFormsModule, AsyncPipe, NgIf];
+
 @Component({
   selector: 'app-add-training-page',
   standalone: true,
-  imports: [components, ReactiveFormsModule, AsyncPipe, NgIf],
+  imports: [components, modules],
   templateUrl: './add-training-page.component.html',
   styleUrl: './add-training-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

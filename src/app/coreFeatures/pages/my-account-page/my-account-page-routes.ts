@@ -7,6 +7,7 @@ import { MyAccountAddTrainerComponent } from './my-account-add-trainer/my-accoun
 import { CanDeactivateGuard } from '../../guards/canDeactivate.guard';
 import { UserResolverService } from '../../resolvers/user.resolver.service';
 import { EditUserReolverService } from '../../resolvers/edit-user.resolver.service';
+import { LoadPageResolverService } from '../../resolvers/load-page.resolver.service';
 
 export default [
   {
@@ -24,6 +25,9 @@ export default [
         path: 'change-password',
         component: ChangePasswordPageComponent,
         canDeactivate: [CanDeactivateGuard],
+        resolve: {
+          pageLoading: LoadPageResolverService,
+        },
       },
       {
         path: 'edit',

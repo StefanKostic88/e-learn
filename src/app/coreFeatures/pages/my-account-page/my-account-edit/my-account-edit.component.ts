@@ -3,15 +3,7 @@ import {
   ButtonSize,
   ButtonState,
 } from '../../../../shared/models/button.model';
-import {
-  exhaustMap,
-  map,
-  Observable,
-  of,
-  Subscription,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import {
   AbstractControl,
   FormControl,
@@ -38,7 +30,11 @@ import { EditFormInput } from '../../../models/shared.models';
 import { ToasterService } from '../../../services/toaster/toaster.service';
 import { ModalService } from '../../../services/modal/modal.service';
 import { ModaltestComponent } from '../../../../shared/components/modaltest/modaltest.component';
-import { HttpClient } from '@angular/common/http';
+
+import { UserStoreService } from '../../../services/user/user-store.service';
+import { environment } from '../../../../enviroment';
+import { EditInterface } from '../../../models/user.model';
+import { v4 } from 'uuid';
 
 const components = [
   CustomImgComponent,
@@ -62,8 +58,10 @@ const modules = [ReactiveFormsModule, CommonModule];
 export class MyAccountEditComponent implements OnInit, OnDestroy {
   public userEditForm!: FormGroup;
 
-  protected img: string | ArrayBuffer | null =
-    '../../../assets/imgs/no-user-img.jpg';
+  private noUserImage: string = environment.staticImages.noUserImage;
+
+  protected img?: string | ArrayBuffer | null | undefined;
+
   protected readonly btnState: typeof ButtonState = ButtonState;
   protected readonly btnSize: typeof ButtonSize = ButtonSize;
   protected changesAreNotValid = true;
@@ -74,10 +72,10 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
   protected snapshot?: { [props: string]: string };
+  protected fileName: string | null = null;
 
   protected inputsArr?: EditFormInput[];
-
-  fileName: string | null = null;
+  protected file?: File;
 
   constructor(
     private routerService: RouterService,
@@ -86,7 +84,7 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
     private formService: FormService,
     private toasterService: ToasterService,
     private modalService: ModalService,
-    private http: HttpClient
+    private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
@@ -104,7 +102,6 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
         },
       })
     );
-    console.log(this.userEditForm);
   }
 
   ngOnDestroy(): void {
@@ -112,28 +109,72 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
   }
 
   protected onSubmit() {
-    const data = this.userEditForm.value;
-    console.log(this.userEditForm.value);
-    const uploadedImageChange = this.userEditForm.get('profilePhoto');
-    console.log();
-    if (uploadedImageChange?.value) {
-      console.log('Handle S3 upload and save');
-    } else {
-      console.log('Save without s3 upload');
+    if (this.changesAreNotValid) {
+      return;
     }
-    // if (!this.changesAreNotValid) {
-    //   this.subscriptions.push(
-    //     this.authStoreService.editCurrentUser(data).subscribe({
-    //       next: () => {
-    //         this.changesAreNotValid = true;
-    //       },
-    //     })
-    //   );
-    // }
+
+    const updateData = this.generateEditData();
+    const uploadedImageChange = this.userEditForm.get('profilePhoto');
+
+    if (uploadedImageChange?.value) {
+      const fileType = this.file?.type;
+
+      if (fileType && this.file) {
+        const photoName = `profile-image-${v4()}`;
+        const dataasdasd = this.userStoreService.uploadUserPhotoAndEditUser(
+          fileType,
+          photoName,
+          this.file,
+          updateData
+        );
+
+        this.subscriptions.push(
+          dataasdasd.subscribe({
+            next: () => {
+              this.changesAreNotValid = true;
+            },
+          })
+        );
+      }
+    } else {
+      this.subscriptions.push(
+        this.authStoreService.editCurrentUser(updateData).subscribe({
+          next: () => {
+            this.changesAreNotValid = true;
+          },
+        })
+      );
+    }
   }
 
   protected navigateBack(): void {
     this.routerService.toMyAccount();
+  }
+
+  protected onFileSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.file = file;
+      this.fileName = file.name;
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.img = reader.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+  protected removePhoto(): void {
+    this.fileName = null;
+    this.img = this.noUserImage;
+    const input = document.getElementById('file-upload') as HTMLInputElement;
+    if (input) {
+      input.value = '';
+    }
   }
 
   private detectEditFormChanges(val: Record<string, string>): void {
@@ -154,6 +195,7 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
         this.userSpecialization = user.specialization;
         this.inputsArr = user.userInputsFinal;
         this.role = user.role;
+        this.img = user.image ? user.image : this.noUserImage;
 
         const formControls: { [prop: string]: AbstractControl } = {};
         const inputValues = this.inputsArr?.map((el) => ({
@@ -180,8 +222,7 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  // boolean | Observable<boolean> | Promise<boolean>
-  canDeactivate() {
+  canDeactivate(): true | Observable<boolean> {
     if (this.changesAreNotValid) {
       return true;
     } else {
@@ -194,53 +235,18 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  onFileSelect(event: Event) {
-    const input = event.target as HTMLInputElement;
+  private generateEditData(): EditInterface {
+    const data = this.userEditForm.value;
+    const updateData: EditInterface = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      address: data.address,
+      username: data.username,
+      dateOfBirth: data.dateOfBirth,
+      specialization: data.specialization,
+    };
 
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      // const fileType = encodeURIComponent(file.type);
-      const fileType = file.type;
-      console.log(file);
-      this.fileName = file.name;
-
-      const photoName = 'TEST_USER_PICK';
-
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        this.img = reader.result;
-        console.log();
-      };
-
-      reader.readAsDataURL(file);
-
-      // const dataasdasd = this.http
-      //   .get<TESTRESPONSE>(
-      //     `https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/import-photo?fileType=${fileType}&photoName=${photoName}`
-      //   )
-      //   .pipe(
-      //     map(({ key, data }) => ({ key, data })),
-      //     exhaustMap(({ key, data }) => {
-      //       console.log(key);
-      //       return this.http.put(data, file);
-      //     })
-      //   );
-
-      // dataasdasd.subscribe(console.log);
-    }
+    return updateData;
   }
-  removePhoto() {
-    this.fileName = null;
-    this.img = '../../../assets/imgs/no-user-img.jpg';
-    const input = document.getElementById('file-upload') as HTMLInputElement;
-    if (input) {
-      input.value = '';
-    }
-  }
-}
-
-interface TESTRESPONSE {
-  data: string;
-  key: string;
 }

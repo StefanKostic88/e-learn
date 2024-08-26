@@ -5,6 +5,7 @@
 
 .feature-box {
   display: flex;
+  flex-direction: row;
 
   align-items: center;
   gap: 22rem;
@@ -17,7 +18,7 @@
   }
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 3rem;
   }
 
@@ -38,9 +39,17 @@
     flex: 1 1 0;
 
     @media (max-width: 768px) {
-      --custom-img-max-width: 7000px;
       width: 100%;
       --custom-img-height: 288px;
     }
+  }
+}
+
+.reversed-feature-box {
+  flex-direction: row-reverse;
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+    gap: 3rem;
   }
 }

@@ -1,4 +1,5 @@
-.custom-image {
+.custom-image,
+.spiner-container {
   overflow: hidden;
   border-radius: var(--custom-img-border-radius);
   height: var(--custom-img-height, 100%);
@@ -15,4 +16,11 @@
     width: 100%;
     height: 100%;
   }
+}
+
+.spiner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
 }

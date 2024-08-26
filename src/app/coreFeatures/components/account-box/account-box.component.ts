@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   ButtonComponent,
   CustomImgComponent,
@@ -30,6 +30,7 @@ const modules = [NgClass, NgIf, AsyncPipe, FontAwesomeModule];
   imports: [components, modules],
   templateUrl: './account-box.component.html',
   styleUrl: './account-box.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountBoxComponent {
   @Input() public accountBoxData?: HeaderDetails;

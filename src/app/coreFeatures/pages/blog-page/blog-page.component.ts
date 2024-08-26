@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   BoxComponent,
   ButtonComponent,
@@ -7,6 +7,7 @@ import {
 } from '../../../shared';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { UiService } from '../../services/uiService/ui.service';
+import { BlogData, blogData } from '../../constants/staticData';
 
 const components = [
   PageWraperComponent,
@@ -25,53 +26,17 @@ const modules = [NgFor, NgIf, AsyncPipe];
   styleUrl: './blog-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogPageComponent {
-  public blogData = [
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-  ];
+export class BlogPageComponent implements OnInit {
+  public blogData: BlogData[] = blogData;
 
   constructor(private uiService: UiService) {}
+
+  ngOnInit(): void {
+    const timer = setTimeout(() => {
+      this.uiService.loadingSpiner = false;
+      clearTimeout(timer);
+    }, 0);
+  }
 
   public trackByIndex(index: number): number {
     return index;

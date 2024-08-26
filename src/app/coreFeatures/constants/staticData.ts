@@ -207,3 +207,56 @@ export const boxItems: BoxItem[] = [
     tag: 'Digital Learning',
   },
 ];
+
+export interface BlogData {
+  title: string;
+  img: string;
+  readTime: number;
+  creationDate: Date;
+  tag: string;
+}
+
+export const blogData: BlogData[] = [
+  {
+    title: 'Blog',
+    img: '../../../assets/imgs/box-image-1.jpg',
+    readTime: 15,
+    creationDate: new Date(),
+    tag: 'Lorem, ipsum.',
+  },
+  {
+    title: 'Blog',
+    img: '../../../assets/imgs/box-image-1.jpg',
+    readTime: 15,
+    creationDate: new Date(),
+    tag: 'Lorem, ipsum.',
+  },
+  {
+    title: 'Blog',
+    img: '../../../assets/imgs/box-image-1.jpg',
+    readTime: 15,
+    creationDate: new Date(),
+    tag: 'Lorem, ipsum.',
+  },
+  {
+    title: 'Blog',
+    img: '../../../assets/imgs/box-image-1.jpg',
+    readTime: 15,
+    creationDate: new Date(),
+    tag: 'Lorem, ipsum.',
+  },
+  {
+    title: 'Blog',
+    img: '../../../assets/imgs/box-image-1.jpg',
+    readTime: 15,
+    creationDate: new Date(),
+    tag: 'Lorem, ipsum.',
+  },
+  {
+    title: 'Blog',
+    img: '../../../assets/imgs/box-image-1.jpg',
+    readTime: 15,
+    creationDate: new Date(),
+    tag: 'Lorem, ipsum.',
+  },
+];

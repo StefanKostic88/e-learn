@@ -12,6 +12,7 @@ import { Observable, filter, map, mergeMap, startWith, switchMap } from 'rxjs';
 })
 export class BreadcrumbsComponent implements OnInit {
   currentRoute?: Observable<string | null>;
+  prevPath?: string;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
   ngOnInit(): void {
@@ -31,7 +32,16 @@ export class BreadcrumbsComponent implements OnInit {
 
   private transformCurrentUrl(url: string) {
     const currentPath = url.slice(1);
+
     const urlArray = currentPath.split('/');
+    this.prevPath = urlArray[urlArray.length - 2];
+
     return urlArray.map((path) => path.split('-').join(' ')).join(' > ');
+  }
+
+  backToHome() {
+    // console.log('ASDASD');
+    // console.log(this.prevPath);
+    // this.router.navigate([this.prevPath], { relativeTo: this.route });
   }
 }

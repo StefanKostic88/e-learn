@@ -15,7 +15,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import {
-  ActivatedRoute,
   NavigationEnd,
   Router,
   RouterLink,
@@ -33,7 +32,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { Observable, filter, map } from 'rxjs';
 import { UiService } from '../../services/uiService/ui.service';
-import { AuthStoreService } from '../../services/auth/auth-store.service';
+
 import { UserStoreService } from '../../services/user/user-store.service';
 import { HeaderData } from '../../models/user.model';
 
@@ -58,6 +57,7 @@ const components = [
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
   public headerIcon: IconDefinition = faEllipsis;
@@ -65,9 +65,8 @@ export class HeaderComponent implements OnInit {
 
   @ViewChild('header') headerEl?: ElementRef;
   @ViewChild(AccountBoxComponent) accountBoxComponent?: AccountBoxComponent;
-  // public userHeaderData$?: Observable<UserHeaderData>;
-  // public userHeaderData$?: Observable<HeaderData>;
-  public userHeaderData$?: Observable<any>;
+
+  public userHeaderData$?: Observable<HeaderData>;
   public readonly linksList = headerLinksList;
   public readonly moonIcon: IconDefinition = faMoon;
   public readonly userIcon: IconDefinition = faCircleUser;
@@ -76,26 +75,12 @@ export class HeaderComponent implements OnInit {
   public darkMode$ = this.uiService.darkMode;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private uiService: UiService,
-    private authStoreService: AuthStoreService,
     private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
-    // this.authStoreService.isAuthorized.subscribe(console.log);
-
-    // this.userHeaderData$ = of({
-    //   accountData: {
-    //     email: 'testemail',
-    //     username: 'sadasd',
-    //     img: '../../../../assets/imgs/profile.jpg',
-    //   },
-    //   isAuthorized: false,
-    // });
-    // this.darkMode$.subscribe(console.log);
-
     this.userHeaderData$ = this.userStoreService.getUserHeaderData();
 
     this.signInPage$ = this.router.events.pipe(
@@ -112,28 +97,28 @@ export class HeaderComponent implements OnInit {
     );
   }
 
-  public navigateToJoinUsPage(): void {
+  protected navigateToJoinUsPage(): void {
     this.router.navigate(['/join-us']);
   }
 
-  public navigateToSignInPage(): void {
+  protected navigateToSignInPage(): void {
     this.router.navigate(['/sign-in']);
   }
 
-  public toggleAccountBox() {
+  protected toggleAccountBox() {
     this.uiService.toggleNavigationMenu();
   }
-  public closeSideBar(): void {
+  protected closeSideBar(): void {
     this.uiService.closeNavigation();
   }
 
-  public handleToggleKeydown(e: KeyboardEvent) {
+  protected handleToggleKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter' || e.key === ' ') {
       this.toggleAccountBox();
     }
   }
 
-  toggleDarkMode() {
+  protected toggleDarkMode() {
     this.uiService.darkModeToggler();
     this.uiService.applyDarkMode();
   }

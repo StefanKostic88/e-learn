@@ -32,7 +32,6 @@ const components = [
   ModalBoxComponent,
   CustomImgComponent,
   StatusMarkerComponent,
-  LoaderComponent,
 ];
 
 @Component({
@@ -72,7 +71,8 @@ export class MyAccountListComponent implements OnInit {
   //   AccountDataOutput[] | undefined
   // > = this.userService.getAccountData();
 
-  public readonly img$ = of('../../../assets/imgs/profile.jpg').pipe();
+  // public readonly img$ = of('../../../assets/imgs/no-user-img.jpg').pipe();
+  public readonly img$ = this.userStoreService.getUserImage();
 
   public icon: IconDefinition = faCheck;
   public readonly btnType: typeof ButtonState = ButtonState;
@@ -110,7 +110,7 @@ export class MyAccountListComponent implements OnInit {
   }
 
   protected navigateTo(route: string): void {
-    this.uiService.loadingSpiner = true;
+    // this.uiService.loadingSpiner = true;
     this.router.navigate([route], { relativeTo: this.route });
   }
 

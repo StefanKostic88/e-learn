@@ -1,6 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserDataRespnse, MyUsersResponse } from '../../models/user.model';
+import {
+  UserDataRespnse,
+  MyUsersResponse,
+  S3PutResponse,
+} from '../../models/user.model';
 import { catchError, map, throwError } from 'rxjs';
 import { environment } from '../../../enviroment';
 
@@ -55,8 +59,21 @@ export class UserService {
         { myUsers }
       )
       .pipe(
-        catchError((err: HttpErrorResponse) => {
-          return throwError(err);
+        catchError((errorResponse: HttpErrorResponse) => {
+          return throwError(errorResponse.message);
+        })
+      );
+  }
+
+  public uploadUserImage(fileType: string, photoName: string) {
+    return this.http
+      .get<S3PutResponse>(
+        `https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/import-photo?fileType=${fileType}&photoName=${photoName}`
+      )
+      .pipe(
+        map(({ key, data }) => ({ key, data })),
+        catchError((errorResponse) => {
+          return throwError(errorResponse.message);
         })
       );
   }

@@ -78,7 +78,7 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
     const timer = setTimeout(() => {
       this.uiService.loadingSpiner = false;
       clearTimeout(timer);
-    }, 100);
+    }, 0);
 
     this.passwordChangeForm =
       this.formService.generatePasswordChangeFomrFields();
@@ -141,9 +141,5 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
     }
 
     this.changesAreNotValid = changed ? false : true;
-  }
-
-  render() {
-    console.log('PASS CHANGE RENDER');
   }
 }
