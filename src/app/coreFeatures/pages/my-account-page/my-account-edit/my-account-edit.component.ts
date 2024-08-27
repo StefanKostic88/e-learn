@@ -29,7 +29,6 @@ import { FormService } from '../../../services/form/form.service';
 import { EditFormInput } from '../../../models/shared.models';
 import { ToasterService } from '../../../services/toaster/toaster.service';
 import { ModalService } from '../../../services/modal/modal.service';
-import { ModaltestComponent } from '../../../../shared/components/modaltest/modaltest.component';
 
 import { UserStoreService } from '../../../services/user/user-store.service';
 import { environment } from '../../../../enviroment';
@@ -43,7 +42,6 @@ const components = [
   DropDownMenuComponent,
   SwitcherComponent,
   ModalBoxComponent,
-  ModaltestComponent,
 ];
 
 const modules = [ReactiveFormsModule, CommonModule];
@@ -204,7 +202,6 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
         }));
 
         inputValues?.forEach((el) => {
-          console.log(el);
           formControls[el.formControlName] = new FormControl(el.value);
         });
         if (this.userSpecialization) {

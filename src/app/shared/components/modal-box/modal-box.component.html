@@ -1,15 +1,30 @@
-<div *ngIf="isOpened" class="modal-box">
+<div *ngIf="modalIsOpened$ | async" class="modal-box">
   <div class="modal-box__overlay"></div>
   <div class="modal-box__content">
     <div class="modal-box__content__heading">
-      <h3>Profile Deletion Confirmation</h3>
-      <fa-icon [icon]="icon" (click)="toggleModal()"></fa-icon>
+      <h3>{{ title | async }}</h3>
+      <fa-icon [icon]="icon" (click)="confirm(false)"></fa-icon>
     </div>
     <div class="modal-box__content__message">
-      <p class="text-small" *ngFor="let messageChunk of messageChunks">
+      <p class="text-small" *ngFor="let messageChunk of messageChunks | async">
         {{ messageChunk.chunk }}
       </p>
     </div>
-    <ng-content></ng-content>
+
+    <div class="modal-controls">
+      <app-button
+        [content]="'Cancel'"
+        [outlined]="false"
+        [btnSize]="btnSize.SMALL"
+        [btnType]="btnType.ERROR"
+        (click)="confirm(false)"
+      ></app-button>
+
+      <app-button
+        [content]="'Confirm'"
+        [btnSize]="btnSize.SMALL"
+        (click)="confirm(true)"
+      ></app-button>
+    </div>
   </div>
 </div>

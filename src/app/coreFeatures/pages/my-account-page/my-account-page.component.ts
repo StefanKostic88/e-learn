@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   BreadcrumbsComponent,
   ButtonComponent,
+  ModalBoxComponent,
   MyAccountListComponent,
   PageWraperComponent,
   SpinerComponent,
@@ -12,7 +13,6 @@ import {
 import { AsyncPipe, NgIf } from '@angular/common';
 
 import { RouterService } from '../../services/router/router.service';
-import { ModaltestComponent } from '../../../shared/components/modaltest/modaltest.component';
 
 const components = [
   PageWraperComponent,
@@ -21,7 +21,7 @@ const components = [
   BreadcrumbsComponent,
   SpinerComponent,
   ToasterComponent,
-  ModaltestComponent,
+  ModalBoxComponent,
 ];
 
 const pipes = [AsyncPipe];

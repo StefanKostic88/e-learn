@@ -19,8 +19,8 @@ const modules = [AsyncPipe, RouterOutlet, NgIf];
 })
 export class AppComponent implements OnInit, OnDestroy {
   protected isLoading$ = this.uiService.loadingSpiner;
+
   private subscriptions: Subscription[] = [];
-  appLoading = true;
 
   constructor(
     private uiService: UiService,
@@ -29,32 +29,24 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.subscriptions.push(this.scrollToTop().subscribe());
     this.subscriptions.push(
-      this.router.events
-        .pipe(
-          filter((event) => event instanceof NavigationEnd),
-          tap(() => {
-            console.log('Reaload');
-          })
-        )
-        .subscribe(() => window.scrollTo(0, 0))
+      this.uiService.getCurrentMode().pipe(take(1)).subscribe()
     );
 
-    this.uiService
-      .getCurrentMode()
-      .pipe(take(1))
-      .subscribe({
-        complete: () => console.log('closed'),
-      });
-
     this.renderer.listen('window', 'load', () => {
-      console.log('LOADING DONE');
-      this.appLoading = false;
-      const test = document.querySelector('.app-spiner');
-      test?.classList.add('hide');
+      const appSpinerEl = document.querySelector('.app-spiner');
+      appSpinerEl?.classList.add('hide');
     });
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  private scrollToTop() {
+    return this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      tap(() => window.scrollTo(0, 0))
+    );
   }
 }

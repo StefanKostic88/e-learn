@@ -13,6 +13,8 @@ export default [
   {
     path: '',
     component: MyAccountPageComponent,
+    data: { breadcrumb: 'My Account' },
+
     children: [
       {
         path: '',
@@ -28,6 +30,7 @@ export default [
         resolve: {
           pageLoading: LoadPageResolverService,
         },
+        data: { breadcrumb: 'Change Password' },
       },
       {
         path: 'edit',
@@ -36,10 +39,12 @@ export default [
         resolve: {
           user: EditUserReolverService,
         },
+        data: { breadcrumb: 'Edit' },
       },
       {
         path: 'add-trainer',
         component: MyAccountAddTrainerComponent,
+        data: { breadcrumb: 'Add trainer' },
       },
       {
         path: 'trainings',
@@ -47,6 +52,7 @@ export default [
         resolve: {
           user: UserResolverService,
         },
+        data: { breadcrumb: 'Trainings' },
       },
     ],
   },

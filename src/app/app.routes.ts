@@ -64,4 +64,8 @@ export const routes: Routes = [
       import('./coreFeatures/pages/join-us-page/join-us-page-routes'),
     canActivate: [SignedInGuard],
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

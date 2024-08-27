@@ -14,5 +14,6 @@ export default [
     resolve: {
       myTrainers: MyTrainersResolverService,
     },
+    data: { breadcrumb: 'Add training' },
   },
 ] as Routes;
