@@ -57,6 +57,7 @@ export class UserStoreService {
         if (isAuthorized) {
           return this.userService.getCurrentUser().pipe(
             tap((user) => {
+              console.log(user);
               this.currentUser = user;
             }),
             catchError(() => {

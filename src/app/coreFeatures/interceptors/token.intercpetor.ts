@@ -27,7 +27,15 @@ export class TokenInterceptor implements HttpInterceptor {
     const JWT_TOKEN = this.sessionStorageService.getToken();
 
     if (req.url.includes('s3') || req.url.includes('.s3.amazonaws.com')) {
-      return next.handle(req);
+      return next.handle(req).pipe(
+        catchError((err: HttpErrorResponse) => {
+          if (!err.ok) {
+            console.log(err);
+            this.authStoreService.logOut();
+          }
+          return throwError(err);
+        })
+      );
     }
 
     if (authorized && JWT_TOKEN) {
@@ -39,15 +47,24 @@ export class TokenInterceptor implements HttpInterceptor {
 
       return next.handle(tokenizedRequest).pipe(
         catchError((err: HttpErrorResponse) => {
-          // if (err.status === 401) {
-          //   // this.authService.logOut();.
-          //   console.log(err.message);
-          // }
-          console.log(err.message);
+          if (!err.ok) {
+            console.log(err);
+            this.authStoreService.logOut();
+          }
+
           return throwError(err);
         })
       );
     }
-    return next.handle(req);
+
+    return next.handle(req).pipe(
+      catchError((err: HttpErrorResponse) => {
+        if (!err.ok) {
+          this.authStoreService.logOut();
+        }
+
+        return throwError(err);
+      })
+    );
   }
 }

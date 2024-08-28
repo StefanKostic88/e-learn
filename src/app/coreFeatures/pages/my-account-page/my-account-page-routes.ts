@@ -8,6 +8,7 @@ import { CanDeactivateGuard } from '../../guards/canDeactivate.guard';
 import { UserResolverService } from '../../resolvers/user.resolver.service';
 import { EditUserReolverService } from '../../resolvers/edit-user.resolver.service';
 import { LoadPageResolverService } from '../../resolvers/load-page.resolver.service';
+import { StudentGuard } from '../../guards/student.guard';
 
 export default [
   {
@@ -45,6 +46,7 @@ export default [
         path: 'add-trainer',
         component: MyAccountAddTrainerComponent,
         data: { breadcrumb: 'Add trainer' },
+        canActivate: [StudentGuard],
       },
       {
         path: 'trainings',
