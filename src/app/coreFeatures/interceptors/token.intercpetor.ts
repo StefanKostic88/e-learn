@@ -29,10 +29,6 @@ export class TokenInterceptor implements HttpInterceptor {
     if (req.url.includes('s3') || req.url.includes('.s3.amazonaws.com')) {
       return next.handle(req).pipe(
         catchError((err: HttpErrorResponse) => {
-          if (!err.ok) {
-            console.log(err);
-            this.authStoreService.logOut();
-          }
           return throwError(err);
         })
       );
@@ -47,11 +43,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
       return next.handle(tokenizedRequest).pipe(
         catchError((err: HttpErrorResponse) => {
-          if (!err.ok) {
-            console.log(err);
-            this.authStoreService.logOut();
-          }
-
           return throwError(err);
         })
       );
@@ -59,10 +50,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError((err: HttpErrorResponse) => {
-        if (!err.ok) {
-          this.authStoreService.logOut();
-        }
-
         return throwError(err);
       })
     );

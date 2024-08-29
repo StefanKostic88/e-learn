@@ -11,4 +11,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class SwitcherComponent {
   @Input() public checked: boolean | null = false;
   @Input() public disabled: boolean = false;
+  @Input() public id: string = 'isActive';
 }

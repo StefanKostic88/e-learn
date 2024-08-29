@@ -30,11 +30,13 @@
         <app-date-picker
           [label]="'From'"
           [formControlName]="'fromDate'"
+          [id]="'from-date'"
         ></app-date-picker>
         <app-date-picker
           [label]="'To'"
           [formControlName]="'toDate'"
           [initialValue]="trainingForm.get('toDate')?.value"
+          [id]="'to-date'"
         ></app-date-picker>
       </div>
     </div>
@@ -47,15 +49,33 @@
   <div>
     <ng-container *ngIf="(role$ | async) === 'student'">
       <h2>My Passed Trainings</h2>
-      <app-table
-        *ngIf="myTrainings$ | async as myTrainings; else loader"
-        [tableHeaders]="tableHeaders"
-        [tableData]="myTrainings"
-        [tableType]="'studentTrainingList'"
-      ></app-table>
+      <ng-container *ngIf="myTrainings$ | async as myTrainings">
+        <ng-container *ngIf="myTrainings.length > 0; else noTrainersInTable">
+          <app-table
+            *ngIf="myTrainings; else loader"
+            [tableHeaders]="tableHeaders"
+            [tableData]="myTrainings"
+            [tableType]="'studentTrainingList'"
+          ></app-table>
+        </ng-container>
+      </ng-container>
     </ng-container>
 
     <ng-container *ngIf="(role$ | async) === 'trainer'">
+      <h2>Result</h2>
+      <ng-container *ngIf="myTrainings$ | async as myTrainings">
+        <ng-container *ngIf="myTrainings.length > 0; else noStudentsInTable">
+          <app-table
+            *ngIf="myTrainings$ | async as myTrainings; else loader"
+            [tableHeaders]="teableHeadersTrainer"
+            [tableData]="myTrainings"
+            [tableType]="'trainerTrainingList'"
+          ></app-table>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+    <!-- <ng-container *ngIf="(role$ | async) === 'trainer'">
       <h2>Result</h2>
       <app-table
         *ngIf="myTrainings$ | async as myTrainings; else loader"
@@ -63,7 +83,7 @@
         [tableData]="myTrainings"
         [tableType]="'trainerTrainingList'"
       ></app-table>
-    </ng-container>
+    </ng-container> -->
   </div>
 </div>
 
@@ -71,4 +91,11 @@
   <div class="loader-container">
     <app-loader></app-loader>
   </div>
+</ng-template>
+
+<ng-template #noTrainersInTable>
+  <div>No Trainings added, please use add training feature</div>
+</ng-template>
+<ng-template #noStudentsInTable>
+  <div>None of the students have selected your lessons.</div>
 </ng-template>

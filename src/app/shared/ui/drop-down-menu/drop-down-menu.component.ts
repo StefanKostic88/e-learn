@@ -40,13 +40,11 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
   protected touched!: () => void;
   protected isDisabled!: boolean;
 
-  // public selectedOption?: string;
   protected selectedOption?: string | TrainerOption;
 
   protected title?: string;
 
   ngOnInit(): void {
-    console.log(this.initialValue, 'SPASDASD');
     this.title = this.initialValue ? this.initialValue : 'Please Select';
   }
 
@@ -72,7 +70,7 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
   public selectOption(option: string | TrainerOption): void {
     if (this.type === 'specialization') {
       const optionAsString = option as string;
-      console.log(optionAsString);
+
       this.selectedOption = option;
       this.chnaged(optionAsString);
       this.touched();
@@ -81,7 +79,7 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
     }
     if (this.type === 'trainer') {
       const optionAsTrainerData = option as TrainerOption;
-      console.log(option);
+
       this.selectedOption = option;
       this.chnaged(optionAsTrainerData);
       this.touched();

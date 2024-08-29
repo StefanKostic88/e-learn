@@ -214,7 +214,6 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
 
         this.userEditForm = new FormGroup(formControls);
         this.snapshot = this.userEditForm.value;
-        console.log(this.snapshot);
       })
     );
   }

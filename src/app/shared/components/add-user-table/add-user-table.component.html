@@ -18,7 +18,14 @@
 
       <ng-template pTemplate="body" let-row let-i="rowIndex">
         <tr class="custom-table-row" [formGroup]="getFormGroup(i)">
-          <td><input type="checkbox" formControlName="selected" /></td>
+          <td>
+            <input
+              type="checkbox"
+              [id]="row.value.id"
+              formControlName="selected"
+            />
+          </td>
+
           <td class="font-bold">{{ row.value.name | titlecase }}</td>
 
           <td>

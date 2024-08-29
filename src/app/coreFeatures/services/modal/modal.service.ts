@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ModalMessage } from '../../models/shared.models';
+import { AuthStoreService } from '../auth/auth-store.service';
+import { UserStoreService } from '../user/user-store.service';
 
 enum ModalOptions {
   LEAVE_PAGE = 'leave page',
@@ -45,6 +47,11 @@ export class ModalService {
     return this.modalIsOpened$;
   }
 
+  constructor(
+    private authStoreService: AuthStoreService,
+    private userStoreService: UserStoreService
+  ) {}
+
   confirm(modalTitle: string, modalMessage: ModalMessage[]) {
     this.modalIsOpened = true;
     this.modalTitle = modalTitle;
@@ -57,8 +64,8 @@ export class ModalService {
     this.confirmSelection$$.next(result);
     this.modalIsOpened = false;
     if (this.modalOptions === ModalOptions.DELETE_PROFILE && result) {
-      console.log('DELETE PROFILE');
-      this.userId$?.subscribe(console.log);
+      this.authStoreService.logOut();
+      this.userStoreService.removeCurrentUser();
     }
   }
 

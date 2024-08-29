@@ -8,8 +8,6 @@ import { HomePageUnsignedComponent } from './home-page-unsigned/home-page-unsign
 import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { UserStoreService } from '../../services/user/user-store.service';
 
-import { UiService } from '../../services/uiService/ui.service';
-
 const components = [
   ButtonComponent,
   PageWraperComponent,
@@ -29,12 +27,11 @@ const components = [
 export class HomePageComponent implements OnInit {
   constructor(
     private authStoreService: AuthStoreService,
-    private userStoreService: UserStoreService,
-    private uiService: UiService
+    private userStoreService: UserStoreService
   ) {}
 
   protected readonly isAuthorized$ = this.authStoreService.isAuthorized;
-  // protected readonly isLoading$ = this.uiService.loadingSpiner;
+
   protected pageTitle?: Observable<string>;
 
   private readonly currentUser$ = this.userStoreService.currentUser;

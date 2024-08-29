@@ -14,14 +14,16 @@ export const environment = {
     myTrainingTrainer:
       'http://localhost:8000/api/trainings/my-trainings-trainer',
 
-    // allSpecializations: 'http://localhost:8000/api/specialization',
-    // allTrainers: 'http://localhost:8000/api/trainers',
-    // addTrainerInStudent: 'http://localhost:8000/api/add-trainer',
-    // addStudentInTrainer: 'http://localhost:8000/api/add-student',
-
-    // trainings: 'http://localhost:8000/api/trainings',
-    // trainingTypes: 'http://localhost:8000/api/training-type',
-    // myTrainings: 'http://localhost:8000/api/trainings/my-trainings',
+    myUsers:
+      'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/my-users',
+    allTrainers:
+      'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/trainers',
+    uploadPhoto:
+      'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/import-photo',
+    myTrainings:
+      'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/my-trainings',
+    addMyUsers:
+      ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/add-my-users',
   },
   captchaSiteKey: '6LcqCisqAAAAAISuj2t66F2XokMGPh9H60ZUPseG',
   staticImages: {
@@ -54,20 +56,4 @@ export const environment = {
     trainersImage:
       'https://d354odvv3vtkqh.cloudfront.net/static-files/trainers.png',
   },
-  // staticImages: {
-  //   aboutUs: '',
-  //   noUserImage: '',
-  //   registerStudentImage: '',
-  //   registerTrainerImage: '',
-  //   boxImageOne: '',
-  //   boxImageTwo: '',
-  //   boxImageThree: '',
-  //   featureImageOne: '',
-  //   featureImageTwo: '',
-  //   teamMemberOne: '',
-  //   teamMemberTwo: '',
-  //   teamMemberThree: '',
-  //   studentsImage: '',
-  //   trainersImage: '',
-  // },
 };

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ButtonComponent, CustomImgComponent } from '../../../../shared';
 import { NgClass, NgStyle } from '@angular/common';
+import { environment } from '../../../../enviroment';
 
 @Component({
   selector: 'app-feature-box',
@@ -11,5 +12,5 @@ import { NgClass, NgStyle } from '@angular/common';
 })
 export class FeatureBoxComponent {
   @Input() public isReversed?: boolean = false;
-  public readonly img = '../../../../../assets/imgs/feature-img-1.jpg';
+  public readonly img = environment.staticImages.featureImageOne;
 }

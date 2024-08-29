@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { catchError, map, throwError } from 'rxjs';
 import {
   MyTrainingsResponse,
-  MyUsersResponse,
   TrainingCreationAttribute,
 } from '../../models/user.model';
+import { environment } from '../../../enviroment';
 
 interface Trainer {
   isActive: string;
@@ -35,9 +35,7 @@ export class TrainingService {
 
   public getAllTrainers() {
     return this.http
-      .get<TrainersResponse>(
-        'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/trainers'
-      )
+      .get<TrainersResponse>(environment.apiEndpoints.allTrainers)
       .pipe(
         map(({ data }) => data),
         catchError((errResponse: HttpErrorResponse) => {
@@ -62,9 +60,7 @@ export class TrainingService {
 
   public getMyTrainings() {
     return this.http
-      .get<MyTrainingsResponse>(
-        ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/my-trainings'
-      )
+      .get<MyTrainingsResponse>(environment.apiEndpoints.myTrainings)
       .pipe(
         map(({ data }) => data),
         catchError((errResponse: HttpErrorResponse) => {
@@ -76,7 +72,7 @@ export class TrainingService {
   public getMyTrainingsWithParams(params: string) {
     return this.http
       .get<MyTrainingsResponse>(
-        `https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/my-trainings?${params}`
+        environment.apiEndpoints.myTrainings + `?${params}`
       )
       .pipe(
         map(({ data }) => data),

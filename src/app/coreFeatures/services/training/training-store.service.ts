@@ -69,17 +69,13 @@ export class TrainingStoreService {
           duration: training.duration,
           student: training.studentName,
         }))
-      ),
-      tap((trainings) => {
-        console.log(trainings);
-      })
+      )
     );
   }
   public getMyTrainingsWithParams(
     params: string
   ): Observable<MyTrainingTableData[]> {
     return this.trainingService.getMyTrainingsWithParams(params).pipe(
-      tap((el) => console.log(el)),
       map((trainings) =>
         trainings.map((training) => ({
           startDate: training.startDate,

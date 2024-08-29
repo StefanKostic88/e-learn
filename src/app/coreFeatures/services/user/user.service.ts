@@ -27,9 +27,7 @@ export class UserService {
 
   public getMyUsers() {
     return this.http
-      .get<MyUsersResponse>(
-        ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/my-users'
-      )
+      .get<MyUsersResponse>(environment.apiEndpoints.myUsers)
       .pipe(
         map(({ data }) => data),
         catchError((errorResponse: HttpErrorResponse) => {
@@ -41,9 +39,7 @@ export class UserService {
 
   public getAllTrainers() {
     return this.http
-      .get<MyUsersResponse>(
-        'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/trainers'
-      )
+      .get<MyUsersResponse>(environment.apiEndpoints.allTrainers)
       .pipe(
         map(({ data }) => data),
         catchError((errorResponse: HttpErrorResponse) => {
@@ -54,10 +50,7 @@ export class UserService {
 
   public addMyUsers(myUsers: string[]) {
     return this.http
-      .post(
-        ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/add-my-users',
-        { myUsers }
-      )
+      .post(environment.apiEndpoints.addMyUsers, { myUsers })
       .pipe(
         catchError((errorResponse: HttpErrorResponse) => {
           return throwError(errorResponse.message);
@@ -68,7 +61,8 @@ export class UserService {
   public uploadUserImage(fileType: string, photoName: string) {
     return this.http
       .get<S3PutResponse>(
-        `https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/import-photo?fileType=${fileType}&photoName=${photoName}`
+        environment.apiEndpoints.uploadPhoto +
+          `?fileType=${fileType}&photoName=${photoName}`
       )
       .pipe(
         map(({ key, data }) => ({ key, data })),

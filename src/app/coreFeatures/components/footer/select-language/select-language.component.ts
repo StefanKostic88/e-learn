@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -10,6 +15,7 @@ import { Subscription } from 'rxjs';
   imports: [FontAwesomeModule, ReactiveFormsModule],
   templateUrl: './select-language.component.html',
   styleUrl: './select-language.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
   protected readonly faChevronDown = faChevronDown;

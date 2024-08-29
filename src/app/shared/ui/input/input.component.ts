@@ -102,8 +102,4 @@ export class InputComponent {
   protected inputIsValid(): boolean {
     return !this.formControl?.valid && this.formControl?.touched;
   }
-
-  checkRender() {
-    console.log('RENDER INPUT');
-  }
 }

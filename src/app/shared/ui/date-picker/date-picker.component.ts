@@ -31,6 +31,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class DatePickerComponent {
   @Input() public label: string = 'From';
   @Input() public initialValue?: Date = new Date(Date.now());
+  @Input() public id?: string;
   public readonly icon: IconDefinition = faCalendar;
   constructor(private cdr: ChangeDetectorRef) {}
 

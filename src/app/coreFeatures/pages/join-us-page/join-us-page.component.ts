@@ -8,6 +8,7 @@ import { JoinUsBox } from '../../models/shared.models';
 import { ActivatedRoute } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { RouterService } from '../../services/router/router.service';
+import { environment } from '../../../enviroment';
 
 const components = [ButtonComponent, PageWraperComponent, JoinUsBoxComponent];
 
@@ -39,14 +40,14 @@ export class JoinUsPageComponent {
         title: 'Register as a Trainer',
         content:
           'Complete your trainer registration on our platform and join our community today.',
-        img: '../../../assets/imgs/trainers.png',
+        img: environment.staticImages.trainersImage,
         navigateTo: () => this.routerService.toTrainerRegister(this.route),
       },
       {
         title: 'Register as a Student',
         content:
           'Complete your student registration on our platform and join our community today.',
-        img: '../../../assets/imgs/students.jpeg',
+        img: environment.staticImages.studentsImage,
         navigateTo: () => this.routerService.toStudentRegister(this.route),
       },
     ];

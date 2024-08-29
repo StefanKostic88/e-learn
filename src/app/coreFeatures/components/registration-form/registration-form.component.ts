@@ -15,6 +15,7 @@ import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { UiService } from '../../services/uiService/ui.service';
 import { RegistrationInputInterface, Role } from '../../models/shared.models';
 import { FormService } from '../../services/form/form.service';
+import { environment } from '../../../enviroment';
 
 const components = [
   CustomImgComponent,
@@ -106,10 +107,11 @@ export class RegistrationFormComponent implements OnInit, OnDestroy {
 
   private generateRegistrationForm() {
     if (this.roleSubject.getValue() === this.checkRole.STUDENT) {
-      this.img = '../../../assets/imgs/register-student.jpeg';
+      this.img = environment.staticImages.registerStudentImage;
+
       return this.formService.generateStudentRegistrationFormFields();
     } else {
-      this.img = '../../../assets/imgs/register-trainer.jpg';
+      this.img = environment.staticImages.registerTrainerImage;
       return this.formService.generateTrainerRegistrationFormFields();
     }
   }

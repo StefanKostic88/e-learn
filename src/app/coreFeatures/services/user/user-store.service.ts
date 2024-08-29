@@ -22,13 +22,12 @@ import { AuthStoreService } from '../auth/auth-store.service';
 import { UiService } from '../uiService/ui.service';
 import { SessionStorageService } from '../session-storage/session-storage.service';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../enviroment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserStoreService {
-  private defaultImgPath = '../../../../assets/imgs/no-user-img.jpg';
-
   private currentUser$$: BehaviorSubject<UserData | null> =
     new BehaviorSubject<UserData | null>(null);
 
@@ -57,7 +56,6 @@ export class UserStoreService {
         if (isAuthorized) {
           return this.userService.getCurrentUser().pipe(
             tap((user) => {
-              console.log(user);
               this.currentUser = user;
             }),
             catchError(() => {
@@ -79,7 +77,7 @@ export class UserStoreService {
           const userData = {
             email: user && user.email,
             username: user && user.username,
-            img: user?.img ? user.img : this.defaultImgPath,
+            img: user?.img ? user.img : environment.staticImages.noUserImage,
           };
           this.sessionStorageService.setHeaderData(userData);
           return userData;
@@ -240,11 +238,9 @@ export class UserStoreService {
   }
 
   public getUserSpecialization() {
-    return this.userService.getCurrentUser().pipe(
-      tap((el) => console.log(el, 'asdasd')),
-      map((user) => user.specialization),
-      tap((el) => console.log(el, 'asdasd'))
-    );
+    return this.userService
+      .getCurrentUser()
+      .pipe(map((user) => user.specialization));
   }
 
   public getMyUsers(): Observable<myStudent[]> {
@@ -294,8 +290,9 @@ export class UserStoreService {
 
   public getUserImage() {
     return this.currentUser.pipe(
-      map((user) => user?.img),
-      tap((el) => console.log(el))
+      map((user) =>
+        user?.img ? user.img : environment.staticImages.noUserImage
+      )
     );
   }
 

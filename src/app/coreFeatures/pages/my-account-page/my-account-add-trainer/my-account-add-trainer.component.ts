@@ -41,7 +41,9 @@ export class MyAccountAddTrainerComponent implements OnInit, OnDestroy {
   protected myTrainersTableHeader = [' Name', 'Specialization'];
   protected tableL$: Observable<boolean> = of(true);
 
-  protected addTrainerForm?: FormGroup;
+  protected addTrainerForm: FormGroup = new FormGroup({
+    rows: new FormArray([]),
+  });
   protected myTrainers$?: Observable<TrainerRefined[] | undefined>;
 
   private subscriptions: Subscription[] = [];
@@ -52,15 +54,15 @@ export class MyAccountAddTrainerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.addTrainerForm = new FormGroup({
-      rows: new FormArray([]),
-    });
-
     this.subscriptions.push(
       this.generateTrainersData().subscribe({
         next: (trainers) => {
           trainers.forEach((trainer) => {
             this.rows.push(this.createRowFormGroup(trainer));
+          });
+
+          this.addTrainerForm = new FormGroup({
+            rows: this.rows,
           });
         },
 

@@ -69,6 +69,7 @@
             <fa-icon [icon]="moonIcon"></fa-icon> Night Mode
             <app-switcher
               [checked]="darkMode$ | async"
+              [id]="'toggler'"
               (change)="toggleDarkMode()"
             ></app-switcher>
           </span>

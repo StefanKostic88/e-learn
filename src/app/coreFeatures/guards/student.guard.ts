@@ -29,7 +29,6 @@ export class StudentGuard implements CanActivate {
     return this.userStoreService.getCurrentUser().pipe(
       map((user) => {
         if (user?.role === 'student') {
-          console.log(user.role);
           return true;
         }
 

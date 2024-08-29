@@ -1,3 +1,5 @@
+import { environment } from '../../enviroment';
+
 export interface TeamData {
   name: string;
   professionalTitle: string;
@@ -10,19 +12,19 @@ export const teamData: TeamData[] = [
     name: 'John Doe',
     professionalTitle: 'Developer',
     description: 'Lorem ipsum dolor sit amet ases.',
-    img: '../../../assets/imgs/team-member-2.jpg',
+    img: environment.staticImages.teamMemberTwo,
   },
   {
     name: 'John Doe',
     professionalTitle: 'Developer',
     description: 'Lorem ipsum dolor sit amet ases.',
-    img: '../../../assets/imgs/team-member-3.jpg',
+    img: environment.staticImages.teamMemberThree,
   },
   {
     name: 'John Doe',
     professionalTitle: 'Developer',
     description: 'Lorem ipsum dolor sit amet ases.',
-    img: '../../../assets/imgs/team-member-1.jpg',
+    img: environment.staticImages.teamMemberOne,
   },
 ];
 
@@ -37,13 +39,13 @@ export const featureDataArr: FeatureBoxData[] = [
     title: 'Feature',
     content:
       'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non vitae suscipit ullam! Dolorem, deleniti asperiores. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non vitae suscipit ullam! Dolorem, deleniti asperiores.',
-    img: '../../../assets/imgs/feature-img-1.jpg',
+    img: environment.staticImages.featureImageOne,
   },
   {
     title: 'Feature',
     content:
       'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non vitae suscipit ullam! Dolorem, deleniti asperiores. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non vitae suscipit ullam! Dolorem, deleniti asperiores.',
-    img: '../../../assets/imgs/feature-img-2.jpg',
+    img: environment.staticImages.featureImageTwo,
   },
 ];
 
@@ -186,7 +188,7 @@ export const boxItems: BoxItem[] = [
   {
     title: 'Revolutionizing Education: How AI is Transforming E-Learning',
     creationDate: new Date(),
-    img: '../../../assets/imgs/box-image-1.jpg',
+    img: environment.staticImages.boxImageOne,
     readTime: 5,
     tag: 'Elearning Transformation',
   },
@@ -194,7 +196,7 @@ export const boxItems: BoxItem[] = [
     title:
       'Mastering New Frontiers: The Rise of Virtual Reality in Online Education',
     creationDate: new Date(),
-    img: '../../../assets/imgs/box-image-2.jpg',
+    img: environment.staticImages.boxImageTwo,
     readTime: 10,
     tag: 'Artificial Intelligence',
   },
@@ -202,7 +204,7 @@ export const boxItems: BoxItem[] = [
     title:
       'Unlocking Potential: Personalized Learning in the Digital Classroom',
     creationDate: new Date(),
-    img: '../../../assets/imgs/box-image-3.jpg',
+    img: environment.staticImages.boxImageThree,
     readTime: 15,
     tag: 'Digital Learning',
   },
@@ -218,45 +220,49 @@ export interface BlogData {
 
 export const blogData: BlogData[] = [
   {
-    title: 'Blog',
-    img: '../../../assets/imgs/box-image-1.jpg',
-    readTime: 15,
-    creationDate: new Date(),
-    tag: 'Lorem, ipsum.',
+    title:
+      'Empowering Lifelong Learning: How E-Learning Platforms are Shaping the Future of Education',
+    img: environment.staticImages.boxImageOne,
+    readTime: 17,
+    creationDate: new Date('12-11-2023'),
+    tag: '#LifelongLearning #EdTech',
   },
   {
-    title: 'Blog',
-    img: '../../../assets/imgs/box-image-1.jpg',
-    readTime: 15,
-    creationDate: new Date(),
-    tag: 'Lorem, ipsum.',
+    title:
+      'Master New Skills Online: A Beginner’s Guide to Getting Started with E-Learning',
+    img: environment.staticImages.boxImageTwo,
+    readTime: 5,
+    creationDate: new Date('05-06-2023'),
+    tag: '#OnlineLearning #BeginnerGuide',
   },
   {
-    title: 'Blog',
-    img: '../../../assets/imgs/box-image-1.jpg',
-    readTime: 15,
-    creationDate: new Date(),
-    tag: 'Lorem, ipsum.',
+    title:
+      'Interactive Learning: 5 Features That Make E-Learning More Engaging',
+    img: environment.staticImages.boxImageThree,
+    readTime: 12,
+    creationDate: new Date('02-06-2023'),
+    tag: '#InteractiveLearning #OnlineEducation',
   },
   {
-    title: 'Blog',
-    img: '../../../assets/imgs/box-image-1.jpg',
-    readTime: 15,
-    creationDate: new Date(),
-    tag: 'Lorem, ipsum.',
+    title: 'Top 10 Benefits of E-Learning: Why Online Education is the Future',
+    img: environment.staticImages.boxImageTwo,
+    readTime: 8,
+    creationDate: new Date('02-02-2023'),
+    tag: '#E-LearningBenefits #OnlineEducation',
   },
   {
-    title: 'Blog',
-    img: '../../../assets/imgs/box-image-1.jpg',
+    title: 'How to Stay Motivated and Succeed in an E-Learning Environment',
+    img: environment.staticImages.boxImageOne,
     readTime: 15,
-    creationDate: new Date(),
-    tag: 'Lorem, ipsum.',
+    creationDate: new Date('02-01-2023'),
+    tag: '#E-LearningSuccess #MotivationTips',
   },
   {
-    title: 'Blog',
-    img: '../../../assets/imgs/box-image-1.jpg',
-    readTime: 15,
-    creationDate: new Date(),
-    tag: 'Lorem, ipsum.',
+    title:
+      'From Classroom to Virtual: The Evolution of Education Through E-Learning Platforms',
+    img: environment.staticImages.boxImageThree,
+    readTime: 22,
+    creationDate: new Date('05-06-2022'),
+    tag: '#VirtualLearning #EducationEvolution',
   },
 ];
