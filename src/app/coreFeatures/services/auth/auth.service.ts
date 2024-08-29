@@ -8,13 +8,10 @@ import { catchError, map, throwError } from 'rxjs';
 
 import {
   LoginUser,
-  // RegisterUser,
-  // CreatedUserResponse,
   ChangePassword,
   EditInterface,
   ChangePasswordResponse,
   LoginResponse,
-  UserDataRespnse,
   RegisterUser,
   CreatedUserResponse,
   UserEditResponse,
@@ -33,13 +30,9 @@ export class AuthService {
     });
 
     return this.http
-      .post<LoginResponse>(
-        'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/login',
-        data,
-        {
-          headers,
-        }
-      )
+      .post<LoginResponse>(environment.apiEndpoints.login, data, {
+        headers,
+      })
       .pipe(
         map(({ token }) => token),
         catchError((errorResponse: HttpErrorResponse) =>
@@ -69,8 +62,9 @@ export class AuthService {
         inputData
       )
       .pipe(
-        map(({ data }) => data),
+        map(({ message }) => message),
         catchError((err: HttpErrorResponse) => {
+          console.log(err);
           return throwError(err.error.message);
         })
       );

@@ -1,14 +1,18 @@
 <app-page-wraper>
   <ng-container class="main">
     <h2>Sign in</h2>
-    <h3 #loginForm>Welcome back</h3>
-    <app-login-form></app-login-form>
+    <h3>Welcome back</h3>
+    <app-login-form [captchValid]="captchaIsValid"></app-login-form>
     <span class="custom-span">Or</span>
     <span class="custom-span"
       >Dont have an accoun? <a [routerLink]="'/join-us'">Sign up</a></span
     >
-    <app-custom-img [img]="captcha"></app-custom-img>
 
-    <app-spiner *ngIf="isLoading$ | async"></app-spiner>
+    <re-captcha
+      (resolved)="resolvedCaptcha($event)"
+      [siteKey]="siteKey"
+    ></re-captcha>
+
+    <!-- <app-spiner *ngIf="isLoading$ | async"></app-spiner> -->
   </ng-container>
 </app-page-wraper>

@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   ButtonComponent,
@@ -18,6 +23,10 @@ import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { ChangePassword } from '../../models/user.model';
 import { UiService } from '../../services/uiService/ui.service';
 import { RouterService } from '../../services/router/router.service';
+import { ToasterService } from '../../services/toaster/toaster.service';
+import { GenerateInputsPipe } from '../../../shared/pipes/generate-inputs.pipe';
+import { FormService } from '../../services/form/form.service';
+import { ModalService } from '../../services/modal/modal.service';
 
 const modules = [ReactiveFormsModule, FontAwesomeModule, CommonModule];
 const components = [
@@ -27,32 +36,28 @@ const components = [
   ToasterComponent,
   SpinerComponent,
 ];
+const pipes = [GenerateInputsPipe];
 
 @Component({
   selector: 'app-change-password-page',
   standalone: true,
-  imports: [modules, components],
+  imports: [modules, components, pipes],
   templateUrl: './change-password-page.component.html',
   styleUrl: './change-password-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChangePasswordPageComponent implements OnInit, OnDestroy {
-  private subscriptions?: Subscription[];
-  public readonly btnSize: typeof ButtonSize = ButtonSize;
-  public lock: IconDefinition = faLock;
-  protected passwordChangeForm!: FormGroup;
-  public disabled = true;
-
-  public readonly errorMsg$: Observable<string | null> =
+  protected readonly btnSize: typeof ButtonSize = ButtonSize;
+  protected lock: IconDefinition = faLock;
+  protected readonly errorMsg$: Observable<string | null> =
     this.uiService.errorMessage;
 
-  public readonly spinner$: Observable<boolean> = this.uiService.loadingSpiner;
+  protected changesAreNotValid = true;
 
-  public readonly sucessMessage$: Observable<boolean> =
-    this.uiService.actionSuccess;
+  protected passwordChangeForm!: FormGroup;
 
-  public changesAreNotValid = true;
-
-  snapshot: Record<string, string> = {
+  private subscriptions: Subscription[] = [];
+  private snapshot: Record<string, string> = {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
@@ -61,86 +66,50 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
   constructor(
     private authStoreService: AuthStoreService,
     private uiService: UiService,
-    private routerService: RouterService
+    private routerService: RouterService,
+    private toasterService: ToasterService,
+    private formService: FormService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
+    this.toasterService.resetToasterState();
+
     const timer = setTimeout(() => {
       this.uiService.loadingSpiner = false;
       clearTimeout(timer);
-    }, 300);
+    }, 0);
 
-    this.passwordChangeForm = new FormGroup({
-      currentPassword: new FormControl(''),
-      newPassword: new FormControl(''),
-      confirmPassword: new FormControl(''),
-    });
+    this.passwordChangeForm =
+      this.formService.generatePasswordChangeFomrFields();
 
-    this.generateInputs();
-    this.passwordChangeForm.valueChanges.subscribe((val) => {
-      let changed = false;
-      for (const key in val) {
-        if (this.snapshot[key] !== val[key]) {
-          changed = true;
-          break;
+    this.subscriptions.push(
+      this.passwordChangeForm.valueChanges.subscribe(
+        (val: Record<string, string>) => {
+          this.uiService.resetErrorMessage();
+          this.detectPasswordFormChanges(val);
         }
-      }
-
-      if (changed) {
-        this.changesAreNotValid = false;
-        console.log('Changes detected');
-      } else {
-        this.changesAreNotValid = true;
-      }
-
-      const { currentPassword, newPassword, confirmPassword } = val;
-
-      if (newPassword === confirmPassword && currentPassword) {
-        this.disabled = false;
-      } else {
-        this.disabled = true;
-      }
-    });
+      )
+    );
   }
 
   ngOnDestroy(): void {
-    this.subscriptions?.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  protected onSubmit() {
+  protected onSubmit(): void {
     const data: ChangePassword = this.passwordChangeForm.value;
 
-    const sub = this.authStoreService.changeUserPassword(data).subscribe({
-      next: () => {
-        this.passwordChangeForm.reset();
-        this.changesAreNotValid = true;
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
-
-    this.subscriptions?.push(sub);
-  }
-  protected generateInputs() {
-    return Object.entries(this.passwordChangeForm.controls).map((el) => {
-      const name = (el[0] as string)
-        .replace(/([a-z])([A-Z])/g, '$1 $2')
-        .replace(/\b\w/g, (char) => char.toUpperCase());
-
-      return {
-        formControlName: el[0],
-        labelName: name,
-        inputType: 'password',
-        placeholderText:
-          name !== 'Confirm New Password'
-            ? `Enter ${name}`
-            : 'Confirm New Password',
-      };
-    });
+    this.subscriptions.push(
+      this.authStoreService.changeUserPassword(data).subscribe({
+        next: () => {
+          this.changesAreNotValid = true;
+        },
+      })
+    );
   }
 
-  public navigateToMyAccount() {
+  protected navigateToMyAccount(): void {
     this.uiService.resetErrorAndSucessState();
     this.routerService.toMyAccount();
   }
@@ -149,14 +118,28 @@ export class ChangePasswordPageComponent implements OnInit, OnDestroy {
     return index;
   }
 
-  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+  public canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
     if (this.changesAreNotValid) {
-      console.log('asdsd');
       return true;
     } else {
-      return confirm(
-        'Are you sure you want to leave this page? Any unsaved changes will be lost.'
-      );
+      return this.modalService.confirmLeavePage('Leave Change Password Page', [
+        {
+          chunk:
+            'Are you sure you want to leave this page? Any unsaved changes will be lost.',
+        },
+      ]);
     }
+  }
+
+  private detectPasswordFormChanges(val: Record<string, string>): void {
+    let changed = false;
+    for (const key in val) {
+      if (this.snapshot[key] !== val[key]) {
+        changed = true;
+        break;
+      }
+    }
+
+    this.changesAreNotValid = changed ? false : true;
   }
 }

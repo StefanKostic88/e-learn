@@ -2,3 +2,4 @@
 <span class="spacer"></span>
 <router-outlet></router-outlet>
 <app-footer></app-footer>
+<app-spiner *ngIf="isLoading$ | async"></app-spiner>

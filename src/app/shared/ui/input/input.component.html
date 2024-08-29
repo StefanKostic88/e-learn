@@ -21,8 +21,9 @@
     [class.invalid-input]="inputIsValid()"
     (input)="handleChange($event)"
     (blur)="touched()"
-    autocomplete="off"
+    autocomplete="autoCompletePass ? current-password : off"
   />
+
   <div *ngIf="inputType === 'password'" class="eye-icon">
     <fa-icon
       class="icon-right"

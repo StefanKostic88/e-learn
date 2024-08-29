@@ -7,6 +7,7 @@ import { WINDOW } from '../../../providers/windowProvider';
 export class SessionStorageService {
   TOKEN = 'SESSION_TOKEN';
   MODE = 'DARK_MODE';
+  HEADER_DATA = 'HEADER_DATA';
 
   constructor(@Inject(WINDOW) private window: Window) {}
 
@@ -29,5 +30,15 @@ export class SessionStorageService {
   }
   public delteMode() {
     this.window.sessionStorage.removeItem(this.MODE);
+  }
+
+  public setHeaderData(data: { email: string; username: string; img: string }) {
+    this.window.sessionStorage.setItem(this.HEADER_DATA, JSON.stringify(data));
+  }
+  public getHeaderData() {
+    return this.window.sessionStorage.getItem(this.HEADER_DATA ?? '');
+  }
+  public deleteHeaderData() {
+    this.window.sessionStorage.removeItem(this.HEADER_DATA);
   }
 }

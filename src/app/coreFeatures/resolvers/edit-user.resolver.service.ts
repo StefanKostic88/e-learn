@@ -2,8 +2,6 @@ import { Resolve } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { UserStoreService } from '../services/user/user-store.service';
 import { Observable } from 'rxjs';
-import { AuthStoreService } from '../services/auth/auth-store.service';
-import { UiService } from '../services/uiService/ui.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,11 +26,7 @@ export class EditUserReolverService
       role: string;
     }>
 {
-  constructor(
-    private userStoreService: UserStoreService,
-    private authStoreService: AuthStoreService,
-    private uiService: UiService
-  ) {}
+  constructor(private userStoreService: UserStoreService) {}
 
   resolve(): Observable<{
     userInputsFinal:

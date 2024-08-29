@@ -25,9 +25,16 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const authorized = this.authStoreService.isAuthorized;
     const JWT_TOKEN = this.sessionStorageService.getToken();
-    console.log(JWT_TOKEN);
 
-    if (authorized) {
+    if (req.url.includes('s3') || req.url.includes('.s3.amazonaws.com')) {
+      return next.handle(req).pipe(
+        catchError((err: HttpErrorResponse) => {
+          return throwError(err);
+        })
+      );
+    }
+
+    if (authorized && JWT_TOKEN) {
       const tokenizedRequest = req.clone({
         setHeaders: {
           authorization: `Bearer ${JWT_TOKEN}`,
@@ -36,15 +43,15 @@ export class TokenInterceptor implements HttpInterceptor {
 
       return next.handle(tokenizedRequest).pipe(
         catchError((err: HttpErrorResponse) => {
-          if (err.status === 401) {
-            // this.authService.logOut();.
-            console.log(err.message);
-          }
           return throwError(err);
         })
       );
     }
 
-    return next.handle(req);
+    return next.handle(req).pipe(
+      catchError((err: HttpErrorResponse) => {
+        return throwError(err);
+      })
+    );
   }
 }

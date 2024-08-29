@@ -1,23 +1,21 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   faEyeSlash,
   faLock,
   faUserAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { Observable, Subscription, tap } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ButtonSize } from '../../../shared/models/button.model';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { ButtonComponent, InputComponent } from '../../../shared';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { UiService } from '../../services/uiService/ui.service';
+
+import { FormService } from '../../services/form/form.service';
+import { LoginUser } from '../../models/user.model';
 import { RouterService } from '../../services/router/router.service';
 
 const components = [ButtonComponent, InputComponent];
@@ -31,43 +29,58 @@ const modules = [FontAwesomeModule, ReactiveFormsModule, CommonModule];
   styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent implements OnInit, OnDestroy {
+  @Input() public captchValid: boolean = false;
+
+  protected readonly buttonSize: typeof ButtonSize = ButtonSize;
+
+  protected readonly loginError$?: Observable<string | null> =
+    this.uiService.errorMessage$;
+
   protected readonly user = faUserAlt;
   protected readonly lock = faLock;
   protected readonly eye = faEyeSlash;
-  protected loginError$?: Observable<string | null> =
-    this.uiService.errorMessage$;
 
-  protected buttonSize: typeof ButtonSize = ButtonSize;
+  protected loginForm!: FormGroup;
 
-  public loginForm!: FormGroup;
-  protected formIsValid = true;
-  private authSubscription?: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private authStoreService: AuthStoreService,
     private uiService: UiService,
+    private formService: FormService,
     private routerService: RouterService
   ) {}
 
   ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      username: new FormControl('stTest', [Validators.required]),
-      password: new FormControl('test', [Validators.required]),
-    });
+    this.loginForm = this.formService.generateLoginFormFields();
+    this.subscriptions.push(
+      this.loginForm.valueChanges.subscribe(() => {
+        this.uiService.resetErrorMessage();
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    this.authSubscription?.unsubscribe();
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.uiService.resetErrorMessage();
   }
 
-  protected onSubmit() {
-    const userCredentials = this.loginForm.value;
+  protected onSubmit(): void {
+    if (this.captchValid) {
+      const userCredentials: LoginUser = this.loginForm.value;
+      this.subscriptions.push(
+        this.authStoreService.logInUser(userCredentials).subscribe({
+          next: (sucess) => {
+            if (sucess) {
+              this.routerService.toHomePage();
+            }
+          },
+        })
+      );
 
-    this.authSubscription = this.authStoreService
-      .logInUser(userCredentials)
-      .pipe(tap(() => this.routerService.toHomePage()))
-      .subscribe();
-
-    this.loginForm.valid && this.loginForm.reset;
+      this.loginForm.valid && this.loginForm.reset;
+    } else {
+      this.uiService.errorMessage = 'Please verify that you are human';
+    }
   }
 }

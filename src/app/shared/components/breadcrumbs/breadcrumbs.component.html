@@ -1,3 +1,21 @@
-<div>
-  <span class="main-route">{{ currentRoute | async | titlecase }}</span>
-</div>
+<nav>
+  <ul class="breadcrumb">
+    <li
+      *ngFor="let breadcrumb of breadcrumbs; let i = index"
+      class="main-route"
+      [ngClass]="{ active: i === breadcrumbs.length - 1 }"
+    >
+      <a
+        *ngIf="i !== breadcrumbs.length - 1; else lastBreadcrumb"
+        (click)="navigateTo(breadcrumb.url)"
+        tabindex="0"
+        (keyup)="handleKeyUp($event, breadcrumb.url)"
+      >
+        {{ breadcrumb.label + " > " }}
+      </a>
+      <ng-template #lastBreadcrumb>
+        {{ breadcrumb.label }}
+      </ng-template>
+    </li>
+  </ul>
+</nav>

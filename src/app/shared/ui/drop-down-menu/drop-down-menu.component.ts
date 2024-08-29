@@ -24,29 +24,27 @@ import { TrainerOption } from '../../../coreFeatures';
   ],
 })
 export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
-  @Input() required: boolean = false;
-  @Input() type: string = 'specialization';
-  @Input() label?: string;
-  @Input() initialValue?: string | null;
+  @Input() public required: boolean = false;
+  @Input() public type: string = 'specialization';
+  @Input() public label?: string;
+  @Input() public initialValue?: string | null;
   @Input() public name: string = 'specialization';
   @Input() public options?: string[] | TrainerOption[];
 
-  public menuIsOpened = false;
-  public readonly icon = faChevronDown;
-  public formControlName?: string;
-  public value!: string;
+  protected readonly icon = faChevronDown;
+  protected menuIsOpened = false;
+  protected formControlName?: string;
+  protected value!: string;
 
-  public chnaged!: (value: string | TrainerOption) => void;
-  public touched!: () => void;
-  public isDisabled!: boolean;
+  protected chnaged!: (value: string | TrainerOption) => void;
+  protected touched!: () => void;
+  protected isDisabled!: boolean;
 
-  // public selectedOption?: string;
-  public selectedOption?: string | TrainerOption;
+  protected selectedOption?: string | TrainerOption;
 
   protected title?: string;
 
   ngOnInit(): void {
-    console.log(this.initialValue, 'SPASDASD');
     this.title = this.initialValue ? this.initialValue : 'Please Select';
   }
 
@@ -72,7 +70,7 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
   public selectOption(option: string | TrainerOption): void {
     if (this.type === 'specialization') {
       const optionAsString = option as string;
-      console.log(optionAsString);
+
       this.selectedOption = option;
       this.chnaged(optionAsString);
       this.touched();
@@ -81,7 +79,7 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
     }
     if (this.type === 'trainer') {
       const optionAsTrainerData = option as TrainerOption;
-      console.log(option);
+
       this.selectedOption = option;
       this.chnaged(optionAsTrainerData);
       this.touched();
@@ -89,14 +87,6 @@ export class DropDownMenuComponent implements ControlValueAccessor, OnInit {
       this.toggleMenu();
     }
   }
-  // public selectOption(option: string): void {
-  //   console.log(option);
-  //   this.selectedOption = option;
-  //   this.chnaged(option);
-  //   this.touched();
-  //   this.title = option;
-  //   this.toggleMenu();
-  // }
 
   public writeValue(value: string): void {
     if (value !== undefined) {

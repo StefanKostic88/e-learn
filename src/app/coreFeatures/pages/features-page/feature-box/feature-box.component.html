@@ -1,7 +1,4 @@
-<figure
-  class="feature-box"
-  [ngStyle]="{ 'flex-direction': isReversed ? 'row-reverse' : 'row' }"
->
+<figure class="feature-box" [ngClass]="{ 'reversed-feature-box': isReversed }">
   <div class="feature-box__content">
     <h3>Feature</h3>
     <p>

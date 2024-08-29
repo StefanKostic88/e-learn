@@ -7,11 +7,15 @@ import { MyAccountAddTrainerComponent } from './my-account-add-trainer/my-accoun
 import { CanDeactivateGuard } from '../../guards/canDeactivate.guard';
 import { UserResolverService } from '../../resolvers/user.resolver.service';
 import { EditUserReolverService } from '../../resolvers/edit-user.resolver.service';
+import { LoadPageResolverService } from '../../resolvers/load-page.resolver.service';
+import { StudentGuard } from '../../guards/student.guard';
 
 export default [
   {
     path: '',
     component: MyAccountPageComponent,
+    data: { breadcrumb: 'My Account' },
+
     children: [
       {
         path: '',
@@ -24,6 +28,10 @@ export default [
         path: 'change-password',
         component: ChangePasswordPageComponent,
         canDeactivate: [CanDeactivateGuard],
+        resolve: {
+          pageLoading: LoadPageResolverService,
+        },
+        data: { breadcrumb: 'Change Password' },
       },
       {
         path: 'edit',
@@ -32,10 +40,13 @@ export default [
         resolve: {
           user: EditUserReolverService,
         },
+        data: { breadcrumb: 'Edit' },
       },
       {
         path: 'add-trainer',
         component: MyAccountAddTrainerComponent,
+        data: { breadcrumb: 'Add trainer' },
+        canActivate: [StudentGuard],
       },
       {
         path: 'trainings',
@@ -43,6 +54,7 @@ export default [
         resolve: {
           user: UserResolverService,
         },
+        data: { breadcrumb: 'Trainings' },
       },
     ],
   },

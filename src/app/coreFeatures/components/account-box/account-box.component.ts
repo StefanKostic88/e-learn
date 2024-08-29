@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   ButtonComponent,
   CustomImgComponent,
@@ -18,28 +18,31 @@ import { UiService } from '../../services/uiService/ui.service';
 import { HeaderDetails } from '../../models/user.model';
 import { AuthStoreService } from '../../services/auth/auth-store.service';
 import { UserStoreService } from '../../services/user/user-store.service';
+import { Observable } from 'rxjs';
+import { HeaderLinkList } from '../../models/shared.models';
 
 const components = [CustomImgComponent, NavigationComponent, ButtonComponent];
+const modules = [NgClass, NgIf, AsyncPipe, FontAwesomeModule];
 
 @Component({
   selector: 'app-account-box',
   standalone: true,
-  imports: [components, NgClass, NgIf, AsyncPipe, FontAwesomeModule],
+  imports: [components, modules],
   templateUrl: './account-box.component.html',
   styleUrl: './account-box.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountBoxComponent {
-  @Input() accountBoxData?: HeaderDetails;
-  @Input() isAuthorized: boolean | null = false;
+  @Input() public accountBoxData?: HeaderDetails;
+  @Input() public isAuthorized: boolean | null = false;
 
-  public readonly isNavigationIsOpened$ = this.uiService.isNavigationIsOpened;
+  public readonly isNavigationIsOpened$: Observable<boolean> =
+    this.uiService.isNavigationIsOpened;
 
-  public readonly linksList = headerLinksList;
+  public readonly linksList: HeaderLinkList[] = headerLinksList;
   public readonly exitIcon: IconDefinition = faArrowRightToBracket;
   public readonly closeIcon: IconDefinition = faClose;
   public readonly btnSize: typeof ButtonSize = ButtonSize;
-
-  // testImg = '../../../../assets/imgs/profile.jpg';
 
   constructor(
     private uiService: UiService,
@@ -48,11 +51,9 @@ export class AccountBoxComponent {
   ) {}
   public closeSidebar(): void {
     this.uiService.closeNavigation();
-    console.log('asdasd');
   }
 
   public logoutUser() {
-    console.log('asdasd');
     this.authStoreService.logOut();
     this.userStoreService.removeCurrentUser();
   }

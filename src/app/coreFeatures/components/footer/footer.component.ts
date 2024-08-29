@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NewsLetterComponent } from './news-letter/news-letter.component';
 import { SelectLanguageComponent } from './select-language/select-language.component';
 import { IconsContainerComponent } from './icons-container/icons-container.component';
@@ -21,9 +21,10 @@ const components = [
   imports: [components, NgFor],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent {
-  linksData = footerLinksData;
+  protected linksData = footerLinksData;
 
   public trackByIndex(index: number): number {
     return index;

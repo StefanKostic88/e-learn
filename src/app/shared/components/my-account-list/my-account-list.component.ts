@@ -14,9 +14,10 @@ import { Observable, of } from 'rxjs';
 import { CustomImgComponent } from '../../ui/custom-img/custom-img.component';
 import { StatusMarkerComponent } from '../../ui/status-marker/status-marker.component';
 import { UserStoreService } from '../../../coreFeatures/services/user/user-store.service';
-import { myStudent, UiService, UserData } from '../../../coreFeatures';
-import { RouterService } from '../../../coreFeatures/services/router/router.service';
-import { LoaderComponent } from '../../ui/loader/loader.component';
+import { myStudent, UserData } from '../../../coreFeatures';
+
+import { ModalService } from '../../../coreFeatures/services/modal/modal.service';
+import { environment } from '../../../enviroment';
 
 export interface AccountDataOutput {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,7 +32,6 @@ const components = [
   ModalBoxComponent,
   CustomImgComponent,
   StatusMarkerComponent,
-  LoaderComponent,
 ];
 
 @Component({
@@ -52,9 +52,6 @@ export class MyAccountListComponent implements OnInit {
   @ViewChild(ModalBoxComponent, { static: false })
   modalBoxComponent?: ModalBoxComponent;
 
-  // public readonly currentUser$: Observable<{ role: string } | null> = of({
-  //   role: 'trainer',
-  // });
   public readonly currentUser$: Observable<UserData | null> =
     this.userStoreService.currentUser;
 
@@ -62,22 +59,16 @@ export class MyAccountListComponent implements OnInit {
 
   public readonly accountDataOutput = this.userStoreService.getAccountData();
   public readonly role$ = this.userStoreService.getCurrentUserRole();
+  public readonly userId$ = this.userStoreService.getUserId();
 
-  // public readonly userActiveStatus$: Observable<string> =
-  //   this.userService.getUserAccountStatus();
-
-  // public readonly accountDataOutput: Observable<
-  //   AccountDataOutput[] | undefined
-  // > = this.userService.getAccountData();
-
-  public readonly img$ = of('../../../assets/imgs/profile.jpg').pipe();
+  public readonly img$ = this.userStoreService.getUserImage();
+  protected noUserImage = of(environment.staticImages.noUserImage);
 
   public icon: IconDefinition = faCheck;
   public readonly btnType: typeof ButtonState = ButtonState;
   public readonly btnSize: typeof ButtonSize = ButtonSize;
 
   public tableData$?: Observable<myStudent[]>;
-  // public tableLoading$?: Observable<boolean> = this.uiService.tableLoading;
 
   public modalMessageChunks = [
     {
@@ -98,8 +89,7 @@ export class MyAccountListComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userStoreService: UserStoreService,
-    private uiService: UiService,
-    private routerService: RouterService
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -107,16 +97,15 @@ export class MyAccountListComponent implements OnInit {
   }
 
   protected navigateTo(route: string): void {
-    this.uiService.loadingSpiner = true;
     this.router.navigate([route], { relativeTo: this.route });
   }
 
   toggleDeletAccountModal() {
-    this.modalBoxComponent?.toggleModal();
-  }
-
-  confirmDeleteAndCloseModal() {
-    this.modalBoxComponent?.toggleModal();
+    this.modalService.confirmDeleteProfile(
+      'Profile Deletion Confirmation',
+      this.modalMessageChunks,
+      this.userId$
+    );
   }
 
   getBojectKeys(obj: object) {

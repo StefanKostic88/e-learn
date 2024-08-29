@@ -15,9 +15,9 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
   styleUrl: './pricing-card.component.scss',
 })
 export class PricingCardComponent {
-  public readonly btnSize: typeof ButtonSize = ButtonSize;
-  public readonly checkIcon: IconDefinition = faCheck;
-  public readonly closeIcon: IconDefinition = faClose;
+  @Input() public cardData?: PricingCard;
 
-  @Input() cardData?: PricingCard;
+  protected readonly btnSize: typeof ButtonSize = ButtonSize;
+  protected readonly checkIcon: IconDefinition = faCheck;
+  protected readonly closeIcon: IconDefinition = faClose;
 }

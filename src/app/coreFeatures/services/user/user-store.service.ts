@@ -4,23 +4,30 @@ import {
   BehaviorSubject,
   catchError,
   combineLatest,
+  exhaustMap,
   map,
   Observable,
   of,
   tap,
   throwError,
 } from 'rxjs';
-import { HeaderData, UserData, myStudent } from '../../models/user.model';
+import {
+  EditInterface,
+  HeaderData,
+  UserData,
+  myStudent,
+} from '../../models/user.model';
 import { AuthStoreService } from '../auth/auth-store.service';
 
 import { UiService } from '../uiService/ui.service';
+import { SessionStorageService } from '../session-storage/session-storage.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../enviroment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserStoreService {
-  private defaultImgPath = '../../../../assets/imgs/no-user-img.jpg';
-
   private currentUser$$: BehaviorSubject<UserData | null> =
     new BehaviorSubject<UserData | null>(null);
 
@@ -30,7 +37,9 @@ export class UserStoreService {
   constructor(
     private userService: UserService,
     private authStoreService: AuthStoreService,
-    private uiService: UiService
+    private uiService: UiService,
+    private sessionStorageService: SessionStorageService,
+    private http: HttpClient
   ) {}
 
   set currentUser(val: null | UserData) {
@@ -42,12 +51,20 @@ export class UserStoreService {
   }
 
   public getCurrentUser(): Observable<UserData | null> {
-    return this.userService.getCurrentUser().pipe(
-      tap((user) => {
-        this.currentUser = user;
-      }),
-      catchError(() => {
-        return of(null);
+    return this.authStoreService.isAuthorized.pipe(
+      exhaustMap((isAuthorized) => {
+        if (isAuthorized) {
+          return this.userService.getCurrentUser().pipe(
+            tap((user) => {
+              this.currentUser = user;
+            }),
+            catchError(() => {
+              return of(null);
+            })
+          );
+        } else {
+          return of(null);
+        }
       })
     );
   }
@@ -56,12 +73,27 @@ export class UserStoreService {
     const isAuthorized = this.authStoreService.isAuthorized;
     const currentUserData = this.currentUser$.pipe(
       map((user) => {
-        const userData = {
-          email: user && user.email,
-          username: user && user.username,
-          img: user?.img ? user.img : this.defaultImgPath,
-        };
-        return userData;
+        if (user) {
+          const userData = {
+            email: user && user.email,
+            username: user && user.username,
+            img: user?.img ? user.img : environment.staticImages.noUserImage,
+          };
+          this.sessionStorageService.setHeaderData(userData);
+          return userData;
+        } else {
+          const data = this.sessionStorageService.getHeaderData();
+
+          const userData = data
+            ? JSON.parse(data)
+            : {
+                email: null,
+                username: null,
+                img: null,
+              };
+
+          return userData;
+        }
       })
     );
 
@@ -71,6 +103,7 @@ export class UserStoreService {
           isAuthorized,
           accountData: currentUserData,
         };
+
         return result;
       })
     );
@@ -91,13 +124,16 @@ export class UserStoreService {
           ],
           currentUser
         );
-      }),
-      tap((el) => console.log(el))
+      })
     );
   }
 
   public getCurrentUserRole() {
     return this.currentUser$.pipe(map((user) => user?.role));
+  }
+
+  public getUserId() {
+    return this.currentUser$.pipe(map((user) => user?.id));
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -161,6 +197,8 @@ export class UserStoreService {
       map((data) => {
         const specialization = data.specialization;
         const role = data.role;
+        const image = data.img;
+
         const userInputs = this.selectedProperitesTest(data, [
           'firstName',
           'lastName',
@@ -170,16 +208,16 @@ export class UserStoreService {
           'dateOfBirth',
         ]);
 
-        return { userInputs, specialization, role };
+        return { userInputs, specialization, role, image };
       }),
-      map(({ userInputs, specialization, role }) => {
+      map(({ userInputs, specialization, role, image }) => {
         const userInputsFinal = userInputs?.map((el) => ({
           formControlName: el['prop'],
           labelName: this.splitAndSwitchToUpper(el['prop']),
           value: el['value'],
         }));
 
-        return { userInputsFinal, specialization, role };
+        return { userInputsFinal, specialization, role, image };
       }),
       tap(() => {
         this.uiService.loadingSpiner = false;
@@ -200,15 +238,12 @@ export class UserStoreService {
   }
 
   public getUserSpecialization() {
-    return this.userService.getCurrentUser().pipe(
-      tap((el) => console.log(el, 'asdasd')),
-      map((user) => user.specialization),
-      tap((el) => console.log(el, 'asdasd'))
-    );
+    return this.userService
+      .getCurrentUser()
+      .pipe(map((user) => user.specialization));
   }
 
   public getMyUsers(): Observable<myStudent[]> {
-    // this.uiService.tableLoading = true;
     return this.userService.getMyUsers().pipe(
       map((users) =>
         users.map((user) => ({
@@ -218,7 +253,6 @@ export class UserStoreService {
         }))
       ),
       catchError((err) => {
-        // this.uiService.tableLoading = false;
         return throwError(err);
       })
     );
@@ -234,7 +268,6 @@ export class UserStoreService {
         }))
       ),
       catchError((err) => {
-        // this.uiService.tableLoading = false;
         return throwError(err);
       })
     );
@@ -254,4 +287,41 @@ export class UserStoreService {
       })
     );
   }
+
+  public getUserImage() {
+    return this.currentUser.pipe(
+      map((user) =>
+        user?.img ? user.img : environment.staticImages.noUserImage
+      )
+    );
+  }
+
+  public uploadUserPhotoAndEditUser(
+    fileType: string,
+    photoName: string,
+    file: File,
+    dataForUpdate: EditInterface
+  ) {
+    this.uiService.loadingSpiner = true;
+    return this.userService.uploadUserImage(fileType, photoName).pipe(
+      exhaustMap(({ key, data }) => {
+        return this.http.put(data, file).pipe(
+          exhaustMap(() => {
+            const imgpath = `https://d354odvv3vtkqh.cloudfront.net/${key}`;
+            return this.authStoreService.editCurrentUser({
+              ...dataForUpdate,
+              img: imgpath,
+            });
+          })
+        );
+      }),
+
+      catchError((err) => {
+        return throwError(err);
+      })
+    );
+  }
 }
+
+// keyFinal = key;
+// return this.http.put(data, this.file);

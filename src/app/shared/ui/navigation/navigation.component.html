@@ -6,7 +6,7 @@
     'account-box-nav': accountBoxNav
   }"
 >
-  <li>
+  <li *ngIf="navigationTitle">
     <h3 class="app-navigation__header">
       {{ navigationTitle }}
     </h3>

@@ -22,9 +22,16 @@
               class="edit-form__top-section__inner-left-section__profile-upload"
             >
               <p class="text-small">Upload yout photo</p>
-              <p class="text-extra-small">
-                Your photo should be in PNG or JPG format
+
+              <p *ngIf="fileName; else fileNameText" class="text-extra-small">
+                {{ fileName }}
               </p>
+              <ng-template #fileNameText>
+                <p class="text-extra-small">
+                  Your photo should be in PNG or JPG format
+                </p>
+              </ng-template>
+
               <div
                 class="edit-form__top-section__inner-left-section__profile-upload-input"
               >
@@ -34,11 +41,19 @@
                 >
                   Choose image
                 </label>
-                <input id="file-upload" type="file" />
+                <input
+                  id="file-upload"
+                  type="file"
+                  accept="image/jpeg image/png"
+                  name="file"
+                  formControlName="profilePhoto"
+                  (change)="onFileSelect($event)"
+                />
                 <app-button
                   [content]="'Remove'"
                   [btnSize]="btnSize.EXTRA_SMALL"
                   [outlined]="false"
+                  (click)="removePhoto()"
                 ></app-button>
               </div>
             </div>
@@ -58,9 +73,7 @@
         class="edit-form__top-section__inner-left-section__form-controls__switcher-container"
       >
         <span>Active</span>
-        <!-- 
-        *ngIf="userActiveStatus$ | async as userActiveStatus"
-        [checked]="userActiveStatus" -->
+
         <app-switcher [disabled]="true" [checked]="true"></app-switcher>
       </div>
     </div>
@@ -91,7 +104,7 @@
       [content]="'Save Changes'"
       [btnSize]="btnSize.MEDIUM"
       (click)="onSubmit()"
+      [disabled]="changesAreNotValid"
     ></app-button>
   </div>
 </form>
-<!-- [disabled]="changesAreNotValid" -->

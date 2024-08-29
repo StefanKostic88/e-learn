@@ -1,4 +1,10 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  forwardRef,
+} from '@angular/core';
 import { FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -22,6 +28,7 @@ const modules = [FontAwesomeModule];
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputComponent {
   @Input() public inputName: string = '';
@@ -31,15 +38,19 @@ export class InputComponent {
   @Input() public placeholder?: string = 'Input Text';
   @Input() public isNotNewsLetter?: boolean = true;
   @Input() public eye: IconDefinition = faEyeSlash;
+  @Input() public autoCompletePass: boolean = false;
 
   public value!: string;
   public chnaged!: (value: string) => void;
   public touched!: () => void;
   public isDisabled!: boolean;
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   // Control Value Accesors
   writeValue(value: string): void {
     this.value = value;
+    this.cdr.markForCheck();
   }
   registerOnChange(fn: (value: string) => void): void {
     this.chnaged = fn;

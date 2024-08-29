@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   IconDefinition,
@@ -14,6 +14,7 @@ import { FaqDataInterface } from '../../../constants/staticData';
   imports: [FontAwesomeModule, NgIf],
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FaqComponent {
   public icon: IconDefinition = faAngleDown;

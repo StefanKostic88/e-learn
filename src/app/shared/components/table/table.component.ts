@@ -1,5 +1,11 @@
 import { DatePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import {
@@ -22,27 +28,24 @@ import {
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit {
-  @Input() tableHeaders?: string[] | undefined | null;
-  @Input() tableData?:
+  @Input() public tableHeaders?: string[] | undefined | null;
+  @Input() public tableData?:
     | TrainerRefined[]
     | myStudent[]
     | null
     | MyTrainingTableData[];
 
-  // @Input() tableData?:
-  // | TrainerRefined[]
-  // | StudentRefined[]
-  // | MyTrainingOutput[]
-  // | MyTrainingStudentOutput[];
-  @Input() role: string = 'student';
-  @Input() tableType: string = 'userList';
-  tableLength?: number = 7;
-  addPaginator = false;
+  @Input() public role: string = 'student';
+  @Input() public tableType: string = 'userList';
+
+  protected tableLength?: number = 7;
+  protected addPaginator = false;
+
   ngOnInit(): void {
     this.tableLength = this.tableType === 'studentTrainingList' ? 4 : 7;
-    console.log(this.tableLength);
 
     this.addPaginator = Number(this.tableData?.length) > this.tableLength;
   }

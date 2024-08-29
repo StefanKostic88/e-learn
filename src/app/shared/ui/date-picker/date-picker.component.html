@@ -1,5 +1,5 @@
 <div class="app-date-picker">
-  <label for="">{{ label }}</label>
+  <label [for]="id">{{ label }}</label>
   <div class="input-group">
     <input
       type="text"
@@ -8,6 +8,7 @@
       bsDatepicker
       [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD MMMM YYYY' }"
       (bsValueChange)="onValueChange($event)"
+      [id]="id"
     />
     <fa-icon [icon]="icon"></fa-icon>
   </div>

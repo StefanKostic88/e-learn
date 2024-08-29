@@ -53,20 +53,3 @@
     ></app-button>
   </div>
 </div>
-
-<app-modal-box [messageChunks]="modalMessageChunks" #modalBox>
-  <div class="modal-controls">
-    <app-button
-      [content]="'Cancel'"
-      [btnSize]="btnSize.SMALL"
-      [outlined]="false"
-      (click)="toggleDeletAccountModal()"
-    ></app-button>
-    <app-button
-      [content]="'Confirm'"
-      [btnSize]="btnSize.SMALL"
-      [btnType]="btnType.ERROR"
-      (click)="confirmDeleteAndCloseModal()"
-    ></app-button>
-  </div>
-</app-modal-box>

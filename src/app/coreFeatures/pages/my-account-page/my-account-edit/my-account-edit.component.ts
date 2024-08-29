@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   ButtonSize,
   ButtonState,
@@ -10,7 +10,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import {
   ButtonComponent,
   CustomImgComponent,
@@ -21,9 +21,19 @@ import {
 } from '../../../../shared';
 import { CommonModule } from '@angular/common';
 import { specializations } from '../../../constants/dictionary';
-import { UserStoreService } from '../../../services/user/user-store.service';
+
 import { AuthStoreService } from '../../../services/auth/auth-store.service';
-import { UiService } from '../../../services/uiService/ui.service';
+
+import { RouterService } from '../../../services/router/router.service';
+import { FormService } from '../../../services/form/form.service';
+import { EditFormInput } from '../../../models/shared.models';
+import { ToasterService } from '../../../services/toaster/toaster.service';
+import { ModalService } from '../../../services/modal/modal.service';
+
+import { UserStoreService } from '../../../services/user/user-store.service';
+import { environment } from '../../../../enviroment';
+import { EditInterface } from '../../../models/user.model';
+import { v4 } from 'uuid';
 
 const components = [
   CustomImgComponent,
@@ -43,127 +53,196 @@ const modules = [ReactiveFormsModule, CommonModule];
   templateUrl: './my-account-edit.component.html',
   styleUrl: './my-account-edit.component.scss',
 })
-export class MyAccountEditComponent implements OnInit {
+export class MyAccountEditComponent implements OnInit, OnDestroy {
   public userEditForm!: FormGroup;
-  public img: string = '../../../assets/imgs/no-user-img.jpg';
-  public readonly btnState: typeof ButtonState = ButtonState;
-  public readonly btnSize: typeof ButtonSize = ButtonSize;
-  public changesAreNotValid = true;
 
-  public subscriptions?: Subscription[];
+  private noUserImage: string = environment.staticImages.noUserImage;
 
-  protected inputsArr?: {
-    formControlName:
-      | 'firstName'
-      | 'lastName'
-      | 'username'
-      | 'email'
-      | 'dateOfBirth'
-      | 'address';
-    labelName: string;
-    value: string | undefined;
-  }[];
+  protected img?: string | ArrayBuffer | null | undefined;
 
-  snapshot?: { [props: string]: string };
-  userActiveStatus$?: Observable<boolean>;
+  protected readonly btnState: typeof ButtonState = ButtonState;
+  protected readonly btnSize: typeof ButtonSize = ButtonSize;
+  protected changesAreNotValid = true;
+  protected readonly allSpecializations = specializations;
 
-  public readonly allSpecializations = specializations;
-  public userSpecialization?: string;
-  public role?: string;
+  protected userSpecialization?: string;
+  protected role?: string;
+
+  private subscriptions: Subscription[] = [];
+  protected snapshot?: { [props: string]: string };
+  protected fileName: string | null = null;
+
+  protected inputsArr?: EditFormInput[];
+  protected file?: File;
 
   constructor(
-    private router: Router,
-    private userStoreService: UserStoreService,
+    private routerService: RouterService,
     private route: ActivatedRoute,
     private authStoreService: AuthStoreService,
-    private uiService: UiService
+    private formService: FormService,
+    private toasterService: ToasterService,
+    private modalService: ModalService,
+    private userStoreService: UserStoreService
   ) {}
 
   ngOnInit(): void {
-    this.userEditForm = new FormGroup({
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      username: new FormControl(''),
-      email: new FormControl(''),
-      address: new FormControl(''),
-      dateOfBirth: new FormControl(''),
-      specialization: new FormControl(''),
-    });
+    this.toasterService.resetToasterState();
+    this.userEditForm = this.formService.generateEditFormFields();
 
-    const data = this.route.data
-      .pipe(
-        tap(({ user }) => {
-          this.userSpecialization = user.specialization;
-          this.inputsArr = user.userInputsFinal;
-          this.role = user.role;
-          const formControls: { [prop: string]: AbstractControl } = {};
-          const inputValues = this.inputsArr?.map((el) => ({
-            formControlName: el.formControlName,
-            value: el.value ? el.value : '',
-          }));
+    this.subscriptions.push(
+      this.generateEditUserInputsWithValues().subscribe()
+    );
 
-          inputValues?.forEach((el) => {
-            formControls[el.formControlName] = new FormControl(el.value);
-          });
-          if (this.userSpecialization) {
-            console.log(this.userSpecialization, 'asdasd');
-            formControls['specialization'] = new FormControl(
-              this.userSpecialization
-            );
-          }
-
-          this.userEditForm = new FormGroup(formControls);
-          this.snapshot = this.userEditForm.value;
-        })
-      )
-      .subscribe();
-
-    this.subscriptions?.push(data);
-
-    const changeSub = this.userEditForm.valueChanges.subscribe({
-      next: (data) => {
-        let changed = false;
-        for (const key in data) {
-          if (this.snapshot && data[key] !== this.snapshot[key]) {
-            changed = true;
-            break;
-          }
-        }
-        if (changed) {
-          this.changesAreNotValid = false;
-          console.log('Changes detected');
-        } else {
-          console.log('Changes NOT detected');
-          this.changesAreNotValid = true;
-        }
-      },
-    });
-
-    this.subscriptions?.push(changeSub);
-  }
-
-  public onSubmit() {
-    const data = this.userEditForm.value;
-    if (!this.changesAreNotValid) {
-      this.authStoreService.editCurrentUser(data).subscribe({
-        next: () => {
-          this.changesAreNotValid = true;
+    this.subscriptions.push(
+      this.userEditForm.valueChanges.subscribe({
+        next: (val) => {
+          this.detectEditFormChanges(val);
         },
-      });
-    }
+      })
+    );
   }
 
-  canDeactivate(): boolean | Observable<boolean> | Promise<boolean> {
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  protected onSubmit() {
     if (this.changesAreNotValid) {
-      return true;
+      return;
+    }
+
+    const updateData = this.generateEditData();
+    const uploadedImageChange = this.userEditForm.get('profilePhoto');
+
+    if (uploadedImageChange?.value) {
+      const fileType = this.file?.type;
+
+      if (fileType && this.file) {
+        const photoName = `profile-image-${v4()}`;
+        const dataasdasd = this.userStoreService.uploadUserPhotoAndEditUser(
+          fileType,
+          photoName,
+          this.file,
+          updateData
+        );
+
+        this.subscriptions.push(
+          dataasdasd.subscribe({
+            next: () => {
+              this.changesAreNotValid = true;
+            },
+          })
+        );
+      }
     } else {
-      return confirm(
-        'Are you sure you want to leave this page? Any unsaved changes will be lost.'
+      this.subscriptions.push(
+        this.authStoreService.editCurrentUser(updateData).subscribe({
+          next: () => {
+            this.changesAreNotValid = true;
+          },
+        })
       );
     }
   }
 
-  navigateBack() {
-    this.router.navigate(['/my-account']);
+  protected navigateBack(): void {
+    this.routerService.toMyAccount();
+  }
+
+  protected onFileSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.file = file;
+      this.fileName = file.name;
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        this.img = reader.result;
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+  protected removePhoto(): void {
+    this.fileName = null;
+    this.img = this.noUserImage;
+    const input = document.getElementById('file-upload') as HTMLInputElement;
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  private detectEditFormChanges(val: Record<string, string>): void {
+    let changed = false;
+    for (const key in val) {
+      if (this.snapshot?.[key] !== val[key]) {
+        changed = true;
+        break;
+      }
+    }
+
+    this.changesAreNotValid = changed ? false : true;
+  }
+
+  private generateEditUserInputsWithValues(): Observable<Data> {
+    return this.route.data.pipe(
+      tap(({ user }) => {
+        this.userSpecialization = user.specialization;
+        this.inputsArr = user.userInputsFinal;
+        this.role = user.role;
+        this.img = user.image ? user.image : this.noUserImage;
+
+        const formControls: { [prop: string]: AbstractControl } = {};
+        const inputValues = this.inputsArr?.map((el) => ({
+          formControlName: el.formControlName,
+          value: el.value ? el.value : '',
+        }));
+
+        inputValues?.forEach((el) => {
+          formControls[el.formControlName] = new FormControl(el.value);
+        });
+        if (this.userSpecialization) {
+          formControls['specialization'] = new FormControl(
+            this.userSpecialization
+          );
+        }
+
+        formControls['profilePhoto'] = new FormControl('');
+
+        this.userEditForm = new FormGroup(formControls);
+        this.snapshot = this.userEditForm.value;
+      })
+    );
+  }
+
+  canDeactivate(): true | Observable<boolean> {
+    if (this.changesAreNotValid) {
+      return true;
+    } else {
+      return this.modalService.confirmLeavePage('Leave Edit Profile', [
+        {
+          chunk:
+            'Are you sure you want to leave this page? Any unsaved changes will be lost.',
+        },
+      ]);
+    }
+  }
+
+  private generateEditData(): EditInterface {
+    const data = this.userEditForm.value;
+    const updateData: EditInterface = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      address: data.address,
+      username: data.username,
+      dateOfBirth: data.dateOfBirth,
+      specialization: data.specialization,
+    };
+
+    return updateData;
   }
 }

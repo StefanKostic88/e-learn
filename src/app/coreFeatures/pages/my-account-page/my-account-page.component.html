@@ -4,6 +4,8 @@
   </ng-container>
   <ng-container class="main">
     <router-outlet></router-outlet>
+    <app-toaster></app-toaster>
   </ng-container>
 </app-page-wraper>
-<app-spiner *ngIf="isLoading$ | async"></app-spiner>
+<!-- <app-modaltest></app-modaltest> -->
+<app-modal-box></app-modal-box>

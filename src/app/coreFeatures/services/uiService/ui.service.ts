@@ -35,10 +35,6 @@ export class UiService {
 
   public actionSuccess$ = this.actionSuccess$$.asObservable();
 
-  // private tableLoading$$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  // private tableLoading$: Observable<boolean> =
-  //   this.tableLoading$$.asObservable();
-
   constructor(private sessionStorageService: SessionStorageService) {}
 
   get isNavigationIsOpened(): Observable<boolean> {
@@ -76,13 +72,6 @@ export class UiService {
   get actionSuccess(): Observable<boolean> {
     return this.actionSuccess$;
   }
-
-  // set tableLoading(val: boolean) {
-  //   this.tableLoading$$.next(val);
-  // }
-  // get tableLoading(): Observable<boolean> {
-  //   return this.tableLoading$;
-  // }
 
   public toggleNavigationMenu(): void {
     const currentValue = this.navigationIsOpened$$.getValue();
@@ -122,6 +111,10 @@ export class UiService {
 
   public resetErrorAndSucessState() {
     this.actionSuccess = false;
+    this.errorMessage = null;
+  }
+
+  public resetErrorMessage() {
     this.errorMessage = null;
   }
 }

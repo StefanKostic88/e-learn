@@ -4,7 +4,8 @@ import {
   MyAccountListComponent,
   PageWraperComponent,
 } from '../../../../shared';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { RouterService } from '../../../services/router/router.service';
 
 const components = [
   PageWraperComponent,
@@ -20,9 +21,12 @@ const components = [
   styleUrl: './my-account-base.component.scss',
 })
 export class MyAccountBaseComponent {
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private routerService: RouterService
+  ) {}
 
   public navigateToTrainings(): void {
-    this.router.navigate(['trainings'], { relativeTo: this.route });
+    this.routerService.toTrainingsNext(this.route);
   }
 }

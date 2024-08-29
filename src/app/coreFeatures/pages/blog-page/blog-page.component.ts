@@ -1,63 +1,44 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import {
   BoxComponent,
   ButtonComponent,
   PageWraperComponent,
+  SpinerComponent,
 } from '../../../shared';
-import { NgFor } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { UiService } from '../../services/uiService/ui.service';
+import { BlogData, blogData } from '../../constants/staticData';
 
-const components = [PageWraperComponent, BoxComponent, ButtonComponent];
+const components = [
+  PageWraperComponent,
+  BoxComponent,
+  ButtonComponent,
+  SpinerComponent,
+];
+
+const modules = [NgFor, NgIf, AsyncPipe];
 
 @Component({
   selector: 'app-blog-page',
   standalone: true,
-  imports: [components, NgFor],
+  imports: [components, modules],
   templateUrl: './blog-page.component.html',
   styleUrl: './blog-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BlogPageComponent {
-  public blogData = [
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-    {
-      title: 'Blog',
-      img: '../../../assets/imgs/box-image-1.jpg',
-      readTime: 15,
-      creationDate: new Date(),
-      tag: 'Lorem, ipsum.',
-    },
-  ];
+export class BlogPageComponent implements OnInit {
+  public blogData: BlogData[] = blogData;
+
+  constructor(private uiService: UiService) {}
+
+  ngOnInit(): void {
+    const timer = setTimeout(() => {
+      this.uiService.loadingSpiner = false;
+      clearTimeout(timer);
+    }, 0);
+  }
+
+  public trackByIndex(index: number): number {
+    return index;
+  }
 }

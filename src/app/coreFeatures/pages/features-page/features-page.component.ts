@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PageWraperComponent } from '../../../shared';
 import { FeatureBoxComponent } from './feature-box/feature-box.component';
-import { featureDataArr } from '../../constants/staticData';
+import { FeatureBoxData, featureDataArr } from '../../constants/staticData';
+import { UiService } from '../../services/uiService/ui.service';
 
 const components = [PageWraperComponent, FeatureBoxComponent];
 
@@ -11,7 +12,17 @@ const components = [PageWraperComponent, FeatureBoxComponent];
   imports: [components],
   templateUrl: './features-page.component.html',
   styleUrl: './features-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeaturesPageComponent {
-  public readonly features = featureDataArr;
+export class FeaturesPageComponent implements OnInit {
+  public readonly features: FeatureBoxData[] = featureDataArr;
+
+  constructor(private uiService: UiService) {}
+
+  ngOnInit(): void {
+    const timer = setTimeout(() => {
+      this.uiService.loadingSpiner = false;
+      clearTimeout(timer);
+    }, 0);
+  }
 }

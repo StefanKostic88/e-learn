@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-switcher',
@@ -6,8 +6,10 @@ import { Component, Input } from '@angular/core';
   imports: [],
   templateUrl: './switcher.component.html',
   styleUrl: './switcher.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SwitcherComponent {
-  @Input() checked: boolean | null = false;
-  @Input() disabled: boolean = false;
+  @Input() public checked: boolean | null = false;
+  @Input() public disabled: boolean = false;
+  @Input() public id: string = 'isActive';
 }
