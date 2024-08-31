@@ -25,7 +25,7 @@ export const environment = {
     addMyUsers:
       ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/add-my-users',
   },
-  captchaSiteKey: '6LcqCisqAAAAAISuj2t66F2XokMGPh9H60ZUPseG',
+  captchaSiteKey: '6LcCtDIqAAAAAJJV0wAcl1x65LHyEZZ-Dd4-PfjF',
   staticImages: {
     aboutUs:
       'https://d354odvv3vtkqh.cloudfront.net/static-files/about-us-img.jpg',
