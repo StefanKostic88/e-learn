@@ -5,6 +5,7 @@
   height: var(--custom-img-height, 100%);
   max-width: var(--custom-img-max-width, 451px);
   background-color: var(--custom-img-bg-color, #cfcbf3ff);
+  min-width: var(--custom-img-min-width, unset);
 
   @media (max-width: 768px) {
     max-width: var(--custom-img-max-width, unset);

@@ -1,27 +1,29 @@
 # ELearnApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.5.
+The ELearnApp is an educational platform developed using the Angular framework with standalone components and RxJS. Its primary objective is to create a dynamic educational environment that enhances communication between students and trainers.
 
-## Development server
+The portal leverages AWS API Gateway for backend communication, ensuring smooth interaction with various services. It also uses AWS S3 buckets for storing and serving static images, as well as handling photo uploads. This integration provides a seamless and efficient user experience, enabling the portal to facilitate interactive learning.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run ng serve for a dev server. Navigate to http://localhost:4200/.
 
-## Code scaffolding
+To log in you can use test users:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Test Trainers:
+Username: stTest
+Password: test
 
-## Build
+Username: IvTest
+Password: test
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Username: mTest
+Password: test
 
-## Running unit tests
+Test Students:
+Username: student1Test
+Password: test
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Username: student2Test
+Password: test
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Username: student3Test
+Password: test

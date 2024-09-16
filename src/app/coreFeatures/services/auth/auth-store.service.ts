@@ -123,6 +123,7 @@ export class AuthStoreService {
   }
 
   public resetRegisterMyAccount() {
+    this.uiService.loadingSpiner = true;
     this.uiService.resetErrorAndSucessState();
     this.createdUser = null;
     this.routerService.toMyAccount();

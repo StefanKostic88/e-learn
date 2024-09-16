@@ -33,11 +33,11 @@ export class FormService {
 
   public generateLoginFormFields() {
     return new FormGroup({
-      [this.loginFormFields.USERNAME]: new FormControl('stTest', [
+      [this.loginFormFields.USERNAME]: new FormControl('', [
         Validators.required,
       ]),
 
-      [this.loginFormFields.PASSWORD]: new FormControl('test', [
+      [this.loginFormFields.PASSWORD]: new FormControl('', [
         Validators.required,
       ]),
     });
