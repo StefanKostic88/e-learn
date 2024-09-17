@@ -1,0 +1,72 @@
+@import "../../../../styles/base/base.scss";
+:host {
+  --custom-wraper-align-items: stretch;
+  --custom-img-height: 100%;
+  --custom-img-max-width: 100%;
+
+  app-button {
+    align-self: baseline;
+  }
+  app-custom-img {
+    position: absolute;
+    top: 0;
+    left: 20%;
+    bottom: 0;
+    right: 0;
+    z-index: -2;
+  }
+}
+
+.generic-details-page {
+  z-index: 1;
+  position: relative;
+  margin-top: 4.8rem;
+  box-shadow: 0px 0px 1px var(--text), 0px 0px 2px var(--text);
+  padding: 6rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10rem;
+
+    &-title {
+      flex: 1;
+      @include text-properties(3rem, 4rem, 700);
+    }
+    &-date {
+      @include text-properties(1.75rem, 2rem, 400);
+    }
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      gap: 3.2rem;
+      &-title {
+        text-align: center;
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+
+    & span {
+      margin-left: auto;
+      color: var(--primary);
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: var(--bg-color);
+    opacity: 0.8;
+    z-index: -1;
+  }
+}

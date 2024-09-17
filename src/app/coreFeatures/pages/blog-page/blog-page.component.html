@@ -11,9 +11,15 @@
           [creationDate]="blog.creationDate"
           [img]="blog.img"
           [tag]="blog.tag"
+          (click)="goToBlog(blog.id)"
         ></app-box>
       </div>
-      <app-button [content]="'Load More Articles'"></app-button>
+      <app-button
+        *ngIf="blogData"
+        [content]="'Load More Articles'"
+        (click)="loadMoreBlogs()"
+        [disabled]="blogData.length >= blogsDataMock.length"
+      ></app-button>
     </div>
   </ng-container>
 </app-page-wraper>

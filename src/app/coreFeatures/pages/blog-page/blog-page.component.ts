@@ -8,6 +8,7 @@ import {
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { UiService } from '../../services/uiService/ui.service';
 import { BlogData, blogData } from '../../constants/staticData';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const components = [
   PageWraperComponent,
@@ -27,18 +28,37 @@ const modules = [NgFor, NgIf, AsyncPipe];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BlogPageComponent implements OnInit {
-  public blogData: BlogData[] = blogData;
+  protected blogsDataMock: BlogData[] = blogData;
+  protected blogData?: BlogData[];
 
-  constructor(private uiService: UiService) {}
+  private sliceStart = 0;
+  private sliceEnd = 6;
+
+  constructor(
+    private uiService: UiService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    this.blogData = blogData.slice(0, 6);
     const timer = setTimeout(() => {
       this.uiService.loadingSpiner = false;
       clearTimeout(timer);
     }, 0);
   }
 
-  public trackByIndex(index: number): number {
+  protected trackByIndex(index: number): number {
     return index;
+  }
+
+  protected goToBlog(id: string) {
+    this.router.navigate([`${id}`], { relativeTo: this.route });
+  }
+  protected loadMoreBlogs() {
+    this.sliceStart = this.sliceStart + 6;
+    this.sliceEnd = this.sliceEnd + 6;
+    const newBlogs = blogData.slice(this.sliceStart, this.sliceEnd);
+    newBlogs.length > 0 && this.blogData?.push(...newBlogs);
   }
 }
