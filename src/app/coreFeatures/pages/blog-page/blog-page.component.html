@@ -1,9 +1,7 @@
 <app-page-wraper [pageTitle]="'Blog'">
   <ng-container class="main">
-    <div class="blog flex flex-col items-center gap-14 pb-24 mb-[266px]">
-      <div
-        class="blog__box-container flex flex-wrap gap-6 items-center justify-center"
-      >
+    <div class="blog">
+      <div class="blog__box-container">
         <app-box
           *ngFor="let blog of blogData; trackBy: trackByIndex"
           [title]="blog.title"

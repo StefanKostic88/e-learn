@@ -1,17 +1,18 @@
 import { Routes } from '@angular/router';
-import { BlogPageComponent } from './blog-page.component';
+
 import { GenericDetailsPageComponent } from '../generic-details-page/generic-details-page.component';
+import { WhatsNewComponent } from './whats-new.component';
 
 export default [
   {
     path: '',
-    component: BlogPageComponent,
+    component: WhatsNewComponent,
   },
   {
     path: ':id',
     component: GenericDetailsPageComponent,
     data: {
-      typeOfItem: 'blog',
+      typeOfItem: 'whats-new',
     },
   },
 ] as Routes;

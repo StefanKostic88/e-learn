@@ -1,0 +1,27 @@
+<app-page-wraper [pageTitle]="'Whats New'">
+  <ng-container class="main">
+    <div class="whats-new">
+      <div class="whats-new__container">
+        <app-box
+          *ngFor="let individualData of whatsNewData; trackBy: trackByIndex"
+          [title]="individualData.title"
+          [readTime]="individualData.readTime"
+          [creationDate]="individualData.creationDate"
+          [img]="individualData.img"
+          [tag]="individualData.tag"
+          (click)="goToWhatsNew(individualData.id)"
+        ></app-box>
+      </div>
+      <app-button
+        *ngIf="whatsNewData"
+        [content]="'Load More Articles'"
+        (click)="loadMoreWhatsNew()"
+        [disabled]="whatsNewData.length >= whatsNewMockData.length"
+      ></app-button>
+    </div>
+  </ng-container>
+</app-page-wraper>
+
+<!-- (click)="loadMoreBlogs()" -->
+
+<!-- (click)="goToBlog(blog.id)" -->

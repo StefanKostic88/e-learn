@@ -17,8 +17,12 @@
         [readTime]="boxItem.readTime"
         [tag]="boxItem.tag"
         [creationDate]="boxItem.creationDate"
+        (click)="goToWhatsNew(boxItem.id)"
       ></app-box>
     </div>
-    <app-button [content]="'Read more articles'"></app-button>
+    <app-button
+      [content]="'Read more articles'"
+      (click)="readMore()"
+    ></app-button>
   </div>
 </ng-container>

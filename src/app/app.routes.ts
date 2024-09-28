@@ -13,10 +13,20 @@ export const routes: Routes = [
       user: UserResolverService,
     },
   },
+
   {
     path: 'blog',
     loadChildren: () =>
       import('./coreFeatures/pages/blog-page/blog-page.routes'),
+    resolve: {
+      pageLoading: LoadPageResolverService,
+    },
+  },
+
+  {
+    path: 'whats-new',
+    loadChildren: () =>
+      import('./coreFeatures/pages/whats-new/whats-new.routes'),
     resolve: {
       pageLoading: LoadPageResolverService,
     },

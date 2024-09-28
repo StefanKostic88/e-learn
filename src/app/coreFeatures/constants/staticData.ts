@@ -182,6 +182,8 @@ export interface BoxItem {
   img: string;
   readTime: number;
   tag: string;
+  description: string;
+  id: string;
 }
 
 export const boxItems: BoxItem[] = [
@@ -191,6 +193,9 @@ export const boxItems: BoxItem[] = [
     img: environment.staticImages.boxImageOne,
     readTime: 5,
     tag: 'Elearning Transformation',
+    description:
+      'In today’s digital age, the concept of lifelong learning is more relevant than ever. E-learning platforms have revolutionized education, breaking down traditional barriers and providing learners with access to a wealth of knowledge from anywhere in the world. This blog explores how e-learning platforms are transforming the educational landscape, making it more flexible, inclusive, and personalized. We’ll delve into how these platforms empower learners of all ages and backgrounds, adapt to individual learning styles, and provide opportunities for skill development, career advancement, and personal growth. Discover the key trends driving this shift and the role technology plays in fostering a culture of continuous learning in the modern world.',
+    id: 'box-item-0',
   },
   {
     title:
@@ -199,6 +204,9 @@ export const boxItems: BoxItem[] = [
     img: environment.staticImages.boxImageTwo,
     readTime: 10,
     tag: 'Artificial Intelligence',
+    description:
+      'In today’s digital age, the concept of lifelong learning is more relevant than ever. E-learning platforms have revolutionized education, breaking down traditional barriers and providing learners with access to a wealth of knowledge from anywhere in the world. This blog explores how e-learning platforms are transforming the educational landscape, making it more flexible, inclusive, and personalized. We’ll delve into how these platforms empower learners of all ages and backgrounds, adapt to individual learning styles, and provide opportunities for skill development, career advancement, and personal growth. Discover the key trends driving this shift and the role technology plays in fostering a culture of continuous learning in the modern world.',
+    id: 'box-item-1',
   },
   {
     title:
@@ -207,6 +215,41 @@ export const boxItems: BoxItem[] = [
     img: environment.staticImages.boxImageThree,
     readTime: 15,
     tag: 'Digital Learning',
+    description:
+      'In today’s digital age, the concept of lifelong learning is more relevant than ever. E-learning platforms have revolutionized education, breaking down traditional barriers and providing learners with access to a wealth of knowledge from anywhere in the world. This blog explores how e-learning platforms are transforming the educational landscape, making it more flexible, inclusive, and personalized. We’ll delve into how these platforms empower learners of all ages and backgrounds, adapt to individual learning styles, and provide opportunities for skill development, career advancement, and personal growth. Discover the key trends driving this shift and the role technology plays in fostering a culture of continuous learning in the modern world.',
+    id: 'box-item-2',
+  },
+  {
+    title: 'Revolutionizing Education: How AI is Transforming E-Learning',
+    creationDate: new Date(),
+    img: environment.staticImages.boxImageOne,
+    readTime: 5,
+    tag: 'Elearning Transformation',
+    description:
+      'In today’s digital age, the concept of lifelong learning is more relevant than ever. E-learning platforms have revolutionized education, breaking down traditional barriers and providing learners with access to a wealth of knowledge from anywhere in the world. This blog explores how e-learning platforms are transforming the educational landscape, making it more flexible, inclusive, and personalized. We’ll delve into how these platforms empower learners of all ages and backgrounds, adapt to individual learning styles, and provide opportunities for skill development, career advancement, and personal growth. Discover the key trends driving this shift and the role technology plays in fostering a culture of continuous learning in the modern world.',
+    id: 'box-item-3',
+  },
+  {
+    title:
+      'Mastering New Frontiers: The Rise of Virtual Reality in Online Education',
+    creationDate: new Date(),
+    img: environment.staticImages.boxImageTwo,
+    readTime: 10,
+    tag: 'Artificial Intelligence',
+    description:
+      'In today’s digital age, the concept of lifelong learning is more relevant than ever. E-learning platforms have revolutionized education, breaking down traditional barriers and providing learners with access to a wealth of knowledge from anywhere in the world. This blog explores how e-learning platforms are transforming the educational landscape, making it more flexible, inclusive, and personalized. We’ll delve into how these platforms empower learners of all ages and backgrounds, adapt to individual learning styles, and provide opportunities for skill development, career advancement, and personal growth. Discover the key trends driving this shift and the role technology plays in fostering a culture of continuous learning in the modern world.',
+    id: 'box-item-4',
+  },
+  {
+    title:
+      'Unlocking Potential: Personalized Learning in the Digital Classroom',
+    creationDate: new Date(),
+    img: environment.staticImages.boxImageThree,
+    readTime: 15,
+    tag: 'Digital Learning',
+    description:
+      'In today’s digital age, the concept of lifelong learning is more relevant than ever. E-learning platforms have revolutionized education, breaking down traditional barriers and providing learners with access to a wealth of knowledge from anywhere in the world. This blog explores how e-learning platforms are transforming the educational landscape, making it more flexible, inclusive, and personalized. We’ll delve into how these platforms empower learners of all ages and backgrounds, adapt to individual learning styles, and provide opportunities for skill development, career advancement, and personal growth. Discover the key trends driving this shift and the role technology plays in fostering a culture of continuous learning in the modern world.',
+    id: 'box-item-5',
   },
 ];
 

@@ -6,10 +6,15 @@ import {
   PageWraperComponent,
 } from '../../../shared';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BlogData, blogData } from '../../constants/staticData';
+import {
+  BlogData,
+  blogData,
+  BoxItem,
+  boxItems,
+} from '../../constants/staticData';
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import { ButtonSize } from '../../../shared/models/button.model';
-import { map, Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
 const components = [PageWraperComponent, ButtonComponent, CustomImgComponent];
 const pipes = [DatePipe, AsyncPipe];
@@ -24,7 +29,9 @@ const modules = [NgIf];
 })
 export class GenericDetailsPageComponent implements OnInit {
   protected readonly btnSize: typeof ButtonSize = ButtonSize;
-  protected blogData$?: Observable<BlogData | undefined>;
+  protected blogData$?: Observable<BlogData | BoxItem | undefined>;
+  public typeOfItem?: 'blog' | 'whats-new';
+  protected title: string = 'Blog Details';
 
   constructor(
     private uiService: UiService,
@@ -38,20 +45,31 @@ export class GenericDetailsPageComponent implements OnInit {
       clearTimeout(timer);
     }, 0);
 
-    this.blogData$ = this.route.paramMap.pipe(
-      map((data) => {
-        const blogId = data.get('id');
-        const blog = blogData.find((blog) => blog.id === blogId);
-        return blog;
+    this.blogData$ = this.route.data.pipe(
+      map(({ typeOfItem }) => typeOfItem),
+      switchMap((typeOfItem) => {
+        this.typeOfItem = typeOfItem;
+        return this.route.paramMap.pipe(
+          map((data) => {
+            const dataId = data.get('id');
+
+            if (typeOfItem === 'blog') {
+              const blog = blogData.find((blog) => blog.id === dataId);
+              return blog;
+            }
+            if (typeOfItem === 'whats-new') {
+              const whatsNewArrticle = boxItems.find(
+                (whatsNew) => whatsNew.id === dataId
+              );
+              this.title = 'Whats New Details';
+              return whatsNewArrticle;
+            }
+
+            return undefined;
+          })
+        );
       })
     );
-
-    // this.route.paramMap.subscribe((data) => {
-    //   const blogId = data.get('id');
-    //   const blog = blogData.find((blog) => blog.id === blogId);
-
-    //   this.blogData = blog;
-    // });
   }
 
   protected goBack() {

@@ -13,14 +13,14 @@
   }
 }
 
-.blog {
+.whats-new {
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 5.6rem;
   padding-bottom: 9.6rem;
   margin-bottom: 26.6rem;
-  &__box-container {
+  &__container {
     @include flex-prop(unset, center);
     flex-wrap: wrap;
     gap: 2.4rem;

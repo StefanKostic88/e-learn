@@ -1,4 +1,4 @@
-<app-page-wraper>
+<app-page-wraper [pageTitle]="title">
   <ng-container class="main">
     <figure class="generic-details-page" *ngIf="blogData$ | async as blogData">
       <header class="generic-details-page__header">
