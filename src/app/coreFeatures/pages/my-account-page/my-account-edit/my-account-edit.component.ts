@@ -154,6 +154,12 @@ export class MyAccountEditComponent implements OnInit, OnDestroy {
 
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
+      const mimeType = file.type;
+
+      if (!(mimeType === 'image/jpeg' || mimeType === 'image/png')) {
+        return;
+      }
+
       this.file = file;
       this.fileName = file.name;
 

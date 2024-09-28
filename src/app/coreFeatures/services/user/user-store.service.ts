@@ -322,6 +322,3 @@ export class UserStoreService {
     );
   }
 }
-
-// keyFinal = key;
-// return this.http.put(data, this.file);
