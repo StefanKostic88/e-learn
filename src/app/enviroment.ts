@@ -24,6 +24,8 @@ export const environment = {
       'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/my-trainings',
     addMyUsers:
       ' https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/add-my-users',
+    createTraining:
+      'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/create-training',
   },
   captchaSiteKey: '6LcCtDIqAAAAAJJV0wAcl1x65LHyEZZ-Dd4-PfjF',
   staticImages: {

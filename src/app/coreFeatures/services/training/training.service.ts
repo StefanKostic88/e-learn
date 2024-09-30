@@ -45,17 +45,12 @@ export class TrainingService {
   }
 
   public createTraining(data: TrainingCreationAttribute) {
-    return this.http
-      .post(
-        'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/create-training',
-        data
-      )
-      .pipe(
-        catchError((errResponse: HttpErrorResponse) => {
-          console.log(errResponse);
-          return throwError(errResponse.error.message);
-        })
-      );
+    return this.http.post(environment.apiEndpoints.createTraining, data).pipe(
+      catchError((errResponse: HttpErrorResponse) => {
+        console.log(errResponse);
+        return throwError(errResponse.error.message);
+      })
+    );
   }
 
   public getMyTrainings() {
