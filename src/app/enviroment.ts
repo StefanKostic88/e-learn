@@ -27,7 +27,7 @@ export const environment = {
     createTraining:
       'https://lryie611ua.execute-api.eu-north-1.amazonaws.com/dev/create-training',
   },
-  captchaSiteKey: '6LcCtDIqAAAAAJJV0wAcl1x65LHyEZZ-Dd4-PfjF',
+  captchaSiteKey: '6LeMK9MqAAAAAFZvaVc6P9OJnG1xhpbyczNjQ2tf',
   staticImages: {
     aboutUs:
       'https://d354odvv3vtkqh.cloudfront.net/static-files/about-us-img.jpg',
