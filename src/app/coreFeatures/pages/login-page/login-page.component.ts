@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LoginFormComponent } from '../../components/login-form/login-form.component';
-import { PageWraperComponent, SpinerComponent } from '../../../shared';
+import { PageWraperComponent } from '../../../shared';
 import { RouterLink } from '@angular/router';
 
-import { AsyncPipe, NgIf } from '@angular/common';
 import { UiService } from '../../services/uiService/ui.service';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { environment } from '../../../enviroment';
 
-const components = [LoginFormComponent, PageWraperComponent, SpinerComponent];
-const modules = [RouterLink, NgIf, AsyncPipe, RecaptchaModule];
+const components = [LoginFormComponent, PageWraperComponent];
+const modules = [RouterLink, RecaptchaModule];
 
 @Component({
   selector: 'app-login-page',
